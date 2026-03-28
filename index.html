@@ -7,14 +7,15 @@
 <title>EglinGym -- Training App</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
+
 :root{
-  --bg:#f4f1eb;--surface:#fff;--surface2:#edeae3;--border:#d8d3c8;
-  --ink:#1a1814;--ink2:#5a5650;--ink3:#9a9590;
-  --strength:#c0392b;--cardio:#1a6b8a;--boxing:#8b4513;--rowing:#2d6a4f;--yoga:#7b6fa0;
-  --green:#27ae60;--amber:#e67e22;
+–bg:#f4f1eb;–surface:#fff;–surface2:#edeae3;–border:#d8d3c8;
+–ink:#1a1814;–ink2:#5a5650;–ink3:#9a9590;
+–strength:#c0392b;–cardio:#1a6b8a;–boxing:#8b4513;–rowing:#2d6a4f;–yoga:#7b6fa0;
+–green:#27ae60;–amber:#e67e22;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-weight:300;min-height:100vh;}
+body{background:var(–bg);color:var(–ink);font-family:‘Barlow’,sans-serif;font-weight:300;min-height:100vh;}
 
 /* ── MASTHEAD ── */
 .masthead{background:#1a1814;color:#f4f1eb;padding:18px 36px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
@@ -206,9 +207,9 @@ placeholder-color:var(–ink3);
 .ib-body{font-size:11px;color:var(–ink2);line-height:1.5;}.ib-body strong{color:var(–ink);font-weight:500;}
 
 /* section dividers */
-.section-divider{padding:5px 16px;background:var(–surface2);border-bottom:1px solid var(–border);border-top:1px solid var(–border);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(–ink3);display:flex;justify-content:space-between;}
+.section-divider{padding:5px 12px;background:var(–surface2);border-bottom:1px solid var(–border);border-top:1px solid var(–border);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(–ink3);display:flex;justify-content:space-between;}
 .section-divider span{color:var(–strength);}
-.yoga-section-label{padding:5px 16px;background:rgba(123,111,160,.06);border-top:1px solid rgba(123,111,160,.2);border-bottom:1px solid rgba(123,111,160,.2);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(–yoga);display:flex;justify-content:space-between;}
+.yoga-section-label{padding:5px 12px;background:rgba(123,111,160,.06);border-top:1px solid rgba(123,111,160,.2);border-bottom:1px solid rgba(123,111,160,.2);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(–yoga);display:flex;justify-content:space-between;}
 
 /* ── STRETCH SECTION ── */
 .stretch-section-label{
@@ -430,8 +431,8 @@ transition:background .15s;
 .he-name{color:#777;font-weight:400;}
 .he-wt{font-family:‘Barlow Condensed’,sans-serif;font-weight:700;color:#1a1814;}
 .no-history{padding:28px 18px;text-align:center;font-size:13px;color:#aaa;font-style:italic;background:#fff;}
-</style>
 
+</style>
 </head>
 <body>
 
@@ -584,8 +585,6 @@ transition:background .15s;
   </div>
 </div>
 <script>
-
-// ═══════════════════════════════════════════════════════
 // STORAGE HELPERS
 // ═══════════════════════════════════════════════════════
 function storageGet(k){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):null; }catch(e){return null;} }
@@ -594,6 +593,7 @@ function storageSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch
 // ═══════════════════════════════════════════════════════
 // EXERCISE LIBRARY (form guide data)
 // ═══════════════════════════════════════════════════════
+
 const EX = {
 "Dumbbell Bench Press":{tag:"Chest · Triceps · Shoulders",type:"Compound",muscles:[{n:"Pectorals",p:true},{n:"Triceps",p:true},{n:"Front Delts",p:false}],cues:["Lie on bench, feet flat on floor. Hold dumbbells at chest height, elbows at 45° to your body.","Press the dumbbells directly up, extending arms fully. They can touch lightly at the top.","Lower slowly (3 seconds) until upper arms are parallel to the floor or slightly below.","Keep your back naturally arched, shoulder blades squeezed into the bench throughout.","Do not bounce off the chest -- pause briefly at the bottom."],mistakes:["Flaring elbows to 90° -- puts excessive stress on the shoulder joint. Keep them at 45°.","Feet leaving the floor -- keep them planted for a stable base throughout.","Arching the back excessively to lift more -- use controlled range and appropriate weight."],breathe:"<strong>Exhale as you press up.</strong> <strong>Inhale as you lower.</strong>",prog:"When 10 controlled reps at 15 kg feel strong, progress to the next weight up. Pausing at the bottom for 1 second increases difficulty before adding weight.",ytQuery:"dumbbell bench press proper form technique"},
 "Incline Dumbbell Press":{tag:"Upper Chest · Shoulders · Triceps",type:"Compound",muscles:[{n:"Upper Pectorals",p:true},{n:"Front Deltoid",p:true},{n:"Triceps",p:false}],cues:["Set bench to 30–45°. Sit back with dumbbells resting on knees, then kick them up to chest height.","Press from chest level upward at the slight incline angle -- not straight up to the ceiling.","Keep elbows at 45° to body throughout. Lower with full control.","Shoulder blades pinched back and down throughout -- do not let them round forward at the top.","Focus on feeling the upper chest contract. The incline shifts emphasis there."],mistakes:["Bench angle too steep (above 45°) -- this turns it into a shoulder press, removing chest emphasis.","Elbows drifting forward or flaring wide -- keep controlled at 45° throughout.","Rushing the eccentric -- the 3 sec lowering phase is where upper chest growth happens."],breathe:"<strong>Exhale on the press up. Inhale on the controlled descent.</strong>",prog:"Progress the same as flat bench. When 12 reps feel controlled, increase weight by 1 increment. The incline press will naturally lag behind flat -- that’s normal.",ytQuery:"incline dumbbell press bench proper form"},
@@ -651,6 +651,7 @@ const EX = {
 // Each day has a base routine (v0) and an alternate routine (v1)
 // After 3 completions, v1 is shown; after 3 more, back to v0 (evolved)
 // ═══════════════════════════════════════════════════════
+
 const ROUTINES = {
 0:{ // MONDAY -- Upper Push
 v0:[
@@ -783,6 +784,7 @@ v1:[
 // ═══════════════════════════════════════════════════════
 // DAY CONFIG -- cardio, title, theme, yoga
 // ═══════════════════════════════════════════════════════
+
 const DAY_CONFIG = [
 {name:"Monday",theme:"Upper Body -- Chest, Shoulders & Triceps",badge:"Push Focus",restBanner:false,restSection:false,
 sessions30:{strengthOnly:{title:"Strength Block -- Full 30 mins",text:"No cardio. Use all 30 minutes on weights. Rest 60–75 sec between sets."},cals:"180–230",tip:"3 sec eccentric on bench press builds more than rushing reps."},
@@ -908,124 +910,6 @@ return `<div class="rotation-banner" id="rotBanner-${dayIdx}">
   </div>`;
 }
 
-function renderExerciseBlocks(dayIdx, blocks, state){
-return blocks.map(b=>{
-if(b.type==="section") return `<div class="section-divider">${b.label}<span>${b.count}</span></div>`;
-if(b.type==="yogaSection") return `<div class="yoga-section-label">${b.label}<span style="color:var(--ink3)">${b.sub}</span></div>`;
-if(b.type==="ex"){
-const checked = state.pendingChecks[b.name] || false;
-// Global weight store takes priority -- falls back to programme default as placeholder
-const savedWt = getWeightForExercise(b.name);
-const isWeighted = b.wt && b.wt!=="BW" && b.wt!=="KB";
-const weightField = isWeighted ? ` <div class="weight-input-wrap"> <input class="weight-input" type="text" placeholder="${b.wt}" value="${savedWt}" title="Log actual weight used" onchange="saveWeight(${dayIdx},'${b.name.replace(/'/g,"\\'")}',this.value)" oninput="saveWeight(${dayIdx},'${b.name.replace(/'/g,"\\'")}',this.value)" /> <span class="weight-unit">kg</span> </div>` : `<div class="ex-weight-default">${b.wt}</div>`;
-return ` <div class="ex-row${checked?' done-row':''}" id="exrow-${dayIdx}-${b.name.replace(/\W/g,'_')}"> <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:2px"> <div class="ex-num">${b.num}</div> <div class="ex-check${checked?' checked':''}" onclick="toggleCheck(${dayIdx},'${b.name.replace(/'/g,"\\'")}')"><svg class="tick-svg" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,9 11,1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div> </div> <div> <button class="ex-name-btn" onclick="openFormModal('${b.name.replace(/'/g,"\\'")}','${b.sets}','${(getWeightForExercise(b.name)||b.wt).replace(/'/g,"\\'")}')">${b.name}</button> <div class="ex-note">${b.note}</div> <div class="ex-hint">tap name for form guide ↗</div> <span class="ex-tag ${tagClass(b.tag)}">${b.tag}</span> </div> <div class="ex-meta"> <div class="ex-sets">${b.sets}</div> ${weightField} </div> </div>`;
-}
-if(b.type==="yoga"){
-return `<div class="yoga-row"> <div class="yoga-num">${b.num}</div> <div> <button class="yoga-name-btn" onclick="openFormModal('${b.name.replace(/'/g,"\\'")}','${b.hold||""}','${b.side||""}')">${b.name}</button> <div class="yoga-note">${b.note}</div> <div class="ex-hint">tap for form guide ↗</div> </div> <div><div class="yoga-hold">${b.hold||""}</div><div class="yoga-side">${b.side||""}</div></div> </div>`;
-}
-return "";
-}).join("");
-}
-
-function renderSession(dayIdx, label, cls, sub, config, blocks, state, extraBlocks){
-const s60 = config;
-let html = `<div class="session-card ${cls}"> <div class="session-head"><div class="session-label">${label}</div><div class="session-sub">${sub}</div></div>`;
-
-if(s60 && s60.cardio){
-const c=s60.cardio;
-html+=`<div class="cardio-block"> <div class="cardio-icon-wrap ${c.iconCls}">${c.icon}</div> <div> <div class="cardio-type">${c.type}</div> <div class="cardio-name">${c.name}</div> <div class="cardio-rec">${c.rec}</div> <div class="cardio-duration ${c.dur}">${c.durText}</div> </div> </div>`;
-if(s60.infoBox){const ib=s60.infoBox;html+=`<div class="info-box ${ib.cls}" style="margin-bottom:1px"><div class="ib-label ${ib.lblCls}">${ib.label}</div><div class="ib-body">${ib.body}</div></div>`;}
-}
-if(s60 && s60.strengthOnly){
-html+=`<div class="strength-only-note"><div class="son-label">${s60.strengthOnly.title}</div><div class="son-text">${s60.strengthOnly.text}</div></div>`;
-}
-
-html+=renderExerciseBlocks(dayIdx, blocks, state);
-if(extraBlocks) html+=renderExerciseBlocks(dayIdx, extraBlocks, state);
-
-const cals = s60.cals;
-const tip = s60.tip;
-
-// check if all checkable exercises are done
-const checkable = blocks.filter(b=>b.type==="ex");
-const allDone = checkable.length>0 && checkable.every(b=>state.pendingChecks[b.name]);
-html+=`<div class="session-footer">
-<div class="footer-cals">Est. <strong>${cals} kcal</strong></div>
-<div class="footer-tip">${tip}</div>
-
-  </div>`;
-  if(cls==="s-30"||cls==="s-60"||cls==="s-90"){
-    html+=`<button class="mark-complete-btn${allDone?' session-complete':''}" id="mcb-${dayIdx}-${cls}" onclick="markSessionComplete(${dayIdx},'${cls}')">${allDone?'✓ Session Complete':'Mark Session Complete'}</button>`;
-  }
-  html+=`</div>`;
-  return html;
-}
-
-function buildDay(dayIdx){
-const cfg = DAY_CONFIG[dayIdx];
-const state = getState(dayIdx);
-const routine = ROUTINES[dayIdx];
-const blocks = routine[`v${state.routineVersion}`];
-
-let html = `<div class="day-panel${dayIdx===0?' active':''}" id="d${dayIdx}"> <div class="day-header"> <div class="day-name">${cfg.name}</div> <div class="day-theme">${cfg.theme}</div> <div class="day-vol-badge">${cfg.badge}</div> </div> ${renderWeekProgress(dayIdx, state)} ${renderRotationBanner(dayIdx)}`;
-
-if(cfg.restBanner) html+=`<div class="flex-rest-banner"><div>🔄</div><div class="frb-text">${cfg.restBanner.text}</div></div>`;
-
-// SAT/SUN are 90 min, others are 30+60
-const isBig = dayIdx>=5;
-const colCls = isBig ? "columns-90" : "columns";
-html+=`<div class="${colCls}">`;
-
-// 30 min card
-html+=renderSession(dayIdx,"30 min","s-30","Strength only / Dumbbells + Bench",cfg.sessions30,blocks,state,null);
-
-// 60 min card
-html+=renderSession(dayIdx,"60 min","s-60",`${dayIdx<5?"Cardio + Strength":"Peloton/Rowing + Strength"} / 30+30`,cfg.sessions60,blocks,state,null);
-
-// 90 min card for Sat/Sun
-if(isBig){
-const yogaBlocks = [
-{type:"yogaSection",label:cfg.yogaLabel,sub:cfg.yogaSub},
-…cfg.yoga
-];
-html+=renderSession(dayIdx,"90 min","s-90","Cardio + Strength + Stretch / 30+30+30",
-{cardio:cfg.sessions60.cardio,infoBox:null,cals:cfg[`sessions90cals`],tip:cfg[`sessions90tip`]},
-blocks, state, yogaBlocks);
-}
-
-html+=`</div>`;
-
-// Friday rest section
-if(cfg.restSection) html+=` <div style="margin-top:28px"> <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;border-top:1px solid var(--border);padding-top:14px;">If Friday is your rest day this week</div> <div class="rest-wrap"><div class="rest-headline" style="font-size:34px">Rest Day</div> <div class="rest-body">Recovery is when your body adapts. Prioritise sleep, protein (1.6–2g per kg), and hydration.</div> <div class="rest-options"> <div class="rest-opt">🧘 20 min yoga</div><div class="rest-opt">🚶 30 min walk</div> <div class="rest-opt">🛁 Epsom bath</div><div class="rest-opt">📏 Foam roll</div> </div></div> </div>`;
-
-html+=`</div>`;
-return html;
-}
-
-function buildAll(){
-const container = document.getElementById("days-container");
-container.innerHTML = "";
-for(let i=0;i<7;i++) container.innerHTML += buildDay(i);
-updateTabBadges();
-}
-
-function updateTabBadges(){
-for(let i=0;i<7;i++){
-const state = getState(i);
-const withinCycle = state.completions.length % 3;
-const tab = document.querySelectorAll(".day-tab")[i];
-// remove existing badge
-const old = tab.querySelector(".tab-badge");
-if(old) old.remove();
-if(withinCycle>0 || state.showRotationBanner){
-const badge = document.createElement("span");
-badge.className = "tab-badge" + (state.showRotationBanner?" complete":"");
-badge.textContent = state.showRotationBanner ? "NEW!" : `${withinCycle}/3`;
-tab.appendChild(badge);
-}
-}
-}
-
 // ═══════════════════════════════════════════════════════
 // GLOBAL WEIGHT STORE -- persists across days, weeks, rotations
 // keyed by exercise name, independent of session state
@@ -1045,17 +929,9 @@ return gw[exName] || ‘’; // empty string means show placeholder (programme d
 // ═══════════════════════════════════════════════════════
 // INTERACTIONS
 // ═══════════════════════════════════════════════════════
-function toggleCheck(dayIdx, exName){
-const state = getState(dayIdx);
-const wasChecked = state.pendingChecks[exName] || false;
-state.pendingChecks[exName] = !wasChecked;
-saveState(dayIdx, state);
-rebuildDay(dayIdx);
-// Only animate when ticking ON, not when removing a tick
-if(!wasChecked) showTickCelebration(exName);
-}
 
 // ═══════════════════════════════════════════════════════
+
 // CHEESY MESSAGES
 // ═══════════════════════════════════════════════════════
 const CHEESY = [
@@ -1185,39 +1061,6 @@ state.pendingWeights[exName] = value;
 saveState(dayIdx, state);
 }
 
-function markSessionComplete(dayIdx, sessionCls){
-const state = getState(dayIdx);
-const routine = ROUTINES[dayIdx];
-const blocks = routine[`v${state.routineVersion}`];
-const checkable = blocks.filter(b=>b.type==="ex");
-
-// tick all
-checkable.forEach(b=>{ state.pendingChecks[b.name]=true; });
-
-// log completion
-const entry = {
-date: new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}),
-session: sessionCls,
-routineVersion: state.routineVersion,
-weights: {…state.pendingWeights}
-};
-state.completions.push(entry);
-
-// check if 3 completions reached in this rotation
-const withinCycle = state.completions.length % 3;
-if(withinCycle===0){
-state.showRotationBanner = true;
-}
-
-saveState(dayIdx, state);
-rebuildDay(dayIdx);
-updateTabBadges();
-
-// show celebration
-const cfg = DAY_CONFIG[dayIdx];
-showCelebration(cfg.name, sessionCls);
-}
-
 function showCelebration(dayName, sessionCls){
 const overlay = document.getElementById(‘celebrateOverlay’);
 const msg = document.getElementById(‘celMsg’);
@@ -1253,60 +1096,9 @@ document.body.style.overflow = ‘’;
 }, 300);
 }
 
-function acceptRotation(dayIdx){
-const state = getState(dayIdx);
-state.routineVersion = state.routineVersion===0 ? 1 : 0;
-state.showRotationBanner = false;
-state.pendingChecks = {};
-// Note: pendingWeights intentionally NOT cleared -- global store preserves them anyway
-saveState(dayIdx, state);
-rebuildDay(dayIdx);
-updateTabBadges();
-}
-
-function dismissRotation(dayIdx){
-const state = getState(dayIdx);
-state.showRotationBanner = false;
-saveState(dayIdx, state);
-rebuildDay(dayIdx);
-updateTabBadges();
-}
-
-function rebuildDay(dayIdx){
-const container = document.getElementById("days-container");
-const panels = container.querySelectorAll(".day-panel");
-const wasActive = panels[dayIdx] && panels[dayIdx].classList.contains("active");
-const tempDiv = document.createElement("div");
-tempDiv.innerHTML = buildDay(dayIdx);
-const newPanel = tempDiv.querySelector(".day-panel");
-if(wasActive) newPanel.classList.add("active");
-if(panels[dayIdx]) panels[dayIdx].replaceWith(newPanel);
-else container.appendChild(newPanel);
-}
-
 // ═══════════════════════════════════════════════════════
 // HISTORY MODAL
 // ═══════════════════════════════════════════════════════
-function showHistory(dayIdx){
-const state = getState(dayIdx);
-const cfg = DAY_CONFIG[dayIdx];
-document.getElementById("histTitle").textContent = `${cfg.name} -- Session History`;
-const content = document.getElementById("histContent");
-
-if(!state.completions || state.completions.length===0){
-content.innerHTML=`<div class="no-history">No completed sessions yet for ${cfg.name}. Complete your first session to start building your history.</div>`;
-} else {
-const reversed = […state.completions].reverse();
-content.innerHTML = reversed.map((entry,i)=>{
-const wtEntries = Object.entries(entry.weights||{}).filter(([k,v])=>v);
-const rows = wtEntries.length>0 ? wtEntries.map(([name,wt])=>` <div class="he-row"><span class="he-name">${name}</span><span class="he-wt">${wt} kg</span></div>`).join("") :
-`<div class="he-row" style="color:var(--ink3);font-style:italic">No weights logged</div>`;
-return `<div class="history-entry"> <div class="he-date">${entry.date} &nbsp;·&nbsp; ${entry.session} session &nbsp;·&nbsp; Routine ${entry.routineVersion===1?"B":"A"}</div> <div class="he-rows">${rows}</div> </div>`;
-}).join("");
-}
-document.getElementById("historyOverlay").classList.add("open");
-document.body.style.overflow="hidden";
-}
 
 function closeHistory(e){if(e.target===document.getElementById("historyOverlay"))closeHistoryDirect();}
 function closeHistoryDirect(){document.getElementById("historyOverlay").classList.remove("open");document.body.style.overflow="";}
@@ -1337,21 +1129,13 @@ function closeFModalDirect(){document.getElementById("modalOverlay").classList.r
 // ═══════════════════════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════════════════════
-function go(i){
-document.querySelectorAll(".day-panel").forEach((p,idx)=>p.classList.toggle("active",idx===i));
-document.querySelectorAll(".day-tab").forEach((t,idx)=>t.classList.toggle("active",idx===i));
-}
-
-document.addEventListener("keydown",e=>{
-if(e.key==="Escape"){closeFModalDirect();closeHistoryDirect();closeCelebration();}
-});
 
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
-// [replaced by initApp()]
 
 // ═══════════════════════════════════════════════════════
+
 // STRETCH ROUTINES -- per day of week (0=Mon … 6=Sun)
 // ═══════════════════════════════════════════════════════
 const STRETCHES = {
@@ -1430,6 +1214,7 @@ items:[
 };
 
 // ═══════════════════════════════════════════════════════
+
 // CALENDAR STATE
 // ═══════════════════════════════════════════════════════
 // weekOffset: 0 = current week, -1 = last week, +1 = next week etc.
@@ -1843,6 +1628,26 @@ document.body.style.overflow=‘hidden’;
 // ═══════════════════════════════════════════════════════
 // INIT -- replace old buildAll with calendar render
 // ═══════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════
+// ROTATION MANAGEMENT
+// ═══════════════════════════════════════════════════════
+function acceptRotation(dayIdx){
+const state = getState(dayIdx);
+state.routineVersion = state.routineVersion===0 ? 1 : 0;
+state.showRotationBanner = false;
+state.pendingChecks = {};
+saveState(dayIdx, state);
+renderCalendar();
+}
+
+function dismissRotation(dayIdx){
+const state = getState(dayIdx);
+state.showRotationBanner = false;
+saveState(dayIdx, state);
+renderCalendar();
+}
+
 function initApp() {
 // Set current day index to today
 const today = new Date();
@@ -1858,9 +1663,12 @@ if(e.key===‘ArrowLeft’) changeWeek(-1);
 if(e.key===‘ArrowRight’) changeWeek(1);
 });
 
-// Replace the final buildAll() call
 initApp();
 </script>
 
+</body>
+</html>
+
+</script>
 </body>
 </html>
