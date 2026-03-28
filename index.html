@@ -17,11 +17,11 @@
 body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-weight:300;min-height:100vh;}
 
 /* MASTHEAD */
-.masthead{background:var(–ink);color:var(–bg);padding:22px 44px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.masthead{background:#1a1814;color:#f4f1eb;padding:22px 44px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
 .masthead-right{text-align:right;}
 .rule-list{list-style:none;}
 .rule-list li{font-size:10px;font-weight:400;letter-spacing:1px;color:#888;padding:2px 0;border-bottom:1px solid #333;}
-.rule-list li strong{color:var(–bg);}
+.rule-list li strong{color:#f4f1eb;}
 
 /* EGLINGYM HEADER LOGO */
 .header-logo{display:inline-flex;align-items:center;gap:14px;}
@@ -292,9 +292,22 @@ font-family:‘Barlow Condensed’,sans-serif;font-weight:400;
 .ex-num{font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:600;color:var(–ink3);padding-top:3px;}
 
 /* checkbox */
-.ex-check{width:18px;height:18px;border:2px solid var(–border);border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-top:1px;background:none;}
-.ex-check.checked{background:var(–green);border-color:var(–green);}
-.ex-check.checked::after{content:‘✓’;color:#fff;font-size:11px;font-weight:700;line-height:1;}
+.ex-check{
+width:22px;height:22px;
+border:2px solid #d8d3c8;
+border-radius:3px;
+cursor:pointer;
+display:flex;align-items:center;justify-content:center;
+flex-shrink:0;
+transition:all .15s;
+margin-top:1px;
+background:#ffffff;
+box-sizing:border-box;
+}
+.ex-check:hover{border-color:#c0392b;}
+.ex-check.checked{background:#27ae60;border-color:#27ae60;}
+.ex-check .tick-svg{display:none;}
+.ex-check.checked .tick-svg{display:block;}
 
 .ex-body{}
 .ex-name-btn{font-size:13px;font-weight:600;color:var(–ink);line-height:1.3;cursor:pointer;display:inline;background:none;border:none;padding:0;text-align:left;font-family:‘Barlow’,sans-serif;border-bottom:1px dotted var(–ink3);transition:color .15s,border-color .15s;}
@@ -482,40 +495,41 @@ transition:background .15s;
 <!-- EXERCISE TICK OVERLAY -->
 
 <div class="tick-overlay" id="tickOverlay">
-  <div class="tick-logo" id="tickLogo">
-    <div style="display:inline-flex;align-items:center;gap:16px;">
-      <svg width="44" height="88" viewBox="0 0 44 88" fill="none" overflow="visible">
-        <rect class="tk-plo" x="6" y="0" width="32" height="12" rx="2" fill="#c0392b"/>
-        <rect class="tk-pli" x="9" y="13" width="26" height="8" rx="1.5" fill="#c0392b" opacity="0.75"/>
-        <rect class="tk-cl"  x="14" y="22" width="16" height="5" rx="1" fill="#555"/>
-        <rect class="tk-bar" x="18" y="26" width="8" height="36" rx="1" fill="#444"/>
-        <rect class="tk-cr"  x="14" y="61" width="16" height="5" rx="1" fill="#555"/>
-        <rect class="tk-pri" x="9" y="67" width="26" height="8" rx="1.5" fill="#c0392b" opacity="0.75"/>
-        <rect class="tk-pro" x="6" y="76" width="32" height="12" rx="2" fill="#c0392b"/>
-      </svg>
-      <div style="display:flex;flex-direction:column;gap:0;">
-        <div style="display:inline-flex;align-items:baseline;">
-          <span class="tk-E"    style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#c0392b;line-height:1;">E</span>
-          <span class="tk-glin" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#ffffff;line-height:1;">GLIN</span>
-        </div>
-        <div class="tk-rule" style="height:2px;background:#c0392b;width:100%;margin:2px 0;"></div>
-        <div style="display:inline-flex;align-items:baseline;">
-          <span class="tk-G"  style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#c0392b;line-height:1;">G</span>
-          <span class="tk-ym" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#ffffff;line-height:1;">YM</span>
+  <!-- logo panel -->
+  <div id="tickLogoPanel">
+    <div id="tickLogo">
+      <div style="display:inline-flex;align-items:center;gap:16px;">
+        <svg width="44" height="88" viewBox="0 0 44 88" fill="none" overflow="visible">
+          <rect class="tk-plo" x="6" y="0" width="32" height="12" rx="2" fill="#c0392b"/>
+          <rect class="tk-pli" x="9" y="13" width="26" height="8" rx="1.5" fill="#c0392b" opacity="0.75"/>
+          <rect class="tk-cl"  x="14" y="22" width="16" height="5" rx="1" fill="#555"/>
+          <rect class="tk-bar" x="18" y="26" width="8" height="36" rx="1" fill="#444"/>
+          <rect class="tk-cr"  x="14" y="61" width="16" height="5" rx="1" fill="#555"/>
+          <rect class="tk-pri" x="9" y="67" width="26" height="8" rx="1.5" fill="#c0392b" opacity="0.75"/>
+          <rect class="tk-pro" x="6" y="76" width="32" height="12" rx="2" fill="#c0392b"/>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="display:inline-flex;align-items:baseline;">
+            <span class="tk-E"    style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#c0392b;line-height:1;">E</span>
+            <span class="tk-glin" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#ffffff;line-height:1;">GLIN</span>
+          </div>
+          <div class="tk-rule" style="height:2px;background:#c0392b;width:100%;margin:2px 0;"></div>
+          <div style="display:inline-flex;align-items:baseline;">
+            <span class="tk-G"  style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#c0392b;line-height:1;">G</span>
+            <span class="tk-ym" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#ffffff;line-height:1;">YM</span>
+          </div>
         </div>
       </div>
     </div>
+    <div class="tk-check" style="font-size:42px;line-height:1;animation:tkCheckPop .4s cubic-bezier(.22,1,.36,1) .78s both;">✓</div>
+    <div class="tk-name" id="tkName" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:3px;text-transform:uppercase;color:#888;text-align:center;animation:tkFade .4s ease .88s both;"></div>
   </div>
-  <div class="tk-check">✓</div>
-  <div class="tk-name" id="tkName"></div>
-</div>
-
-<!-- cheesy message panel -- swaps in after logo -->
-
-<div class="tk-cheesy" id="tkCheesy">
-  <div class="tk-cheesy-emoji" id="tkEmoji"></div>
-  <div class="tk-cheesy-text" id="tkMsg"></div>
-  <div class="tk-cheesy-sub" id="tkSub"></div>
+  <!-- cheesy message panel -- hidden until swap -->
+  <div class="tk-cheesy" id="tkCheesy" style="display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:0 32px;">
+    <div class="tk-cheesy-emoji" id="tkEmoji" style="font-size:72px;line-height:1;"></div>
+    <div class="tk-cheesy-text" id="tkMsg" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(42px,8vw,72px);color:#ffffff;line-height:1;letter-spacing:1px;text-transform:uppercase;"></div>
+    <div class="tk-cheesy-sub" id="tkSub" style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:#888;"></div>
+  </div>
 </div>
 
 <!-- CELEBRATION OVERLAY -->
@@ -928,7 +942,7 @@ function renderExerciseBlocks(dayIdx, blocks, state){
         <div class="ex-row${checked?' done-row':''}" id="exrow-${dayIdx}-${b.name.replace(/\W/g,'_')}">
           <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:2px">
             <div class="ex-num">${b.num}</div>
-            <div class="ex-check${checked?' checked':''}" onclick="toggleCheck(${dayIdx},'${b.name.replace(/'/g,"\\'")}')"></div>
+            <div class="ex-check${checked?' checked':''}" onclick="toggleCheck(${dayIdx},'${b.name.replace(/'/g,"\\'")}')"><svg class="tick-svg" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,9 11,1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           </div>
           <div>
             <button class="ex-name-btn" onclick="openFormModal('${b.name.replace(/'/g,"\\'")}','${b.sets}','${(getWeightForExercise(b.name)||b.wt).replace(/'/g,"\\'")}')">${b.name}</button>
@@ -1149,72 +1163,80 @@ function getNextCheesy(){
 }
 
 function showTickCelebration(exName){
-  const overlay  = document.getElementById('tickOverlay');
-  const nameEl   = document.getElementById('tkName');
-  const logo     = document.getElementById('tickLogo');
-  const checkEl  = overlay.querySelector('.tk-check');
-  const cheesy   = document.getElementById('tkCheesy');
+  const overlay    = document.getElementById('tickOverlay');
+  const logoPanel  = document.getElementById('tickLogoPanel');
+  const cheesyPanel= document.getElementById('tkCheesy');
+  const nameEl     = document.getElementById('tkName');
+  const emojiEl    = document.getElementById('tkEmoji');
+  const msgEl      = document.getElementById('tkMsg');
+  const subEl      = document.getElementById('tkSub');
 
+  // Set exercise name
   nameEl.textContent = exName;
 
-  // Make sure logo panel is visible, cheesy panel hidden
-  logo.style.display = '';
-  checkEl.style.display = '';
-  nameEl.style.display = '';
-  cheesy.style.display = 'none';
+  // Reset: show logo panel, hide cheesy panel
+  logoPanel.style.display  = 'flex';
+  logoPanel.style.flexDirection = 'column';
+  logoPanel.style.alignItems = 'center';
+  logoPanel.style.gap = '16px';
+  logoPanel.style.opacity  = '1';
+  logoPanel.style.transition = '';
+  cheesyPanel.style.display = 'none';
+  cheesyPanel.style.opacity  = '1';
+  cheesyPanel.style.transition = '';
 
-  // Reset logo animations by cloning
-  const fresh = logo.cloneNode(true);
-  fresh.id = 'tickLogo';
-  fresh.style.display = '';
-  logo.replaceWith(fresh);
+  // Restart SVG animations by forcing reflow
+  const svgRects = logoPanel.querySelectorAll('rect, .tk-rule');
+  svgRects.forEach(el => {
+    el.style.animationName = 'none';
+    el.offsetHeight; // reflow
+    el.style.animationName = '';
+  });
+  const animEls = logoPanel.querySelectorAll('.tk-E,.tk-glin,.tk-G,.tk-ym,.tk-rule,.tk-check,.tk-name');
+  animEls.forEach(el => {
+    el.style.animationName = 'none';
+    el.offsetHeight;
+    el.style.animationName = '';
+  });
 
+  // Show overlay
   overlay.classList.add('show');
-
   clearTimeout(window._tkTimer);
   clearTimeout(window._tkCheesyTimer);
 
-  // After logo animation settles (~1s), swap to cheesy message
+  // After 1.1s swap to cheesy message
   window._tkCheesyTimer = setTimeout(()=>{
     // Fade out logo panel
-    const logoEl = document.getElementById('tickLogo');
-    const checkE = overlay.querySelector('.tk-check');
-    const nameE  = overlay.querySelector('.tk-name');
-    [logoEl, checkE, nameE].forEach(el=>{
-      if(el){ el.style.transition='opacity .3s ease'; el.style.opacity='0'; }
-    });
-
+    logoPanel.style.transition = 'opacity .25s ease';
+    logoPanel.style.opacity = '0';
     setTimeout(()=>{
-      // Hide logo elements
-      [logoEl, checkE, nameE].forEach(el=>{ if(el) el.style.display='none'; });
+      logoPanel.style.display = 'none';
 
-      // Pick a cheesy message and reset its animations
+      // Pick message
       const pick = getNextCheesy();
-      const cheesyFresh = cheesy.cloneNode(true);
-      cheesyFresh.id = 'tkCheesy';
-      cheesy.replaceWith(cheesyFresh);
-      const cf = document.getElementById('tkCheesy');
-      cf.querySelector('#tkEmoji').id = 'tkEmoji';
-      cf.querySelector('#tkMsg').id   = 'tkMsg';
-      cf.querySelector('#tkSub').id   = 'tkSub';
-      document.getElementById('tkEmoji').textContent = pick.emoji;
-      document.getElementById('tkMsg').textContent   = pick.msg;
-      document.getElementById('tkSub').textContent   = pick.sub;
-      cf.style.display = 'flex';
-    }, 300);
+      emojiEl.textContent = pick.emoji;
+      msgEl.textContent   = pick.msg;
+      subEl.textContent   = pick.sub;
+
+      // Reset cheesy animations
+      [emojiEl, msgEl, subEl].forEach(el => {
+        el.style.animationName = 'none';
+        el.offsetHeight;
+        el.style.animationName = '';
+      });
+
+      cheesyPanel.style.display = 'flex';
+    }, 250);
   }, 1100);
 
-  // Auto-dismiss after logo + message have both shown
+  // Auto-dismiss after 2.8s total
   window._tkTimer = setTimeout(()=>{
-    overlay.style.opacity = '0';
     overlay.style.transition = 'opacity .3s ease';
+    overlay.style.opacity = '0';
     setTimeout(()=>{
       overlay.classList.remove('show');
-      overlay.style.opacity = '';
+      overlay.style.opacity  = '1';
       overlay.style.transition = '';
-      // Reset for next time
-      const cheesyEl = document.getElementById('tkCheesy');
-      if(cheesyEl) cheesyEl.style.display = 'none';
     }, 300);
   }, 2800);
 }
