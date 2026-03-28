@@ -29,7 +29,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
 .hl-eglin{display:inline-flex;align-items:baseline;}
 .hl-gym{display:inline-flex;align-items:baseline;}
 .hl-E,.hl-G{font-family:‘Barlow Condensed’,sans-serif;font-weight:900;font-size:clamp(32px,4.5vw,52px);color:#c0392b;line-height:1;}
-.hl-glin,.hl-ym{font-family:‘Barlow Condensed’,sans-serif;font-weight:900;font-size:clamp(32px,4.5vw,52px);color:#f0ede6;line-height:1;}
+.hl-glin,.hl-ym{font-family:‘Barlow Condensed’,sans-serif;font-weight:900;font-size:clamp(32px,4.5vw,52px);color:#ffffff;line-height:1;}
 .hl-rule{height:2px;background:#c0392b;width:100%;margin:1px 0;}
 .hl-tag{font-family:‘Barlow Condensed’,sans-serif;font-weight:300;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:#555;margin-top:2px;}
 /* dumbbell animations */
@@ -53,7 +53,103 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
 @keyframes hlRuleGrow{from{transform:scaleX(0);}to{transform:scaleX(1);}}
 @keyframes hlFade{from{opacity:0;}to{opacity:1;}}
 
-/* ── CELEBRATION OVERLAY ── */
+/* ── EXERCISE TICK CELEBRATION ── */
+.tick-overlay{
+display:none;position:fixed;inset:0;z-index:1900;
+background:rgba(10,8,6,.78);
+align-items:center;justify-content:center;
+flex-direction:column;gap:16px;
+backdrop-filter:blur(5px);
+pointer-events:none;
+}
+.tick-overlay.show{display:flex;animation:tickFadeIn .2s ease forwards;}
+@keyframes tickFadeIn{from{opacity:0;}to{opacity:1;}}
+
+.tick-logo{opacity:0;animation:tickLogoIn .01s .05s forwards;}
+@keyframes tickLogoIn{to{opacity:1;}}
+
+/* dumbbell */
+.tk-plo{animation:tkSlL .45s cubic-bezier(.22,1,.36,1) .1s both;}
+.tk-pli{animation:tkSlL .45s cubic-bezier(.22,1,.36,1) .18s both;}
+.tk-cl{animation:tkSlL .35s cubic-bezier(.22,1,.36,1) .25s both;}
+.tk-bar{animation:tkBarG .3s cubic-bezier(.22,1,.36,1) .31s both;}
+.tk-cr{animation:tkSlR .35s cubic-bezier(.22,1,.36,1) .25s both;}
+.tk-pri{animation:tkSlR .45s cubic-bezier(.22,1,.36,1) .18s both;}
+.tk-pro{animation:tkSlR .45s cubic-bezier(.22,1,.36,1) .1s both;}
+@keyframes tkSlL{from{opacity:0;transform:translateX(-16px);}to{opacity:1;transform:translateX(0);}}
+@keyframes tkSlR{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:translateX(0);}}
+@keyframes tkBarG{from{opacity:0;transform:scaleY(0);}to{opacity:1;transform:scaleY(1);}}
+
+/* wordmark */
+.tk-E{animation:tkDrop .35s cubic-bezier(.22,1,.36,1) .42s both;}
+.tk-glin{animation:tkDrop .35s cubic-bezier(.22,1,.36,1) .50s both;}
+.tk-rule{animation:tkRuleG .3s cubic-bezier(.22,1,.36,1) .56s both;transform-origin:left;}
+.tk-G{animation:tkDrop .35s cubic-bezier(.22,1,.36,1) .62s both;}
+.tk-ym{animation:tkDrop .35s cubic-bezier(.22,1,.36,1) .70s both;}
+@keyframes tkDrop{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes tkRuleG{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+
+/* tick check + exercise name */
+.tk-check{
+font-size:42px;line-height:1;
+animation:tkCheckPop .4s cubic-bezier(.22,1,.36,1) .78s both;
+}
+@keyframes tkCheckPop{
+0%{opacity:0;transform:scale(.4);}
+70%{transform:scale(1.2);}
+100%{opacity:1;transform:scale(1);}
+}
+.tk-name{
+font-family:‘Barlow Condensed’,sans-serif;font-weight:600;
+font-size:16px;letter-spacing:3px;text-transform:uppercase;
+color:#888;text-align:center;
+animation:tkFade .4s ease .88s both;
+}
+@keyframes tkFade{from{opacity:0;}to{opacity:1;}}
+
+/* ── CHEESY MESSAGE ── */
+.tk-cheesy{
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:12px;
+text-align:center;
+padding:0 32px;
+}
+.tk-cheesy-emoji{
+font-size:72px;
+line-height:1;
+animation:emojiPop .5s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes emojiPop{
+0%{opacity:0;transform:scale(0) rotate(-15deg);}
+65%{transform:scale(1.25) rotate(5deg);}
+100%{opacity:1;transform:scale(1) rotate(0deg);}
+}
+.tk-cheesy-text{
+font-family:‘Barlow Condensed’,sans-serif;
+font-weight:900;
+font-size:clamp(42px,8vw,72px);
+color:#ffffff;
+line-height:1;
+letter-spacing:1px;
+text-transform:uppercase;
+animation:cheesySlam .45s cubic-bezier(.22,1,.36,1) .15s both;
+}
+@keyframes cheesySlam{
+0%{opacity:0;transform:scale(1.4);}
+100%{opacity:1;transform:scale(1);}
+}
+.tk-cheesy-sub{
+font-family:‘Barlow Condensed’,sans-serif;
+font-weight:300;
+font-size:14px;
+letter-spacing:4px;
+text-transform:uppercase;
+color:#666;
+animation:tkFade .4s ease .35s both;
+}
 .celebrate-overlay{
 display:none;position:fixed;inset:0;z-index:2000;
 background:rgba(10,8,6,.85);
@@ -381,6 +477,45 @@ transition:background .15s;
 
 <div class="main">
   <div id="days-container"></div>
+</div>
+
+<!-- EXERCISE TICK OVERLAY -->
+
+<div class="tick-overlay" id="tickOverlay">
+  <div class="tick-logo" id="tickLogo">
+    <div style="display:inline-flex;align-items:center;gap:16px;">
+      <svg width="44" height="88" viewBox="0 0 44 88" fill="none" overflow="visible">
+        <rect class="tk-plo" x="6" y="0" width="32" height="12" rx="2" fill="#c0392b"/>
+        <rect class="tk-pli" x="9" y="13" width="26" height="8" rx="1.5" fill="#c0392b" opacity="0.75"/>
+        <rect class="tk-cl"  x="14" y="22" width="16" height="5" rx="1" fill="#555"/>
+        <rect class="tk-bar" x="18" y="26" width="8" height="36" rx="1" fill="#444"/>
+        <rect class="tk-cr"  x="14" y="61" width="16" height="5" rx="1" fill="#555"/>
+        <rect class="tk-pri" x="9" y="67" width="26" height="8" rx="1.5" fill="#c0392b" opacity="0.75"/>
+        <rect class="tk-pro" x="6" y="76" width="32" height="12" rx="2" fill="#c0392b"/>
+      </svg>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:inline-flex;align-items:baseline;">
+          <span class="tk-E"    style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#c0392b;line-height:1;">E</span>
+          <span class="tk-glin" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#ffffff;line-height:1;">GLIN</span>
+        </div>
+        <div class="tk-rule" style="height:2px;background:#c0392b;width:100%;margin:2px 0;"></div>
+        <div style="display:inline-flex;align-items:baseline;">
+          <span class="tk-G"  style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#c0392b;line-height:1;">G</span>
+          <span class="tk-ym" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;color:#ffffff;line-height:1;">YM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tk-check">✓</div>
+  <div class="tk-name" id="tkName"></div>
+</div>
+
+<!-- cheesy message panel -- swaps in after logo -->
+
+<div class="tk-cheesy" id="tkCheesy">
+  <div class="tk-cheesy-emoji" id="tkEmoji"></div>
+  <div class="tk-cheesy-text" id="tkMsg"></div>
+  <div class="tk-cheesy-sub" id="tkSub"></div>
 </div>
 
 <!-- CELEBRATION OVERLAY -->
@@ -966,9 +1101,122 @@ function getWeightForExercise(exName, programmeDefault){
 // ═══════════════════════════════════════════════════════
 function toggleCheck(dayIdx, exName){
   const state = getState(dayIdx);
-  state.pendingChecks[exName] = !state.pendingChecks[exName];
+  const wasChecked = state.pendingChecks[exName] || false;
+  state.pendingChecks[exName] = !wasChecked;
   saveState(dayIdx, state);
   rebuildDay(dayIdx);
+  // Only animate when ticking ON, not when removing a tick
+  if(!wasChecked) showTickCelebration(exName);
+}
+
+// ═══════════════════════════════════════════════════════
+// CHEESY MESSAGES
+// ═══════════════════════════════════════════════════════
+const CHEESY = [
+  { emoji:"💪", msg:"BEAST MODE!", sub:"Absolutely crushing it" },
+  { emoji:"🔥", msg:"ON FIRE!", sub:"The gym fears you" },
+  { emoji:"🏆", msg:"CHAMP!", sub:"Born to lift" },
+  { emoji:"⚡", msg:"ELECTRIC!", sub:"Pure raw power" },
+  { emoji:"🦁", msg:"ROAR!", sub:"King of EglinGym" },
+  { emoji:"🚀", msg:"LAUNCHED!", sub:"To the moon and back" },
+  { emoji:"💥", msg:"DESTROYED IT!", sub:"That exercise never stood a chance" },
+  { emoji:"🎯", msg:"NAILED IT!", sub:"Textbook. Absolutely textbook." },
+  { emoji:"🥇", msg:"GOLD MEDAL!", sub:"Step aside, Olympians" },
+  { emoji:"😤", msg:"TOO EASY!", sub:"What's next, a mountain?" },
+  { emoji:"🤩", msg:"SENSATIONAL!", sub:"The crowd goes wild" },
+  { emoji:"👑", msg:"ROYALTY!", sub:"All hail the EglinGym monarch" },
+  { emoji:"💎", msg:"DIAMOND!", sub:"Pressure makes diamonds. And you." },
+  { emoji:"🌊", msg:"UNSTOPPABLE!", sub:"Like a wave of pure muscle" },
+  { emoji:"🎸", msg:"ROCK STAR!", sub:"Shredding it. Literally." },
+  { emoji:"🦅", msg:"SOARING!", sub:"Eagles don't skip leg day" },
+  { emoji:"⚔️",  msg:"WARRIOR!", sub:"Forged in the fires of EglinGym" },
+  { emoji:"🏋️", msg:"LEGENDARY!", sub:"They'll write songs about this" },
+  { emoji:"😎", msg:"TOO COOL!", sub:"Sunglasses required after that set" },
+  { emoji:"🌟", msg:"SUPERSTAR!", sub:"Hollywood called. They want your story." },
+  { emoji:"💪", msg:"GAINS INCOMING!", sub:"Your future self says thank you" },
+  { emoji:"🐉", msg:"DRAGON ENERGY!", sub:"Scales? Muscles. Wings? Biceps." },
+  { emoji:"🎉", msg:"YASSS!", sub:"Every. Single. Rep." },
+  { emoji:"🦾", msg:"BIONIC!", sub:"Part human, part absolute unit" },
+  { emoji:"🔑", msg:"UNLOCKED!", sub:"Achievement: did the thing" },
+];
+let _cheesyIdx = -1;
+function getNextCheesy(){
+  // never repeat the same one twice in a row
+  let next;
+  do { next = Math.floor(Math.random() * CHEESY.length); } while(next === _cheesyIdx);
+  _cheesyIdx = next;
+  return CHEESY[next];
+}
+
+function showTickCelebration(exName){
+  const overlay  = document.getElementById('tickOverlay');
+  const nameEl   = document.getElementById('tkName');
+  const logo     = document.getElementById('tickLogo');
+  const checkEl  = overlay.querySelector('.tk-check');
+  const cheesy   = document.getElementById('tkCheesy');
+
+  nameEl.textContent = exName;
+
+  // Make sure logo panel is visible, cheesy panel hidden
+  logo.style.display = '';
+  checkEl.style.display = '';
+  nameEl.style.display = '';
+  cheesy.style.display = 'none';
+
+  // Reset logo animations by cloning
+  const fresh = logo.cloneNode(true);
+  fresh.id = 'tickLogo';
+  fresh.style.display = '';
+  logo.replaceWith(fresh);
+
+  overlay.classList.add('show');
+
+  clearTimeout(window._tkTimer);
+  clearTimeout(window._tkCheesyTimer);
+
+  // After logo animation settles (~1s), swap to cheesy message
+  window._tkCheesyTimer = setTimeout(()=>{
+    // Fade out logo panel
+    const logoEl = document.getElementById('tickLogo');
+    const checkE = overlay.querySelector('.tk-check');
+    const nameE  = overlay.querySelector('.tk-name');
+    [logoEl, checkE, nameE].forEach(el=>{
+      if(el){ el.style.transition='opacity .3s ease'; el.style.opacity='0'; }
+    });
+
+    setTimeout(()=>{
+      // Hide logo elements
+      [logoEl, checkE, nameE].forEach(el=>{ if(el) el.style.display='none'; });
+
+      // Pick a cheesy message and reset its animations
+      const pick = getNextCheesy();
+      const cheesyFresh = cheesy.cloneNode(true);
+      cheesyFresh.id = 'tkCheesy';
+      cheesy.replaceWith(cheesyFresh);
+      const cf = document.getElementById('tkCheesy');
+      cf.querySelector('#tkEmoji').id = 'tkEmoji';
+      cf.querySelector('#tkMsg').id   = 'tkMsg';
+      cf.querySelector('#tkSub').id   = 'tkSub';
+      document.getElementById('tkEmoji').textContent = pick.emoji;
+      document.getElementById('tkMsg').textContent   = pick.msg;
+      document.getElementById('tkSub').textContent   = pick.sub;
+      cf.style.display = 'flex';
+    }, 300);
+  }, 1100);
+
+  // Auto-dismiss after logo + message have both shown
+  window._tkTimer = setTimeout(()=>{
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity .3s ease';
+    setTimeout(()=>{
+      overlay.classList.remove('show');
+      overlay.style.opacity = '';
+      overlay.style.transition = '';
+      // Reset for next time
+      const cheesyEl = document.getElementById('tkCheesy');
+      if(cheesyEl) cheesyEl.style.display = 'none';
+    }, 300);
+  }, 2800);
 }
 
 function saveWeight(dayIdx, exName, value){
