@@ -861,7 +861,13 @@ function weekDates(off){
   const m=monOfWeek(off);
   return Array.from({length:7},(_,i)=>{const d=new Date(m);d.setDate(m.getDate()+i);return d;});
 }
-function dKey(d){return d.toISOString().slice(0,10);}
+function dKey(d){
+  // Use local date (not UTC) to avoid BST/timezone mismatch
+  const yr=d.getFullYear();
+  const mo=String(d.getMonth()+1).padStart(2,'0');
+  const dy=String(d.getDate()).padStart(2,'0');
+  return yr+'-'+mo+'-'+dy;
+}
 function isToday(d){const t=new Date();return d.getDate()===t.getDate()&&d.getMonth()===t.getMonth()&&d.getFullYear()===t.getFullYear();}
 function isPast(d){const t=new Date();t.setHours(0,0,0,0);return d<t;}
 function changeWeek(delta){weekOff+=delta;curDay=0;pastUnlocked=false;render();}
