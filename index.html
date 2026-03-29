@@ -329,6 +329,7 @@ canvas.chart-cv{width:100%!important;height:180px!important;}
       <li><strong>Tap exercise name</strong> for form guide &amp; video</li>
       <li><strong>Tick</strong> exercises &amp; cardio when done</li>
       <li><strong>&#8592; &#8594;</strong> navigate weeks &middot; <strong>Today</strong> to return</li>
+      <li><button onclick="showDiag()" style="background:none;border:none;color:#555;font-size:9px;letter-spacing:1px;cursor:pointer;padding:0;text-decoration:underline;">&#128269; Storage diagnostic</button></li>
     </ul>
   </div>
 </header>
@@ -788,8 +789,46 @@ function getWeightForExercise(exName, programmeDefault){
 
 
 // ── STORAGE ──
-function sGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
-function sSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function sGet(k){
+  try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}
+  catch(e){return null;}
+}
+function sSet(k,v){
+  try{
+    localStorage.setItem(k,JSON.stringify(v));
+    // Verify it actually saved
+    const check=localStorage.getItem(k);
+    if(!check) showStorageWarning();
+  }catch(e){
+    showStorageWarning();
+  }
+}
+
+let _storageWarnShown=false;
+function showStorageWarning(){
+  if(_storageWarnShown) return;
+  _storageWarnShown=true;
+  const el=document.createElement('div');
+  el.id='storageWarn';
+  el.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#c0392b;color:#fff;padding:12px 16px;z-index:9999;font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:1px;text-align:center;';
+  el.innerHTML='&#9888; Storage unavailable \u2014 data will not be saved. Try: Settings \u2192 Safari \u2192 turn off "Block All Cookies". <button onclick="this.parentNode.remove()" style="margin-left:12px;background:rgba(255,255,255,.25);border:none;color:#fff;padding:3px 10px;cursor:pointer;font-family:Barlow Condensed,sans-serif;font-weight:700;letter-spacing:1px;">Dismiss</button>';
+  document.body.appendChild(el);
+}
+
+// Test storage on startup
+function testStorage(){
+  try{
+    const k='eg_test';
+    localStorage.setItem(k,'1');
+    const ok=localStorage.getItem(k)==='1';
+    localStorage.removeItem(k);
+    if(!ok) showStorageWarning();
+    return ok;
+  }catch(e){
+    showStorageWarning();
+    return false;
+  }
+}
 
 // ── GLOBAL WEIGHTS (PB tracking) ──
 function gWeights(){return sGet('eg_gw')||{};}
@@ -1518,6 +1557,45 @@ function closeCel(){
   setTimeout(()=>{ov.classList.remove('show');ov.style.opacity='1';ov.style.transition='';},300);
 }
 
+// ── STORAGE DIAGNOSTIC ──
+function showDiag(){
+  let keys=[];
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&k.startsWith('eg_')) keys.push(k);
+    }
+  }catch(e){keys=['ERROR: '+e.message];}
+
+  // Today's expected key
+  const now=new Date();
+  const yr=now.getFullYear();
+  const mo=String(now.getMonth()+1).padStart(2,'0');
+  const dy=String(now.getDate()).padStart(2,'0');
+  const todayLocal=yr+'-'+mo+'-'+dy;
+  const todayUTC=now.toISOString().slice(0,10);
+  const dow=now.getDay();
+  const dayIdx=dow===0?6:dow-1;
+  const expectedKey='eg_date_'+todayLocal+'_'+dayIdx;
+  const utcKey='eg_date_'+todayUTC+'_'+dayIdx;
+
+  let msg='=== STORAGE DIAGNOSTIC ===\n\n';
+  msg+='Local date: '+todayLocal+'\n';
+  msg+='UTC date:   '+todayUTC+'\n';
+  msg+='Day index:  '+dayIdx+' ('+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][dayIdx]+')\n\n';
+  msg+='Expected key: '+expectedKey+'\n';
+  msg+='UTC key would be: '+utcKey+'\n\n';
+  msg+='Key exists (local): '+(localStorage.getItem(expectedKey)?'YES \u2713':'NO \u2717')+'\n';
+  msg+='Key exists (UTC):   '+(localStorage.getItem(utcKey)?'YES (timezone bug data here!)':'no')+'\n\n';
+  msg+='All eg_ keys in storage ('+keys.length+'):\n';
+  keys.sort().forEach(k=>{
+    const val=localStorage.getItem(k);
+    msg+='  '+k+' ('+( val?val.length:0)+' chars)\n';
+  });
+  msg+='\nStorage available: '+(testStorage()?'YES':'NO');
+  alert(msg);
+}
+
 // ── HISTORY MODAL ──
 function showHist(d){
   const st=getDayState(d);
@@ -1566,6 +1644,7 @@ document.addEventListener('keydown',e=>{
 });
 
 (function(){
+  testStorage();
   const dow=new Date().getDay();
   curDay=dow===0?6:dow-1;
   weekOff=0;
