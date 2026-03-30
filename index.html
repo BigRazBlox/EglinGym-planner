@@ -439,13 +439,13 @@ canvas.cv{display:block;width:100%!important;height:180px!important;}
 </div>
 <script>const EX={};
 const ROUTINES={0:{v0:[],v1:[]},1:{v0:[],v1:[]},2:{v0:[],v1:[]},3:{v0:[],v1:[]},4:{v0:[],v1:[]},5:{v0:[],v1:[]},6:{v0:[],v1:[]}};
-const DAY_CONFIG=[{name:"Mon",theme:"",badge:"",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
-{name:"Tue",theme:"",badge:"",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
-{name:"Wed",theme:"",badge:"",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
-{name:"Thu",theme:"",badge:"",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
-{name:"Fri",theme:"",badge:"",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
-{name:"Sat",theme:"",badge:"",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
-{name:"Sun",theme:"",badge:"",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""}];
+const DAY_CONFIG=[{name:"X",badge:"x",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
+{name:"X",badge:"x",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
+{name:"X",badge:"x",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
+{name:"X",badge:"x",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
+{name:"X",badge:"x",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
+{name:"X",badge:"x",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""},
+{name:"X",badge:"x",restBanner:false,restSection:false,sessions30:{strengthOnly:{title:"",text:""},cals:"0",tip:""},sessions60:{cardio:{icon:"",iconCls:"ci-p",type:"",name:"",rec:"",dur:"dur-b",durText:""},infoBox:null,cals:"0",tip:""},yogaLabel:"",yogaSub:"",yoga:[],sessions90cals:"0",sessions90tip:""}];
 
 // STORAGE
 function sGet(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
@@ -569,206 +569,8 @@ document.getElementById(‘weekStrip’).innerHTML=html;
 }
 
 // WEEK PROGRESS
-function renderWP(d,st){
-var wc=st.completions.length%3;
-var weeks=’’;
-for(var n=1;n<=3;n++){
-var cls=n<=wc?‘done’:n===wc+1&&wc<3?‘cur’:’’;
-weeks+=’<div class="wp-w'+(cls?' '+cls:'')+'">’+(n<=wc?’✓’:n)+’</div>’;
-}
-return ‘<div class="wp"><span class="wp-lbl">Rotation</span><div class="wp-weeks">’+weeks+’</div>’+
-‘<div class="wp-info">Week ‘+(wc+1)+’ of 3</div>’+
-‘<button class="wp-hist" onclick="showHist('+d+')">History</button></div>’;
-}
-
-// ROTATION BANNER
-function renderRotBan(d){
-var st=getDST(d);
-if(!st.showRotationBanner) return ‘’;
-var nv=st.routineVersion===0?1:0;
-var lbl=’Routine ’+(nv===0?‘A’:‘B’);
-return ‘<div class="rot-ban"><div class="rot-title">🔄 Time for a fresh routine!</div>’+
-‘<div class="rot-body">You've completed this session 3 times. Switch to ‘+lbl+’ for different exercises.</div>’+
-‘<div class="rot-btns"><button class="rot-btn rot-ok" onclick="acceptRot('+d+')">Switch to ‘+lbl+’</button>’+
-‘<button class="rot-btn rot-no" onclick="dismissRot('+d+')">Keep current</button></div></div>’;
-}
-function acceptRot(d){var st=getDST(d);st.routineVersion=st.routineVersion===0?1:0;st.showRotationBanner=false;setDST(d,st);render();}
-function dismissRot(d){var st=getDST(d);st.showRotationBanner=false;setDST(d,st);render();}
-
-// STRETCHES
-var STR={
-0:{lbl:‘Upper Body \xb7 5\u20138 min’,items:[
-{n:’\u2460’,name:‘Doorway Chest Stretch’,note:‘Arms at 90\xb0, lean forward \u2014 opens the chest after pressing’,hold:‘45 sec’},
-{n:’\u2461’,name:‘Cross-Body Shoulder’,note:‘Pull arm across chest \u2014 rear delt and rotator cuff’,hold:‘30 sec’,side:‘each side’},
-{n:’\u2462’,name:‘Tricep Overhead Stretch’,note:‘One arm behind head, gentle pull with other hand’,hold:‘30 sec’,side:‘each side’},
-{n:’\u2463’,name:‘Neck & Trap Release’,note:‘Ear to shoulder \u2014 releases tension from pressing’,hold:‘30 sec’,side:‘each direction’},
-{n:’\u2464’,name:"Child’s Pose",note:‘Arms extended forward \u2014 decompress the spine’,hold:‘60 sec’},
-]},
-1:{lbl:‘Lower Body \xb7 8\u201310 min’,items:[
-{n:’\u2460’,name:‘Standing Quad Stretch’,note:‘Hold ankle behind, stand tall \u2014 quad lengthening’,hold:‘40 sec’,side:‘each side’},
-{n:’\u2461’,name:‘Standing Hamstring Stretch’,note:‘Hinge forward slowly’,hold:‘45 sec’},
-{n:’\u2462’,name:‘Low Lunge / Crescent’,note:‘Step back, sink hips \u2014 hip flexor release’,hold:‘45 sec’,side:‘each side’},
-{n:’\u2463’,name:‘Pigeon Pose’,note:‘Front shin across mat \u2014 glutes worked hard today’,hold:‘60 sec’,side:‘each side’},
-{n:’\u2464’,name:‘Seated Forward Fold’,note:‘Legs straight, hinge from hips’,hold:‘45 sec’},
-{n:’\u2465’,name:‘Supine Spinal Twist’,note:‘Lying down, knee drops across \u2014 lower back’,hold:‘30 sec’,side:‘each side’},
-]},
-2:{lbl:‘Chest & Shoulder \xb7 5\u20138 min’,items:[
-{n:’\u2460’,name:‘Doorway Chest Stretch’,note:‘Two positions \u2014 elbow at shoulder height, then raised’,hold:‘40 sec’,side:‘each position’},
-{n:’\u2461’,name:‘Cobra / Upward Dog’,note:‘Hands under shoulders, press up \u2014 anterior chain’,hold:‘45 sec’},
-{n:’\u2462’,name:‘Cross-Body Shoulder’,note:‘Pull arm across chest’,hold:‘30 sec’,side:‘each side’},
-{n:’\u2463’,name:‘Thread the Needle’,note:‘On all fours, slide arm under \u2014 thoracic rotation’,hold:‘40 sec’,side:‘each side’},
-{n:’\u2464’,name:‘Neck & Trap Release’,note:‘Shoulder shrugs, then ear to shoulder’,hold:‘30 sec’,side:‘each direction’},
-]},
-3:{lbl:‘Back & Bicep \xb7 5\u20138 min’,items:[
-{n:’\u2460’,name:‘Lat Stretch \u2014 Kneeling’,note:‘Arm on bench, push hips away \u2014 lats tight after rows’,hold:‘45 sec’,side:‘each side’},
-{n:’\u2461’,name:‘Thread the Needle’,note:‘On all fours, slide arm under \u2014 mid-back rotation’,hold:‘40 sec’,side:‘each side’},
-{n:’\u2462’,name:‘Bicep Wall Stretch’,note:‘Palm on wall, arm straight, gently turn away’,hold:‘30 sec’,side:‘each side’},
-{n:’\u2463’,name:"Child’s Pose",note:‘Arms extended \u2014 decompresses spine and opens lats’,hold:‘60 sec’},
-{n:’\u2464’,name:‘Neck & Trap Release’,note:‘Chin to chest \u2014 releases neck extensors’,hold:‘30 sec’},
-]},
-4:{lbl:‘Glutes & Hamstring \xb7 8\u201310 min’,items:[
-{n:’\u2460’,name:‘Pigeon Pose’,note:‘Front shin across mat \u2014 glutes were primary today’,hold:‘75 sec’,side:‘each side’},
-{n:’\u2461’,name:‘Standing Hamstring Stretch’,note:‘Hinge, feel the hamstring release’,hold:‘45 sec’},
-{n:’\u2462’,name:‘Supine Spinal Twist’,note:‘Lying down, knee drops across’,hold:‘45 sec’,side:‘each side’},
-{n:’\u2463’,name:‘Low Lunge / Crescent’,note:‘Hip flexors oppose glutes’,hold:‘45 sec’,side:‘each side’},
-{n:’\u2464’,name:‘Seated Forward Fold’,note:‘Full hamstring lengthening’,hold:‘45 sec’},
-]},
-5:{lbl:‘Full Body \xb7 8\u201310 min’,items:[
-{n:’\u2460’,name:"Child’s Pose",note:‘Arms extended \u2014 full spine decompression’,hold:‘60 sec’},
-{n:’\u2461’,name:‘Cat-Cow Flow’,note:‘On all fours, arch and round \u2014 whole spine’,hold:‘10 breaths’},
-{n:’\u2462’,name:‘Low Lunge / Crescent’,note:‘Hip flexors, hips, quads’,hold:‘45 sec’,side:‘each side’},
-{n:’\u2463’,name:‘Thread the Needle’,note:‘Upper back rotation’,hold:‘40 sec’,side:‘each side’},
-{n:’\u2464’,name:‘Supine Spinal Twist’,note:‘Full spinal decompression’,hold:‘40 sec’,side:‘each side’},
-{n:’\u2465’,name:‘Savasana’,note:"Completely still \u2014 let the week’s work settle",hold:‘3 min’},
-]},
-6:{lbl:‘Upper Body & Spine \xb7 8\u201310 min’,items:[
-{n:’\u2460’,name:‘Lat Stretch \u2014 Kneeling’,note:‘Arm on bench \u2014 lats worked hard on the rower’,hold:‘45 sec’,side:‘each side’},
-{n:’\u2461’,name:‘Doorway Chest Stretch’,note:‘Open the chest \u2014 counterbalance all the pulling’,hold:‘45 sec’},
-{n:’\u2462’,name:‘Seated Spinal Twist’,note:‘One leg crossed, rotate toward it \u2014 after rowing’,hold:‘45 sec’,side:‘each side’},
-{n:’\u2463’,name:‘Neck & Trap Release’,note:‘Ear to shoulder \u2014 rowing loads upper traps’,hold:‘30 sec’,side:‘each direction’},
-{n:’\u2464’,name:‘Savasana’,note:"End the week. Completely still. You’ve earned it.",hold:‘3\u20135 min’},
-]},
-};
-function renderStretch(d){
-var s=STR[d]; if(!s) return ‘’;
-var h=’<div class="str-div"><span>Post-Session Stretch</span><span style="color:rgba(39,174,96,.5);font-weight:300;">’+s.lbl+’</span></div>’;
-for(var i=0;i<s.items.length;i++){
-var it=s.items[i];
-h+=’<div class="str-row"><div class="str-num">’+it.n+’</div>’+
-‘<div><div class="str-name">’+it.name+’</div><div class="str-note">’+it.note+’</div></div>’+
-‘<div><div class="str-hold">’+it.hold+’</div>’+(it.side?’<div class="str-side">’+it.side+’</div>’:’’)+’ </div></div>’;
-}
-return h;
-}
-
-// EXERCISE BLOCKS
-function renderExBlks(dayIdx,dateStr,blks,dd){
-var h=’’;
-for(var i=0;i<blks.length;i++){
-var b=blks[i];
-if(b.type===‘section’){h+=’<div class="sec-div">’+b.label+’<span>’+b.count+’</span></div>’;continue;}
-if(b.type===‘yogaSection’){h+=’<div class="yoga-div">’+b.label+’<span style="color:var(--ink3)">’+b.sub+’</span></div>’;continue;}
-if(b.type===‘ex’){
-var ckd=dd.checks[b.name]||false;
-var sw=getGW(b.name);
-var isW=b.wt&&b.wt!==‘BW’&&b.wt!==‘KB’;
-var nm=b.name.replace(/’/g,"\’");
-var wf=isW?
-‘<div class="wt-wrap"><input class="wt-in" type="text" placeholder="'+b.wt+'" value="'+sw+'" onchange="saveWt(\''+dateStr+'\','+dayIdx+',\''+nm+'\',this.value)" oninput="saveWt(\''+dateStr+'\','+dayIdx+',\''+nm+'\',this.value)"><span class="wt-unit">kg</span></div>’:
-‘<div class="ex-wt-def">’+b.wt+’</div>’;
-h+=’<div class="ex-row'+(ckd?' dn':'')+'">’+
-‘<div style="display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:2px;">’+
-‘<div class="ex-num">’+b.num+’</div>’+
-‘<div class="ex-ck'+(ckd?' on':'')+'" onclick="toggleEx(\''+dateStr+'\','+dayIdx+',\''+nm+'\')">’+TICK+’</div>’+
-‘</div>’+
-‘<div>’+
-‘<button class="ex-name" onclick="openFm('’+nm+’','’+b.sets+’','’+(sw||b.wt).replace(/’/g,"\’")+’')">’+b.name+’</button>’+
-‘<div class="ex-note">’+b.note+’</div><div class="ex-hint">tap name for form guide \u2197</div>’+
-‘<span class="ex-tag '+tCls(b.tag)+'">’+b.tag+’</span>’+
-‘</div>’+
-‘<div class="ex-meta"><div class="ex-sets">’+b.sets+’</div>’+wf+’</div></div>’;
-continue;
-}
-if(b.type===‘yoga’){
-var yn=b.name.replace(/’/g,"\’");
-h+=’<div class="yoga-row"><div class="yoga-num">’+b.num+’</div>’+
-‘<div><button class="yoga-name" onclick="openFm(\''+yn+'\',\''+(b.hold||'')+'\',\''+(b.side||'')+'\')">’+b.name+’</button>’+
-‘<div class="yoga-note">’+b.note+’</div></div>’+
-‘<div><div class="yoga-hold">’+(b.hold||’’)+’</div><div class="yoga-side">’+(b.side||’’)+’</div></div></div>’;
-}
-}
-return h;
-}
-
-// SESSION CARD
-function renderCard(dayIdx,dateStr,label,cls,sub,cfg,blks,daySt,dd,extraBlks,hasCardio){
-var isComp=(dd.completedSessions||[]).indexOf(cls)>=0;
-if(isComp){
-var dateFmt=new Date(dateStr+‘T12:00:00’).toLocaleDateString(‘en-GB’,{day:‘numeric’,month:‘short’,year:‘numeric’});
-var entries=daySt.completions.filter(function(e){return e.session===cls&&e.date===dateFmt;});
-var entry=entries.length?entries[entries.length-1]:null;
-var detail=entry?(‘Routine ‘+(entry.routineVersion===1?‘B’:‘A’)+(entry.cardio?’ \xb7 Cardio \u2713’:’’)):’’;
-return ‘<div class="done-card"><div class="done-ban">’+
-‘<div><div class="done-lbl">\u2713 ‘+label+’ Complete</div><div class="done-detail">’+detail+’</div></div>’+
-‘<button class="edit-btn" onclick="editSess(\''+dateStr+'\','+dayIdx+',\''+cls+'\')">Edit</button>’+
-‘</div></div>’;
-}
-var h=’<div class="scard '+cls+'"><div class="scard-hdr"><div class="scard-lbl">’+label+’</div><div class="scard-sub">’+sub+’</div></div>’;
-if(hasCardio&&cfg.cardio){
-var c=cfg.cardio;
-h+=’<div class="cardio-blk"><div class="cardio-ico '+c.iconCls+'">’+c.icon+’</div>’+
-‘<div><div class="cardio-type">’+c.type+’</div><div class="cardio-name">’+c.name+’</div>’+
-‘<div class="cardio-rec">’+c.rec+’</div><div class="cardio-dur '+c.dur+'">’+c.durText+’</div></div></div>’;
-if(cfg.infoBox){var ib=cfg.infoBox;h+=’<div class="ib '+ib.cls+'"><div class="ib-lbl '+ib.lblCls+'">’+ib.label+’</div><div class="ib-body">’+ib.body+’</div></div>’;}
-var cc=dd.cardioOn, cv=(dd.cardioClass||’’).replace(/"/g,’"’);
-h+=’<div class="c-log"><div class="c-log-row">’+
-‘<div class="c-ck'+(cc?' on':'')+'" onclick="toggleCardio(\''+dateStr+'\','+dayIdx+')">’+TICK+’</div>’+
-‘<span class="c-lbl'+(cc?' on':'')+'">’+( cc?’\u2713 Cardio complete’:‘Mark cardio done’)+’</span></div>’+
-‘<input class="c-in" type="text" placeholder="Log class / details" value="'+cv+'" onchange="saveCardioClass(\''+dateStr+'\','+dayIdx+',this.value)" oninput="saveCardioClass(\''+dateStr+'\','+dayIdx+',this.value)"></div>’;
-}
-if(cfg.strengthOnly) h+=’<div class="str-note"><div class="str-note-lbl">’+cfg.strengthOnly.title+’</div><div class="str-note-txt">’+cfg.strengthOnly.text+’</div></div>’;
-h+=renderExBlks(dayIdx,dateStr,blks,dd);
-if(extraBlks) h+=renderExBlks(dayIdx,dateStr,extraBlks,dd);
-h+=renderStretch(dayIdx);
-var checkable=blks.filter(function(b){return b.type===‘ex’;});
-var allDone=checkable.length>0&&checkable.every(function(b){return dd.checks[b.name];});
-h+=’<div class="scard-foot"><div class="scard-kcal">Est. <strong>’+cfg.cals+’ kcal</strong></div><div class="scard-tip">’+cfg.tip+’</div></div>’;
-h+=’<button class="complete-btn" onclick="markComplete(\''+dateStr+'\','+dayIdx+',\''+cls+'\')">Mark Session Complete</button>’;
-h+=’</div>’;
-return h;
-}
-
-// ADDITIONAL EXERCISES
-function renderAddEx(dateStr,d){
-var dd=getDD(dateStr,d);
-var items=dd.customEx||[];
-var rows=’’;
-if(items.length){
-for(var i=0;i<items.length;i++){
-var ex=items[i];
-rows+=’<div class="cex-row">’+
-‘<input class="cex-name" type="text" placeholder="Exercise name" value="’+ex.name.replace(/"/g,’"’)+’" onchange="saveCex('’+dateStr+’',’+d+’,’+i+’,'name',this.value)">’+
-‘<input class="cex-in" type="text" placeholder="Sets/reps" value="’+ex.sets.replace(/"/g,’"’)+’" onchange="saveCex('’+dateStr+’',’+d+’,’+i+’,'sets',this.value)">’+
-‘<input class="cex-in" type="text" placeholder="Weight" value="’+ex.wt.replace(/"/g,’"’)+’" onchange="saveCex('’+dateStr+’',’+d+’,’+i+’,'wt',this.value)">’+
-‘<button class="cex-del" onclick="delCex(\''+dateStr+'\','+d+','+i+')">\xd7</button>’+
-‘</div>’;
-}
-} else {
-rows=’<div class="addex-empty">No extra exercises yet. Tap + to add.</div>’;
-}
-return ‘<div class="addex"><div class="addex-hdr"><span class="addex-title">Additional / Alternative Exercises</span>’+
-‘<button class="addex-btn" onclick="addCex(\''+dateStr+'\','+d+')">+ Add Exercise</button></div>’+
-rows+’<div class="addex-note">Log any extra exercises, modifications, or alternatives.</div></div>’;
-}
-function addCex(dateStr,d){var dd=getDD(dateStr,d);if(!dd.customEx)dd.customEx=[];dd.customEx.push({name:’’,sets:’’,wt:’’});setDD(dateStr,d,dd);render();}
-function saveCex(dateStr,d,i,f,v){var dd=getDD(dateStr,d);if(dd.customEx&&dd.customEx[i])dd.customEx[i][f]=v;setDD(dateStr,d,dd);}
-function delCex(dateStr,d,i){var dd=getDD(dateStr,d);if(dd.customEx)dd.customEx.splice(i,1);setDD(dateStr,d,dd);render();}
-
-// BODY STATS
-// TEST: if we got here, first half parsed OK
-document.getElementById(‘dayContainer’).innerHTML = ‘<div style="padding:20px;color:green;font-size:16px;">FIRST HALF OK - renderStats and above all parsed correctly</div>’;
-document.getElementById(‘weekStrip’).innerHTML = ‘<div style="padding:10px;color:white;">First half of logic runs fine</div>’;
-document.getElementById(‘calLbl’).textContent = ‘First half test’;
+document.getElementById(‘dayContainer’).innerHTML=’<div style="padding:20px;color:green;font-size:18px;">Q1 OK: storage+calendar+renderStrip all parsed</div>’;
+document.getElementById(‘calLbl’).textContent=‘Q1 passed’;
 </script>
 
 </body>
