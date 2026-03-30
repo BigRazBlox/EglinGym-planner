@@ -1347,347 +1347,383 @@ function exportData(){
     }
   });
   const csv=rows.join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='eglingym-data-'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click();
+  // iOS Safari doesn't support Blob + download attribute
+  // Use a data URI shown in a new window instead
+  const encoded='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  // Try standard download first, fall back to opening in new tab
+  try {
+    const a=document.createElement('a');
+    a.href=encoded;
+    a.download='eglingym-data-'+new Date().toISOString().slice(0,10)+'.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch(e) {
+    // Fallback for iOS: open in new tab so user can share/copy
+    window.open(encoded,'_blank');
+  }
+  // iOS Safari fallback: also show the data in an alert with copy instructions
+  if(/iPhone|iPad/i.test(navigator.userAgent)){
+    setTimeout(()=>{
+      if(confirm('On iPad, tap OK to open the CSV data in a new tab.\nFrom there: tap the Share button \u2192 Save to Files.')){
+        const w=window.open('','_blank');
+        if(w){
+          w.document.write('<pre style="font-size:11px;word-break:break-all;">'+csv.replace(/</g,'&lt;')+'</pre>');
+
+```
+      w.document.close();
+    }
+  }
+},500);
+```
+
+}
 }
 
 // ── MAIN RENDER ──
-const MNAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const DNAMES=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const MNAMES=[‘January’,‘February’,‘March’,‘April’,‘May’,‘June’,‘July’,‘August’,‘September’,‘October’,‘November’,‘December’];
+const DNAMES=[‘Monday’,‘Tuesday’,‘Wednesday’,‘Thursday’,‘Friday’,‘Saturday’,‘Sunday’];
 function renderDay(){
-  const dates=weekDates(weekOff);
-  const date=dates[curDay];
-  const dateStr=dKey(date);
-  const d=curDay;
-  const cfg=DAY_CONFIG[d];
-  const daySt=getDayState(d);
-  const blks=ROUTINES[d]['v'+daySt.routineVersion];
-  const ds=getDS(dateStr,d);
-  const isP=isPast(date)&&!isToday(date);
-  const hasLog=Object.keys(ds.checks).some(k=>ds.checks[k])||ds.cardioOn||(ds.completedSessions&&ds.completedSessions.length>0);
-  const showFaded=isP&&!hasLog&&!pastUnlocked;
-  let h='';
-  // Day header
-  h+='<div class="day-hdr"><div class="day-hdr-name">'+DNAMES[d]+'</div>'+
-    '<div class="day-hdr-date">'+date.getDate()+' '+MNAMES[date.getMonth()]+' '+date.getFullYear()+'</div>'+
-    '<div class="hdr-right">';
-  if(isToday(date)) h+='<div class="badge badge-today">Today</div>';
-  else if(isP) h+='<div class="badge badge-past">Past</div>';
-  h+='<div class="badge badge-vol">'+cfg.badge+'</div></div></div>';
-  h+=renderWP(d,daySt);
-  h+=renderRotBanner(d);
-  if(cfg.restBanner) h+='<div class="rest-banner"><div>&#128260;</div><div><strong>'+cfg.restBanner.title+'</strong> '+cfg.restBanner.text+'</div></div>';
-  if(showFaded) h+='<div class="past-banner"><span>&#128197; <strong>Planned session</strong> \u2014 nothing logged yet. Tap to log retroactively.</span><button class="past-unlock-btn" onclick="unlockPast()">Log this day</button></div>';
-  const isBig=d>=5;
-  const colCls=isBig?'cols3':'cols';
-  h+='<div class="'+(showFaded?'faded':'')+'" id="sessionCols"><div class="'+colCls+'">';
-  h+=renderCard(d,dateStr,'30 min','s-30','Strength only / Dumbbells + Bench',cfg.sessions30,blks,daySt,ds,null,false);
-  h+=renderCard(d,dateStr,'60 min','s-60',(d<5?'Cardio + Strength':'Peloton + Strength')+' / 30+30',cfg.sessions60,blks,daySt,ds,null,true);
-  if(isBig){
-    const yb=[{type:'yogaSection',label:cfg.yogaLabel,sub:cfg.yogaSub},...cfg.yoga];
-    h+=renderCard(d,dateStr,'90 min','s-90','Cardio + Strength + Stretch / 30+30+30',
-      {cardio:cfg.sessions60.cardio,infoBox:null,cals:cfg.sessions90cals,tip:cfg.sessions90tip},blks,daySt,ds,yb,true);
-  }
-  h+='</div></div>';
-  if(cfg.restSection) h+='<div style="margin-top:20px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;border-top:1px solid var(--border);padding-top:12px;">If Friday is your rest day this week</div><div class="rest-card"><div class="rest-hl">Rest Day</div><div class="rest-body">Recovery is when your body adapts. Prioritise sleep, protein (1.6\u20132g/kg), and hydration.</div><div class="rest-opts"><div class="rest-opt">&#129348; Yoga</div><div class="rest-opt">&#128694; Walk</div><div class="rest-opt">&#128705; Epsom bath</div><div class="rest-opt">&#128208; Foam roll</div></div></div></div>';
-  // Additional exercises section
-  h+=renderAddEx(dateStr,d);
-  // Body stats
-  h+=renderBodyStats(dateStr);
-  // Progress charts
-  h+=renderCharts();
-  document.getElementById('dayContainer').innerHTML=h;
-  // Draw chart after DOM update
-  requestAnimationFrame(drawChart);
+const dates=weekDates(weekOff);
+const date=dates[curDay];
+const dateStr=dKey(date);
+const d=curDay;
+const cfg=DAY_CONFIG[d];
+const daySt=getDayState(d);
+const blks=ROUTINES[d][‘v’+daySt.routineVersion];
+const ds=getDS(dateStr,d);
+const isP=isPast(date)&&!isToday(date);
+const hasLog=Object.keys(ds.checks).some(k=>ds.checks[k])||ds.cardioOn||(ds.completedSessions&&ds.completedSessions.length>0);
+const showFaded=isP&&!hasLog&&!pastUnlocked;
+let h=’’;
+// Day header
+h+=’<div class="day-hdr"><div class="day-hdr-name">’+DNAMES[d]+’</div>’+
+‘<div class="day-hdr-date">’+date.getDate()+’ ‘+MNAMES[date.getMonth()]+’ ‘+date.getFullYear()+’</div>’+
+‘<div class="hdr-right">’;
+if(isToday(date)) h+=’<div class="badge badge-today">Today</div>’;
+else if(isP) h+=’<div class="badge badge-past">Past</div>’;
+h+=’<div class="badge badge-vol">’+cfg.badge+’</div></div></div>’;
+h+=renderWP(d,daySt);
+h+=renderRotBanner(d);
+if(cfg.restBanner) h+=’<div class="rest-banner"><div>🔄</div><div><strong>’+cfg.restBanner.title+’</strong> ‘+cfg.restBanner.text+’</div></div>’;
+if(showFaded) h+=’<div class="past-banner"><span>📅 <strong>Planned session</strong> \u2014 nothing logged yet. Tap to log retroactively.</span><button class="past-unlock-btn" onclick="unlockPast()">Log this day</button></div>’;
+const isBig=d>=5;
+const colCls=isBig?‘cols3’:‘cols’;
+h+=’<div class="'+(showFaded?'faded':'')+'" id="sessionCols"><div class="'+colCls+'">’;
+h+=renderCard(d,dateStr,‘30 min’,‘s-30’,‘Strength only / Dumbbells + Bench’,cfg.sessions30,blks,daySt,ds,null,false);
+h+=renderCard(d,dateStr,‘60 min’,‘s-60’,(d<5?‘Cardio + Strength’:‘Peloton + Strength’)+’ / 30+30’,cfg.sessions60,blks,daySt,ds,null,true);
+if(isBig){
+const yb=[{type:‘yogaSection’,label:cfg.yogaLabel,sub:cfg.yogaSub},…cfg.yoga];
+h+=renderCard(d,dateStr,‘90 min’,‘s-90’,‘Cardio + Strength + Stretch / 30+30+30’,
+{cardio:cfg.sessions60.cardio,infoBox:null,cals:cfg.sessions90cals,tip:cfg.sessions90tip},blks,daySt,ds,yb,true);
+}
+h+=’</div></div>’;
+if(cfg.restSection) h+=’<div style="margin-top:20px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;border-top:1px solid var(--border);padding-top:12px;">If Friday is your rest day this week</div><div class="rest-card"><div class="rest-hl">Rest Day</div><div class="rest-body">Recovery is when your body adapts. Prioritise sleep, protein (1.6\u20132g/kg), and hydration.</div><div class="rest-opts"><div class="rest-opt">🥄 Yoga</div><div class="rest-opt">🚶 Walk</div><div class="rest-opt">🛁 Epsom bath</div><div class="rest-opt">📐 Foam roll</div></div></div></div>’;
+// Additional exercises section
+h+=renderAddEx(dateStr,d);
+// Body stats
+h+=renderBodyStats(dateStr);
+// Progress charts
+h+=renderCharts();
+document.getElementById(‘dayContainer’).innerHTML=h;
+// Draw chart after DOM update
+requestAnimationFrame(drawChart);
 }
 function render(){renderStrip();renderDay();}
 function unlockPast(){pastUnlocked=true;render();}
 
 // ── INTERACTIONS ──
 function toggleEx(dateStr,d,name){
-  const ds=getDS(dateStr,d);
-  const was=ds.checks[name]||false;
-  ds.checks[name]=!was;
-  setDS(dateStr,d,ds);
-  render();
-  if(!was){
-    checkPB(name,ds.weights[name]||getGW(name));
-    showTick(name);
-  }
+const ds=getDS(dateStr,d);
+const was=ds.checks[name]||false;
+ds.checks[name]=!was;
+setDS(dateStr,d,ds);
+render();
+if(!was){
+checkPB(name,ds.weights[name]||getGW(name));
+showTick(name);
+}
 }
 function toggleCardio(dateStr,d){
-  const ds=getDS(dateStr,d);
-  ds.cardioOn=!ds.cardioOn;
-  setDS(dateStr,d,ds);
-  render();
-  if(ds.cardioOn) showTick('Cardio done!');
+const ds=getDS(dateStr,d);
+ds.cardioOn=!ds.cardioOn;
+setDS(dateStr,d,ds);
+render();
+if(ds.cardioOn) showTick(‘Cardio done!’);
 }
 function saveCardioClass(dateStr,d,val){const ds=getDS(dateStr,d);ds.cardioClass=val;setDS(dateStr,d,ds);}
 function saveWt(dateStr,d,name,val){
-  setGW(name,val);
-  const ds=getDS(dateStr,d);
-  ds.weights[name]=val;
-  setDS(dateStr,d,ds);
+setGW(name,val);
+const ds=getDS(dateStr,d);
+ds.weights[name]=val;
+setDS(dateStr,d,ds);
 }
 
 // ── MARK COMPLETE (once per session) ──
 function markComplete(dateStr,d,cls){
-  const ds=getDS(dateStr,d);
-  const daySt=getDayState(d);
-  const blks=ROUTINES[d]['v'+daySt.routineVersion];
-  blks.filter(b=>b.type==='ex').forEach(b=>{ds.checks[b.name]=true;});
-  if(!ds.completedSessions) ds.completedSessions=[];
-  if(!ds.completedSessions.includes(cls)) ds.completedSessions.push(cls);
-  setDS(dateStr,d,ds);
-  const entry={
-    date:new Date(dateStr+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),
-    session:cls,routineVersion:daySt.routineVersion,
-    weights:{...ds.weights},cardio:ds.cardioOn,cardioClass:ds.cardioClass
-  };
-  daySt.completions.push(entry);
-  if(daySt.completions.length%3===0) daySt.showRotationBanner=true;
-  setDayState(d,daySt);
-  render();
-  showCel(DNAMES[d],cls);
+const ds=getDS(dateStr,d);
+const daySt=getDayState(d);
+const blks=ROUTINES[d][‘v’+daySt.routineVersion];
+blks.filter(b=>b.type===‘ex’).forEach(b=>{ds.checks[b.name]=true;});
+if(!ds.completedSessions) ds.completedSessions=[];
+if(!ds.completedSessions.includes(cls)) ds.completedSessions.push(cls);
+setDS(dateStr,d,ds);
+const entry={
+date:new Date(dateStr+‘T12:00:00’).toLocaleDateString(‘en-GB’,{day:‘numeric’,month:‘short’,year:‘numeric’}),
+session:cls,routineVersion:daySt.routineVersion,
+weights:{…ds.weights},cardio:ds.cardioOn,cardioClass:ds.cardioClass
+};
+daySt.completions.push(entry);
+if(daySt.completions.length%3===0) daySt.showRotationBanner=true;
+setDayState(d,daySt);
+render();
+showCel(DNAMES[d],cls);
 }
 
 // ── EDIT SESSION (removes completion, unlocks) ──
 function editSession(dateStr,d,cls){
-  const ds=getDS(dateStr,d);
-  const daySt=getDayState(d);
-  // Remove from completedSessions
-  if(ds.completedSessions) ds.completedSessions=ds.completedSessions.filter(s=>s!==cls);
-  setDS(dateStr,d,ds);
-  // Remove the most recent matching completion from history
-  const dateFmt=new Date(dateStr+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-  const idx=daySt.completions.map((e,i)=>({e,i})).filter(({e})=>e.session===cls&&e.date===dateFmt).slice(-1)[0]?.i;
-  if(idx!==undefined) daySt.completions.splice(idx,1);
-  // Recalculate rotation banner
-  if(daySt.completions.length%3!==0) daySt.showRotationBanner=false;
-  setDayState(d,daySt);
-  render();
+const ds=getDS(dateStr,d);
+const daySt=getDayState(d);
+// Remove from completedSessions
+if(ds.completedSessions) ds.completedSessions=ds.completedSessions.filter(s=>s!==cls);
+setDS(dateStr,d,ds);
+// Remove the most recent matching completion from history
+const dateFmt=new Date(dateStr+‘T12:00:00’).toLocaleDateString(‘en-GB’,{day:‘numeric’,month:‘short’,year:‘numeric’});
+const idx=daySt.completions.map((e,i)=>({e,i})).filter(({e})=>e.session===cls&&e.date===dateFmt).slice(-1)[0]?.i;
+if(idx!==undefined) daySt.completions.splice(idx,1);
+// Recalculate rotation banner
+if(daySt.completions.length%3!==0) daySt.showRotationBanner=false;
+setDayState(d,daySt);
+render();
 }
 
 // ── PB CHECK ──
 function checkPB(name,val){
-  if(!val||isNaN(parseFloat(val))) return;
-  const v=parseFloat(val);
-  const pb=getPB(name);
-  if(!pb||v>parseFloat(pb)){
-    setPB(name,val);
-    if(pb){// Only flash if we actually beat a previous PB (not first time)
-      const fl=document.getElementById('pbFlash');
-      fl.textContent='\ud83c\udfc6 New PB \u2014 '+name+' at '+val+' kg!';
-      fl.classList.add('show');
-      setTimeout(()=>fl.classList.remove('show'),3500);
-    }
-  }
+if(!val||isNaN(parseFloat(val))) return;
+const v=parseFloat(val);
+const pb=getPB(name);
+if(!pb||v>parseFloat(pb)){
+setPB(name,val);
+if(pb){// Only flash if we actually beat a previous PB (not first time)
+const fl=document.getElementById(‘pbFlash’);
+fl.textContent=’\ud83c\udfc6 New PB \u2014 ‘+name+’ at ‘+val+’ kg!’;
+fl.classList.add(‘show’);
+setTimeout(()=>fl.classList.remove(‘show’),3500);
+}
+}
 }
 
 // ── CHEESY MESSAGES ──
 const CHEESY=[
-  {e:'\ud83d\udcaa',m:'BEAST MODE!',s:'Absolutely crushing it'},
-  {e:'\ud83d\udd25',m:'ON FIRE!',s:'The gym fears you'},
-  {e:'\ud83c\udfc6',m:'CHAMP!',s:'Born to lift'},
-  {e:'\u26a1',m:'ELECTRIC!',s:'Pure raw power'},
-  {e:'\ud83e\udd81',m:'ROAR!',s:'King of EglinGym'},
-  {e:'\ud83d\ude80',m:'LAUNCHED!',s:'To the moon and back'},
-  {e:'\ud83d\udca5',m:'DESTROYED IT!',s:'That exercise never stood a chance'},
-  {e:'\ud83c\udfaf',m:'NAILED IT!',s:'Textbook. Absolutely textbook.'},
-  {e:'\ud83e\udd47',m:'GOLD MEDAL!',s:'Step aside, Olympians'},
-  {e:'\ud83d\ude24',m:'TOO EASY!',s:"What's next, a mountain?"},
-  {e:'\ud83e\udd29',m:'SENSATIONAL!',s:'The crowd goes wild'},
-  {e:'\ud83d\udc51',m:'ROYALTY!',s:'All hail the EglinGym monarch'},
-  {e:'\ud83d\udcce',m:'DIAMOND!',s:'Pressure makes diamonds. And you.'},
-  {e:'\ud83c\udf0a',m:'UNSTOPPABLE!',s:'Like a wave of pure muscle'},
-  {e:'\ud83c\udfb8',m:'ROCK STAR!',s:'Shredding it. Literally.'},
-  {e:'\ud83e\udd85',m:'SOARING!',s:"Eagles don't skip leg day"},
-  {e:'\ud83c\udfcb\ufe0f',m:'LEGENDARY!',s:"They'll write songs about this"},
-  {e:'\ud83d\ude0e',m:'TOO COOL!',s:'Sunglasses required after that set'},
-  {e:'\ud83c\udf1f',m:'SUPERSTAR!',s:'Hollywood called. They want your story.'},
-  {e:'\ud83e\uddb7',m:'BIONIC!',s:'Part human, part absolute unit'},
-  {e:'\ud83d\udd11',m:'UNLOCKED!',s:'Achievement: did the thing'},
-  {e:'\ud83d\udc09',m:'DRAGON ENERGY!',s:'Scales? Muscles. Wings? Biceps.'},
-  {e:'\ud83c\udf89',m:'YASSS!',s:'Every. Single. Rep.'},
+{e:’\ud83d\udcaa’,m:‘BEAST MODE!’,s:‘Absolutely crushing it’},
+{e:’\ud83d\udd25’,m:‘ON FIRE!’,s:‘The gym fears you’},
+{e:’\ud83c\udfc6’,m:‘CHAMP!’,s:‘Born to lift’},
+{e:’\u26a1’,m:‘ELECTRIC!’,s:‘Pure raw power’},
+{e:’\ud83e\udd81’,m:‘ROAR!’,s:‘King of EglinGym’},
+{e:’\ud83d\ude80’,m:‘LAUNCHED!’,s:‘To the moon and back’},
+{e:’\ud83d\udca5’,m:‘DESTROYED IT!’,s:‘That exercise never stood a chance’},
+{e:’\ud83c\udfaf’,m:‘NAILED IT!’,s:‘Textbook. Absolutely textbook.’},
+{e:’\ud83e\udd47’,m:‘GOLD MEDAL!’,s:‘Step aside, Olympians’},
+{e:’\ud83d\ude24’,m:‘TOO EASY!’,s:"What’s next, a mountain?"},
+{e:’\ud83e\udd29’,m:‘SENSATIONAL!’,s:‘The crowd goes wild’},
+{e:’\ud83d\udc51’,m:‘ROYALTY!’,s:‘All hail the EglinGym monarch’},
+{e:’\ud83d\udcce’,m:‘DIAMOND!’,s:‘Pressure makes diamonds. And you.’},
+{e:’\ud83c\udf0a’,m:‘UNSTOPPABLE!’,s:‘Like a wave of pure muscle’},
+{e:’\ud83c\udfb8’,m:‘ROCK STAR!’,s:‘Shredding it. Literally.’},
+{e:’\ud83e\udd85’,m:‘SOARING!’,s:"Eagles don’t skip leg day"},
+{e:’\ud83c\udfcb\ufe0f’,m:‘LEGENDARY!’,s:"They’ll write songs about this"},
+{e:’\ud83d\ude0e’,m:‘TOO COOL!’,s:‘Sunglasses required after that set’},
+{e:’\ud83c\udf1f’,m:‘SUPERSTAR!’,s:‘Hollywood called. They want your story.’},
+{e:’\ud83e\uddb7’,m:‘BIONIC!’,s:‘Part human, part absolute unit’},
+{e:’\ud83d\udd11’,m:‘UNLOCKED!’,s:‘Achievement: did the thing’},
+{e:’\ud83d\udc09’,m:‘DRAGON ENERGY!’,s:‘Scales? Muscles. Wings? Biceps.’},
+{e:’\ud83c\udf89’,m:‘YASSS!’,s:‘Every. Single. Rep.’},
 ];
 let lastC=-1;
 function nextCheesy(){let n;do{n=Math.floor(Math.random()*CHEESY.length);}while(n===lastC);lastC=n;return CHEESY[n];}
 
 let tickT1,tickT2;
 function showTick(name){
-  clearTimeout(tickT1);clearTimeout(tickT2);
-  const ov=document.getElementById('tickOv');
-  const lp=document.getElementById('tickLogoPnl');
-  const cp=document.getElementById('cheesyPnl');
-  document.getElementById('tickName').textContent=name;
-  lp.style.display='flex';cp.style.display='none';lp.style.opacity='1';lp.style.transition='';
-  ov.classList.add('show');
-  tickT1=setTimeout(()=>{
-    lp.style.transition='opacity .25s';lp.style.opacity='0';
-    setTimeout(()=>{
-      lp.style.display='none';
-      const c=nextCheesy();
-      document.getElementById('cheesyEmoji').textContent=c.e;
-      document.getElementById('cheesyMsg').textContent=c.m;
-      document.getElementById('cheesySub').textContent=c.s;
-      cp.style.display='flex';
-    },250);
-  },1100);
-  tickT2=setTimeout(()=>{
-    ov.style.transition='opacity .3s';ov.style.opacity='0';
-    setTimeout(()=>{ov.classList.remove('show');ov.style.opacity='1';ov.style.transition='';},300);
-  },2800);
+clearTimeout(tickT1);clearTimeout(tickT2);
+const ov=document.getElementById(‘tickOv’);
+const lp=document.getElementById(‘tickLogoPnl’);
+const cp=document.getElementById(‘cheesyPnl’);
+document.getElementById(‘tickName’).textContent=name;
+lp.style.display=‘flex’;cp.style.display=‘none’;lp.style.opacity=‘1’;lp.style.transition=’’;
+ov.classList.add(‘show’);
+tickT1=setTimeout(()=>{
+lp.style.transition=‘opacity .25s’;lp.style.opacity=‘0’;
+setTimeout(()=>{
+lp.style.display=‘none’;
+const c=nextCheesy();
+document.getElementById(‘cheesyEmoji’).textContent=c.e;
+document.getElementById(‘cheesyMsg’).textContent=c.m;
+document.getElementById(‘cheesySub’).textContent=c.s;
+cp.style.display=‘flex’;
+},250);
+},1100);
+tickT2=setTimeout(()=>{
+ov.style.transition=‘opacity .3s’;ov.style.opacity=‘0’;
+setTimeout(()=>{ov.classList.remove(‘show’);ov.style.opacity=‘1’;ov.style.transition=’’;},300);
+},2800);
 }
 
 let celT;
 function showCel(dayName,cls){
-  clearTimeout(celT);
-  const mins=cls==='s-30'?'30':cls==='s-60'?'60':'90';
-  document.getElementById('celMsg').textContent=dayName+' \xb7 '+mins+' min session complete';
-  document.getElementById('celOv').classList.add('show');
-  celT=setTimeout(closeCel,3200);
+clearTimeout(celT);
+const mins=cls===‘s-30’?‘30’:cls===‘s-60’?‘60’:‘90’;
+document.getElementById(‘celMsg’).textContent=dayName+’ \xb7 ‘+mins+’ min session complete’;
+document.getElementById(‘celOv’).classList.add(‘show’);
+celT=setTimeout(closeCel,3200);
 }
 function closeCel(){
-  clearTimeout(celT);
-  const ov=document.getElementById('celOv');
-  ov.style.transition='opacity .3s';ov.style.opacity='0';
-  setTimeout(()=>{ov.classList.remove('show');ov.style.opacity='1';ov.style.transition='';},300);
+clearTimeout(celT);
+const ov=document.getElementById(‘celOv’);
+ov.style.transition=‘opacity .3s’;ov.style.opacity=‘0’;
+setTimeout(()=>{ov.classList.remove(‘show’);ov.style.opacity=‘1’;ov.style.transition=’’;},300);
 }
 
 // ── STORAGE DIAGNOSTIC ──
 function showDiag(){
-  let keys=[];
-  try{
-    for(let i=0;i<localStorage.length;i++){
-      const k=localStorage.key(i);
-      if(k&&k.startsWith('eg_')) keys.push(k);
-    }
-  }catch(e){keys=['ERROR: '+e.message];}
+let keys=[];
+try{
+for(let i=0;i<localStorage.length;i++){
+const k=localStorage.key(i);
+if(k&&k.startsWith(‘eg_’)) keys.push(k);
+}
+}catch(e){keys=[’ERROR: ’+e.message];}
 
-  const now=new Date();
-  const yr=now.getFullYear();
-  const mo=String(now.getMonth()+1).padStart(2,'0');
-  const dy=String(now.getDate()).padStart(2,'0');
-  const todayLocal=yr+'-'+mo+'-'+dy;
-  const todayUTC=now.toISOString().slice(0,10);
-  const dow=now.getDay();
-  const dayIdx=dow===0?6:dow-1;
-  const expectedKey='eg_date_'+todayLocal+'_'+dayIdx;
+const now=new Date();
+const yr=now.getFullYear();
+const mo=String(now.getMonth()+1).padStart(2,‘0’);
+const dy=String(now.getDate()).padStart(2,‘0’);
+const todayLocal=yr+’-’+mo+’-’+dy;
+const todayUTC=now.toISOString().slice(0,10);
+const dow=now.getDay();
+const dayIdx=dow===0?6:dow-1;
+const expectedKey=‘eg_date_’+todayLocal+’_’+dayIdx;
 
-  let msg='=== STORAGE DIAGNOSTIC ===\n\n';
-  msg+='Local date: '+todayLocal+'\n';
-  msg+='UTC date:   '+todayUTC+'\n';
-  msg+='Day index:  '+dayIdx+' ('+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][dayIdx]+')\n';
-  msg+='Current weekOff: '+weekOff+', curDay: '+curDay+'\n\n';
+let msg=’=== STORAGE DIAGNOSTIC ===\n\n’;
+msg+=‘Local date: ‘+todayLocal+’\n’;
+msg+=‘UTC date:   ‘+todayUTC+’\n’;
+msg+=‘Day index:  ‘+dayIdx+’ (’+[‘Mon’,‘Tue’,‘Wed’,‘Thu’,‘Fri’,‘Sat’,‘Sun’][dayIdx]+’)\n’;
+msg+=‘Current weekOff: ‘+weekOff+’, curDay: ‘+curDay+’\n\n’;
 
-  // Show today's key contents
-  const todayVal=localStorage.getItem(expectedKey);
-  msg+='Today\'s key: '+expectedKey+'\n';
-  if(todayVal){
-    try{
-      const parsed=JSON.parse(todayVal);
-      msg+='  cardioOn: '+parsed.cardioOn+'\n';
-      msg+='  completedSessions: '+JSON.stringify(parsed.completedSessions||[])+'\n';
-      const checks=Object.entries(parsed.checks||{}).filter(([k,v])=>v);
-      msg+='  exercises ticked: '+checks.length+'\n';
-      if(checks.length) msg+='  -> '+checks.map(([k])=>k).join(', ')+'\n';
-      const weights=Object.entries(parsed.weights||{}).filter(([k,v])=>v);
-      msg+='  weights logged: '+weights.length+'\n';
-      msg+='  customEx: '+(parsed.customEx||[]).length+'\n';
-    }catch(e){msg+='  PARSE ERROR: '+e.message+'\n';}
-  } else {
-    msg+='  NOT FOUND\n';
-    // Check if stored under UTC key
-    const utcKey='eg_date_'+todayUTC+'_'+dayIdx;
-    if(utcKey!==expectedKey){
-      const utcVal=localStorage.getItem(utcKey);
-      if(utcVal) msg+='  BUT found under UTC key: '+utcKey+'\n';
-    }
-  }
+// Show today’s key contents
+const todayVal=localStorage.getItem(expectedKey);
+msg+=‘Today's key: ‘+expectedKey+’\n’;
+if(todayVal){
+try{
+const parsed=JSON.parse(todayVal);
+msg+=’  cardioOn: ‘+parsed.cardioOn+’\n’;
+msg+=’  completedSessions: ‘+JSON.stringify(parsed.completedSessions||[])+’\n’;
+const checks=Object.entries(parsed.checks||{}).filter(([k,v])=>v);
+msg+=’  exercises ticked: ‘+checks.length+’\n’;
+if(checks.length) msg+=’  -> ‘+checks.map(([k])=>k).join(’, ‘)+’\n’;
+const weights=Object.entries(parsed.weights||{}).filter(([k,v])=>v);
+msg+=’  weights logged: ‘+weights.length+’\n’;
+msg+=’  customEx: ‘+(parsed.customEx||[]).length+’\n’;
+}catch(e){msg+=’  PARSE ERROR: ‘+e.message+’\n’;}
+} else {
+msg+=’  NOT FOUND\n’;
+// Check if stored under UTC key
+const utcKey=‘eg_date_’+todayUTC+’_’+dayIdx;
+if(utcKey!==expectedKey){
+const utcVal=localStorage.getItem(utcKey);
+if(utcVal) msg+=’  BUT found under UTC key: ‘+utcKey+’\n’;
+}
+}
 
-  // Day state
-  const dsVal=localStorage.getItem('eg_ds_'+dayIdx);
-  if(dsVal){
-    try{
-      const ds=JSON.parse(dsVal);
-      msg+='\neg_ds_'+dayIdx+' (rotation state):\n';
-      msg+='  routineVersion: '+ds.routineVersion+'\n';
-      msg+='  completions: '+ds.completions.length+'\n';
-      msg+='  showRotationBanner: '+ds.showRotationBanner+'\n';
-    }catch(e){}
-  }
+// Day state
+const dsVal=localStorage.getItem(‘eg_ds_’+dayIdx);
+if(dsVal){
+try{
+const ds=JSON.parse(dsVal);
+msg+=’\neg_ds_’+dayIdx+’ (rotation state):\n’;
+msg+=’  routineVersion: ‘+ds.routineVersion+’\n’;
+msg+=’  completions: ‘+ds.completions.length+’\n’;
+msg+=’  showRotationBanner: ‘+ds.showRotationBanner+’\n’;
+}catch(e){}
+}
 
-  msg+='\nAll eg_ keys ('+keys.length+'):\n';
-  keys.sort().forEach(k=>{
-    const val=localStorage.getItem(k);
-    msg+='  '+k+' ('+( val?val.length:0)+' chars)\n';
-  });
-  msg+='\nStorage available: '+(testStorage()?'YES':'NO');
-  msg+='\nTotal keys in localStorage: ';
-  try{msg+=localStorage.length;}catch(e){msg+='ERROR';}
+msg+=’\nAll eg_ keys (’+keys.length+’):\n’;
+keys.sort().forEach(k=>{
+const val=localStorage.getItem(k);
+msg+=’  ‘+k+’ (’+( val?val.length:0)+’ chars)\n’;
+});
+msg+=’\nStorage available: ‘+(testStorage()?‘YES’:‘NO’);
+msg+=’\nTotal keys in localStorage: ‘;
+try{msg+=localStorage.length;}catch(e){msg+=‘ERROR’;}
+msg+=’\n\nIf data looks correct above but page shows wrong state,\ntap OK then the page will force re-render.’;
 
-  alert(msg);
+alert(msg);
+// Force re-render after dismissing diagnostic
+render();
 }
 
 // ── HISTORY MODAL ──
 function showHist(d){
-  const st=getDayState(d);
-  document.getElementById('histTitle').textContent=DNAMES[d]+' \u2014 Session History';
-  const c=document.getElementById('histContent');
-  if(!st.completions||st.completions.length===0){
-    c.innerHTML='<div class="no-hist">No completed sessions yet for '+DNAMES[d]+'.</div>';
-  } else {
-    c.innerHTML=[...st.completions].reverse().map(e=>{
-      const wt=Object.entries(e.weights||{}).filter(([k,v])=>v);
-      const rows=wt.length?wt.map(([n,w])=>'<div class="he-row"><span class="he-name">'+n+'</span><span class="he-wt">'+w+' kg</span></div>').join(''):
-        '<div class="he-row" style="color:var(--ink3);font-style:italic">No weights logged</div>';
-      const cr=e.cardio?'<div class="he-row" style="margin-top:4px;padding-top:4px;border-top:1px solid #f0ede6;"><span class="he-name" style="color:#1a6b8a">\u2713 Cardio</span><span class="he-wt" style="font-family:Barlow,sans-serif;font-weight:400;font-size:11px;color:var(--ink2)">'+(e.cardioClass||'completed')+'</span></div>':'';
-      return '<div class="hist-entry"><div class="he-date">'+e.date+' \xb7 '+e.session+' \xb7 Routine '+(e.routineVersion===1?'B':'A')+'</div>'+rows+cr+'</div>';
-    }).join('');
-  }
-  document.getElementById('histOv').classList.add('open');
-  document.body.style.overflow='hidden';
+const st=getDayState(d);
+document.getElementById(‘histTitle’).textContent=DNAMES[d]+’ \u2014 Session History’;
+const c=document.getElementById(‘histContent’);
+if(!st.completions||st.completions.length===0){
+c.innerHTML=’<div class="no-hist">No completed sessions yet for ‘+DNAMES[d]+’.</div>’;
+} else {
+c.innerHTML=[…st.completions].reverse().map(e=>{
+const wt=Object.entries(e.weights||{}).filter(([k,v])=>v);
+const rows=wt.length?wt.map(([n,w])=>’<div class="he-row"><span class="he-name">’+n+’</span><span class="he-wt">’+w+’ kg</span></div>’).join(’’):
+‘<div class="he-row" style="color:var(--ink3);font-style:italic">No weights logged</div>’;
+const cr=e.cardio?’<div class="he-row" style="margin-top:4px;padding-top:4px;border-top:1px solid #f0ede6;"><span class="he-name" style="color:#1a6b8a">\u2713 Cardio</span><span class="he-wt" style="font-family:Barlow,sans-serif;font-weight:400;font-size:11px;color:var(--ink2)">’+(e.cardioClass||‘completed’)+’</span></div>’:’’;
+return ‘<div class="hist-entry"><div class="he-date">’+e.date+’ \xb7 ‘+e.session+’ \xb7 Routine ‘+(e.routineVersion===1?‘B’:‘A’)+’</div>’+rows+cr+’</div>’;
+}).join(’’);
 }
-function closeHist(){document.getElementById('histOv').classList.remove('open');document.body.style.overflow='';}
+document.getElementById(‘histOv’).classList.add(‘open’);
+document.body.style.overflow=‘hidden’;
+}
+function closeHist(){document.getElementById(‘histOv’).classList.remove(‘open’);document.body.style.overflow=’’;}
 
 // ── FORM MODAL ──
 function openFm(name,sets,wt){
-  const data=EX[name];if(!data) return;
-  document.getElementById('mTag').textContent=data.tag;
-  document.getElementById('mTitle').textContent=name;
-  document.getElementById('mSub').textContent=data.type+' exercise';
-  document.getElementById('mMuscles').innerHTML=data.muscles.map(m=>'<span class="'+(m.p?'chip-p':'chip-s')+'">'+m.n+'</span>').join('');
-  document.getElementById('mSets').innerHTML=
-    '<div class="m-sets-cell"><div class="m-sets-lbl">Sets / Reps</div><div class="m-sets-val">'+(sets||'\u2014')+'</div></div>'+
-    '<div class="m-sets-cell"><div class="m-sets-lbl">Weight</div><div class="m-sets-val">'+(wt||'\u2014')+'</div></div>';
-  document.getElementById('mCues').innerHTML=data.cues.map((c,i)=>'<li class="cue-item"><span class="cue-n">'+(i+1)+'</span><span class="cue-t">'+c+'</span></li>').join('');
-  document.getElementById('mMistakes').innerHTML=data.mistakes.map(m=>'<li class="mk-item">'+m+'</li>').join('');
-  document.getElementById('mBreathe').innerHTML=data.breathe;
-  document.getElementById('mProg').innerHTML=data.prog;
-  document.getElementById('mYT').href='https://www.youtube.com/results?search_query='+encodeURIComponent(data.ytQuery);
-  document.getElementById('formOv').classList.add('open');
-  document.body.style.overflow='hidden';
+const data=EX[name];if(!data) return;
+document.getElementById(‘mTag’).textContent=data.tag;
+document.getElementById(‘mTitle’).textContent=name;
+document.getElementById(‘mSub’).textContent=data.type+’ exercise’;
+document.getElementById(‘mMuscles’).innerHTML=data.muscles.map(m=>’<span class="'+(m.p?'chip-p':'chip-s')+'">’+m.n+’</span>’).join(’’);
+document.getElementById(‘mSets’).innerHTML=
+‘<div class="m-sets-cell"><div class="m-sets-lbl">Sets / Reps</div><div class="m-sets-val">’+(sets||’\u2014’)+’</div></div>’+
+‘<div class="m-sets-cell"><div class="m-sets-lbl">Weight</div><div class="m-sets-val">’+(wt||’\u2014’)+’</div></div>’;
+document.getElementById(‘mCues’).innerHTML=data.cues.map((c,i)=>’<li class="cue-item"><span class="cue-n">’+(i+1)+’</span><span class="cue-t">’+c+’</span></li>’).join(’’);
+document.getElementById(‘mMistakes’).innerHTML=data.mistakes.map(m=>’<li class="mk-item">’+m+’</li>’).join(’’);
+document.getElementById(‘mBreathe’).innerHTML=data.breathe;
+document.getElementById(‘mProg’).innerHTML=data.prog;
+document.getElementById(‘mYT’).href=‘https://www.youtube.com/results?search_query=’+encodeURIComponent(data.ytQuery);
+document.getElementById(‘formOv’).classList.add(‘open’);
+document.body.style.overflow=‘hidden’;
 }
-function closeFm(){document.getElementById('formOv').classList.remove('open');document.body.style.overflow='';}
+function closeFm(){document.getElementById(‘formOv’).classList.remove(‘open’);document.body.style.overflow=’’;}
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeFm();closeHist();closeCel();}
-  if(e.key==='ArrowLeft') changeWeek(-1);
-  if(e.key==='ArrowRight') changeWeek(1);
+document.addEventListener(‘keydown’,e=>{
+if(e.key===‘Escape’){closeFm();closeHist();closeCel();}
+if(e.key===‘ArrowLeft’) changeWeek(-1);
+if(e.key===‘ArrowRight’) changeWeek(1);
 });
 
+// Re-render when tab becomes visible again (catches the "disappeared" scenario)
+document.addEventListener(‘visibilitychange’,()=>{
+if(document.visibilityState===‘visible’) render();
+});
+
+// Also re-render when page gains focus
+window.addEventListener(‘focus’,()=>render());
+
 (function(){
-  testStorage();
-  const dow=new Date().getDay();
-  curDay=dow===0?6:dow-1;
-  weekOff=0;
-  render();
+testStorage();
+const dow=new Date().getDay();
+curDay=dow===0?6:dow-1;
+weekOff=0;
+render();
 })();
 
 </script>
-
 </body>
 </html>
