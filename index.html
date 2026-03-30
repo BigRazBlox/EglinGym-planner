@@ -1436,16 +1436,22 @@ if(document.visibilityState===‘visible’) render();
 
 // INIT
 (function(){
-window.onerror = function(msg, src, line, col, err) {
-var d = document.getElementById(‘errDisplay’);
-if(d) { d.style.display=‘block’; d.textContent = ‘JS ERROR: ‘+msg+’\nLine: ‘+line+’\n’+(err?err.stack:’’); }
+function showErr(msg) {
+var el = document.getElementById(‘dayContainer’);
+if(el) el.innerHTML = ‘<div style="padding:20px;background:#c0392b;color:white;font-family:monospace;font-size:11px;white-space:pre-wrap;">ERROR - please screenshot this:\n’+String(msg)+’</div>’;
+}
+window.onerror = function(msg,src,line,col,err){
+showErr(msg+’ (line ‘+line+’)’+(err?’\n’+err.stack:’’));
 return false;
 };
-if(!sTest()) alert(‘Warning: localStorage is not available. Data will not be saved.\n\nCheck: Settings \u2192 Safari \u2192 ensure "Block All Cookies" is off.’);
-var dow=new Date().getDay();
-curDay=dow===0?6:dow-1;
-weekOff=0;
+try {
+var dow = new Date().getDay();
+curDay = dow===0 ? 6 : dow-1;
+weekOff = 0;
 render();
+} catch(e) {
+showErr(e.message+’\n’+(e.stack||‘no stack’));
+}
 })();
 
 </script>
