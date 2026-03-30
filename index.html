@@ -328,14 +328,15 @@ canvas.cv{display:block;width:100%!important;height:180px!important;}
   </div>
 </header>
 
-<div class="cal-nav">
+<div id="errDisplay" style="display:none;padding:20px;background:#c0392b;color:white;font-family:monospace;font-size:12px;white-space:pre-wrap;"></div>
+<div class="cal-nav" id="calNavDiv">
   <button class="cal-btn" onclick="changeWeek(-1)">&#8592;</button>
   <div class="cal-lbl" id="calLbl"></div>
   <button class="cal-btn sm" onclick="goToToday()">Today</button>
   <button class="cal-btn" onclick="changeWeek(1)">&#8594;</button>
 </div>
 <div class="week-strip" id="weekStrip"></div>
-<div class="main"><div id="dayContainer"></div></div>
+<div class="main"><div id="dayContainer"><p style="padding:20px;color:#888;">Loading...</p></div></div>
 
 <!-- PB FLASH -->
 
@@ -1435,6 +1436,11 @@ if(document.visibilityState===‘visible’) render();
 
 // INIT
 (function(){
+window.onerror = function(msg, src, line, col, err) {
+var d = document.getElementById(‘errDisplay’);
+if(d) { d.style.display=‘block’; d.textContent = ‘JS ERROR: ‘+msg+’\nLine: ‘+line+’\n’+(err?err.stack:’’); }
+return false;
+};
 if(!sTest()) alert(‘Warning: localStorage is not available. Data will not be saved.\n\nCheck: Settings \u2192 Safari \u2192 ensure "Block All Cookies" is off.’);
 var dow=new Date().getDay();
 curDay=dow===0?6:dow-1;
