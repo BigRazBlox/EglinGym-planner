@@ -4,6 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>EglinGym</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
@@ -1713,8 +1716,8 @@ document.addEventListener(‘visibilitychange’,()=>{
 if(document.visibilityState===‘visible’) render();
 });
 
-// Also re-render when page gains focus
-window.addEventListener(‘focus’,()=>render());
+// Also re-render when page gains focus (belt and braces)
+try{ window.addEventListener(‘focus’,()=>render()); }catch(e){}
 
 (function(){
 testStorage();
