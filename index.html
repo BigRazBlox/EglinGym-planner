@@ -1567,7 +1567,6 @@ function showDiag(){
     }
   }catch(e){keys=['ERROR: '+e.message];}
 
-  // Today's expected key
   const now=new Date();
   const yr=now.getFullYear();
   const mo=String(now.getMonth()+1).padStart(2,'0');
@@ -1577,22 +1576,59 @@ function showDiag(){
   const dow=now.getDay();
   const dayIdx=dow===0?6:dow-1;
   const expectedKey='eg_date_'+todayLocal+'_'+dayIdx;
-  const utcKey='eg_date_'+todayUTC+'_'+dayIdx;
 
   let msg='=== STORAGE DIAGNOSTIC ===\n\n';
   msg+='Local date: '+todayLocal+'\n';
   msg+='UTC date:   '+todayUTC+'\n';
-  msg+='Day index:  '+dayIdx+' ('+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][dayIdx]+')\n\n';
-  msg+='Expected key: '+expectedKey+'\n';
-  msg+='UTC key would be: '+utcKey+'\n\n';
-  msg+='Key exists (local): '+(localStorage.getItem(expectedKey)?'YES \u2713':'NO \u2717')+'\n';
-  msg+='Key exists (UTC):   '+(localStorage.getItem(utcKey)?'YES (timezone bug data here!)':'no')+'\n\n';
-  msg+='All eg_ keys in storage ('+keys.length+'):\n';
+  msg+='Day index:  '+dayIdx+' ('+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][dayIdx]+')\n';
+  msg+='Current weekOff: '+weekOff+', curDay: '+curDay+'\n\n';
+
+  // Show today's key contents
+  const todayVal=localStorage.getItem(expectedKey);
+  msg+='Today\'s key: '+expectedKey+'\n';
+  if(todayVal){
+    try{
+      const parsed=JSON.parse(todayVal);
+      msg+='  cardioOn: '+parsed.cardioOn+'\n';
+      msg+='  completedSessions: '+JSON.stringify(parsed.completedSessions||[])+'\n';
+      const checks=Object.entries(parsed.checks||{}).filter(([k,v])=>v);
+      msg+='  exercises ticked: '+checks.length+'\n';
+      if(checks.length) msg+='  -> '+checks.map(([k])=>k).join(', ')+'\n';
+      const weights=Object.entries(parsed.weights||{}).filter(([k,v])=>v);
+      msg+='  weights logged: '+weights.length+'\n';
+      msg+='  customEx: '+(parsed.customEx||[]).length+'\n';
+    }catch(e){msg+='  PARSE ERROR: '+e.message+'\n';}
+  } else {
+    msg+='  NOT FOUND\n';
+    // Check if stored under UTC key
+    const utcKey='eg_date_'+todayUTC+'_'+dayIdx;
+    if(utcKey!==expectedKey){
+      const utcVal=localStorage.getItem(utcKey);
+      if(utcVal) msg+='  BUT found under UTC key: '+utcKey+'\n';
+    }
+  }
+
+  // Day state
+  const dsVal=localStorage.getItem('eg_ds_'+dayIdx);
+  if(dsVal){
+    try{
+      const ds=JSON.parse(dsVal);
+      msg+='\neg_ds_'+dayIdx+' (rotation state):\n';
+      msg+='  routineVersion: '+ds.routineVersion+'\n';
+      msg+='  completions: '+ds.completions.length+'\n';
+      msg+='  showRotationBanner: '+ds.showRotationBanner+'\n';
+    }catch(e){}
+  }
+
+  msg+='\nAll eg_ keys ('+keys.length+'):\n';
   keys.sort().forEach(k=>{
     const val=localStorage.getItem(k);
     msg+='  '+k+' ('+( val?val.length:0)+' chars)\n';
   });
   msg+='\nStorage available: '+(testStorage()?'YES':'NO');
+  msg+='\nTotal keys in localStorage: ';
+  try{msg+=localStorage.length;}catch(e){msg+='ERROR';}
+
   alert(msg);
 }
 
