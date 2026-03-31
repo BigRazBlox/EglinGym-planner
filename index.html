@@ -14,8 +14,8 @@ body{background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;font-siz
 .logo{display:inline-flex;align-items:center;gap:10px;}
 .lw{display:flex;flex-direction:column;gap:0;}
 .lr{display:flex;align-items:baseline;}
-.lE,.lG{font-weight:900;font-size:clamp(26px,4vw,44px);color:#c0392b;line-height:1;font-family:Arial,sans-serif;}
-.lrest{font-weight:900;font-size:clamp(26px,4vw,44px);color:#fff;line-height:1;font-family:Arial,sans-serif;}
+.lE,.lG{font-weight:900;font-size:36px;color:#c0392b;line-height:1;font-family:Arial,sans-serif;}
+.lrest{font-weight:900;font-size:36px;color:#fff;line-height:1;font-family:Arial,sans-serif;}
 .lrule{height:2px;background:#c0392b;width:100%;margin:1px 0;}
 .ltag{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#555;margin-top:2px;}
 .mhr{text-align:right;}
@@ -50,7 +50,7 @@ body{background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;font-siz
 .main{padding:20px 20px 80px;max-width:1160px;}
 /* DAY HEADER */
 .dhdr{display:flex;align-items:baseline;gap:14px;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:18px;flex-wrap:wrap;}
-.dhn{font-size:clamp(26px,5vw,46px);font-weight:900;text-transform:uppercase;letter-spacing:-1px;line-height:1;}
+.dhn{font-size:36px;font-weight:900;text-transform:uppercase;letter-spacing:-1px;line-height:1;}
 .dhd{font-size:15px;font-style:italic;color:var(--ink2);}
 .hdgbs{margin-left:auto;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .badge{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;}
@@ -234,12 +234,12 @@ canvas.cv{display:block;width:100%!important;height:180px!important;}
 .pbf{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#e67e22;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;z-index:3000;box-shadow:0 4px 20px rgba(0,0,0,0.3);opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
 .pbf.on{opacity:1;}
 /* OVERLAYS */
-.tov{display:none;position:fixed;inset:0;z-index:1900;background:rgba(10,8,6,0.78);align-items:center;justify-content:center;flex-direction:column;gap:16px;pointer-events:none;}
+.tov{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:1900;background:rgba(10,8,6,0.78);align-items:center;justify-content:center;flex-direction:column;gap:16px;pointer-events:none;}
 .tov.on{display:flex;}
-.cov{display:none;position:fixed;inset:0;z-index:2000;background:rgba(10,8,6,0.85);align-items:center;justify-content:center;flex-direction:column;gap:20px;cursor:pointer;}
+.cov{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:2000;background:rgba(10,8,6,0.85);align-items:center;justify-content:center;flex-direction:column;gap:20px;cursor:pointer;}
 .cov.on{display:flex;}
 /* MODALS */
-.mov{display:none;position:fixed;inset:0;background:rgba(5,4,3,0.88);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.mov{display:none;position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(5,4,3,0.88);z-index:1000;align-items:center;justify-content:center;padding:20px;}
 .mov.on{display:flex;}
 .mdl{background:#fff;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;border-top:4px solid #c0392b;box-shadow:0 32px 80px rgba(0,0,0,0.6);position:relative;}
 .mx{position:absolute;top:12px;right:14px;background:#c0392b;border:none;cursor:pointer;width:26px;height:26px;border-radius:2px;color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;}
@@ -1519,14 +1519,21 @@ if(document.visibilityState==="visible") render();
 
 // INIT
 (function(){
-if(!sTest()){
-document.getElementById("dayContainer").innerHTML="<div style="padding:20px;background:#c0392b;color:white;">Storage unavailable. Check Safari settings - ensure Block All Cookies is off.</div>";
-return;
+function dbg(msg){
+var el=document.getElementById("dayContainer");
+if(el) el.innerHTML="<div style="padding:16px;background:#1a1814;color:#27ae60;font-family:monospace;font-size:12px;white-space:pre-wrap;">"+el.innerHTML.replace(/<[^>]+>/g,"")+"\n"+msg+"</div>";
 }
+dbg("Step 1: script running");
+if(!sTest()){dbg("FAIL: storage unavailable");return;}
+dbg("Step 2: storage OK");
 var dow=new Date().getDay();
 curDay=dow===0?6:dow-1;
 weekOff=0;
-render();
+dbg("Step 3: calling renderStrip()");
+try{renderStrip();}catch(e){dbg("FAIL renderStrip: "+e.message);return;}
+dbg("Step 4: calling renderDay()");
+try{renderDay();}catch(e){dbg("FAIL renderDay: "+e.message);return;}
+dbg("Step 5: render complete!");
 })();
 
 </script>
