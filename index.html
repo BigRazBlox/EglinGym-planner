@@ -132,6 +132,7 @@ a{color:var(--accent);text-decoration:none}
 .tilenote b{color:var(--muted)}
 .trend{background-color:var(--card);border-radius:12px;padding:14px;margin-bottom:16px;box-shadow:var(--shadow);border-left:3px solid var(--green);font-size:0.9rem;color:var(--text);line-height:1.5}
 .trend b{color:var(--green)}
+.trend-sub{color:var(--faint);font-size:0.85em;white-space:nowrap}
 .bmic{background-color:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;border-left:3px solid var(--gold);box-shadow:var(--shadow)}
 .bmic h4{font-weight:700;font-size:0.95rem;margin-bottom:10px;color:var(--muted)}
 .bmic-big{font-weight:900;font-size:2rem;line-height:1}
@@ -143,9 +144,9 @@ a{color:var(--accent);text-decoration:none}
 .bmic-tgt b{color:var(--text)}
 .heat{background-color:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
 .heat h4{font-weight:700;font-size:0.95rem;margin-bottom:12px;color:var(--muted)}
-.heat-grid{display:inline-flex;flex-direction:column;gap:2px}
-.heat-row{display:flex;gap:2px;align-items:center}
-.heat-cell{width:16px;height:12px;flex:0 0 16px;border-radius:2px;background-color:var(--card2)}
+.heat-grid{display:flex;flex-direction:column;gap:3px;width:100%;max-width:560px}
+.heat-row{display:flex;gap:3px;align-items:center}
+.heat-cell{height:20px;flex:1 1 0;min-width:0;border-radius:3px;background-color:var(--card2)}
 .heat-cell.l1{background-color:#cdeadb}
 .heat-cell.l2{background-color:#8ccfaa}
 .heat-cell.l3{background-color:#45a06b}
@@ -154,8 +155,8 @@ body.dark .heat-cell.l1{background-color:#1d4433}
 body.dark .heat-cell.l2{background-color:#2c7a50}
 body.dark .heat-cell.l3{background-color:#42ad6d}
 body.dark .heat-cell.l4{background-color:#7ae2a4}
-.heat-wl{font-size:0.6rem;color:var(--faint);width:38px;flex-shrink:0;line-height:12px}
-.heat-dl{width:16px;flex:0 0 16px;font-size:0.55rem;color:var(--faint);text-align:center;line-height:12px}
+.heat-wl{font-size:0.65rem;color:var(--faint);width:42px;flex-shrink:0;line-height:20px}
+.heat-dl{flex:1 1 0;min-width:0;font-size:0.6rem;color:var(--faint);text-align:center;line-height:14px}
 .heat-lg{display:flex;align-items:center;gap:4px;margin-top:10px;font-size:0.62rem;color:var(--faint)}
 .heat-lg i{width:12px;height:12px;border-radius:2px;display:inline-block;background-color:var(--card2)}
 .chtc{background-color:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
@@ -263,7 +264,7 @@ body.dark .celeb{background-color:rgba(26,24,20,0.94)}
 <div class="setc"><h3>Data</h3><div class="setr"><label>Export backup</label><button class="xbtn" onclick="expJSON()">💾 Export</button></div><div class="setr"><label>Import backup</label><input type="file" accept=".json" onchange="impJSON(event)" style="width:auto;font-size:0.8rem"></div><div class="setr"><label style="color:var(--accent)">Reset all data</label><button class="dbtn" onclick="resetAll()">🗑 Reset</button></div></div>
 <div class="setc"><h3>Security</h3><div class="setr"><label>Lock the app now</label><button class="xbtn" onclick="lockNow()">🔒 Lock</button></div><div class="setr" style="display:block"><label style="display:block;margin-bottom:8px">Change password</label><input type="password" id="cp-cur" placeholder="Current password" style="width:100%;margin-bottom:6px"><input type="password" id="cp-new" placeholder="New password" style="width:100%;margin-bottom:6px"><input type="password" id="cp-new2" placeholder="Confirm new password" style="width:100%;margin-bottom:8px"><button class="xbtn" onclick="changePw()">Update password</button><div id="cp-msg" style="font-size:0.8rem;margin-top:8px;color:var(--faint)"></div></div><p style="margin-top:6px">Your data is encrypted with your password. It can't be recovered if you forget it, so keep a JSON backup somewhere safe. If you turn sync on, both devices share one password — changing it here only changes this device, so turn sync off first.</p></div>
 <div class="setc"><h3>How it works</h3><p>Each time you train, tap the day, pick how long you've got, and choose the blocks you want. Your weights focus advances Push → Pull → Legs, and cardio, core and flexibility rotate too — but only when you actually log a session. Miss a day and nothing shifts; you always pick up the next focus.</p></div>
-<div class="setc"><h3>About</h3><p>EglinGym v3.2 · Encrypted on this device. With sync on, that encrypted copy is mirrored to the service you chose — it is never uploaded in readable form. Use Export to back up.</p><p style="margin-top:8px;font-size:0.78rem">v3.2 — cross-device sync: end-to-end encrypted, and merges day by day rather than one device overwriting the other.<br>v3.1 — fixed the celebration messages (they were firing but invisible), messages now cycle through the full set before repeating, consistency grid made compact with shading by blocks per day and most recent week first, and every chart axis now sits on round numbers.</p></div>
+<div class="setc"><h3>About</h3><p>EglinGym v3.3 · Encrypted on this device. With sync on, that encrypted copy is mirrored to the service you chose — it is never uploaded in readable form. Use Export to back up.</p><p style="margin-top:8px;font-size:0.78rem">v3.3 — weight progress now measured from your first ever entry; consistency grid made taller and full width.<br>v3.2 — cross-device sync: end-to-end encrypted, and merges day by day rather than one device overwriting the other.<br>v3.1 — fixed the celebration messages (they were firing but invisible), messages now cycle through the full set before repeating, consistency grid made compact with shading by blocks per day and most recent week first, and every chart axis now sits on round numbers.</p></div>
 </div>
 </div>
 <div class="mov" id="mov" onclick="if(event.target===this)clMo()"><div class="mo"><div class="mo-h"><h3 id="mo-t"></h3><button class="mo-x" onclick="clMo()">✕</button></div><div class="mo-b" id="mo-b"></div></div></div>
@@ -648,7 +649,15 @@ el.innerHTML='<div class="tiles">'+tiles.map(function(x){return'<div class="tile
 +'<div class="tilenote"><b>Days trained</b> — any day you ticked at least one block complete <i>or</i> logged an activity. Counted once per day, so the most you can score is 7 in a week (it is not one per 30 minutes).<br>'
 +'<b>Blocks</b> — each section you finished that day: Weights, Cardio, Core, Flexibility, plus one if you logged any walking / swimming / cycling / steps. Up to 4 a day.<br>'
 +'<b>Total time</b> — adds up the session length you picked on each day you trained (30 / 60 / 90 min), not the actual clock time.</div>'}
-function rTrend(){var el=gEl('trend-area');var lw=latestWeight();if(!lw||S.bs.length<2){el.innerHTML='';return}var target=null;for(var i=0;i<S.bs.length;i++){if(S.bs[i].weight==null)continue;var days=(new Date(lw.date)-new Date(S.bs[i].date))/864e5;if(days>=21){target=S.bs[i]}}if(!target){el.innerHTML='';return}var diff=Math.round((target.weight-lw.weight)*10)/10;if(diff>0){el.innerHTML='<div class="trend">📉 You\'re <b>down '+diff+' kg</b> since '+fmtD(target.date)+'. That\'s real progress — keep the momentum going!</div>'}else if(diff<0){el.innerHTML='<div class="trend" style="border-left-color:var(--gold)">Since '+fmtD(target.date)+' you\'re up '+(-diff)+' kg. Some weeks go the other way — stay consistent and trust the process.</div>'}else{el.innerHTML=''}}
+// Always measured from the very first weight ever logged — that is the starting point.
+function firstWeight(){var best=null;for(var i=0;i<S.bs.length;i++){var e=S.bs[i];if(!e||e.weight==null)continue;if(!best||e.date<best.date)best=e}return best}
+function rTrend(){var el=gEl('trend-area');var lw=latestWeight();var fw=firstWeight();
+if(!lw||!fw||fw.date===lw.date){el.innerHTML='';return}
+var diff=Math.round((fw.weight-lw.weight)*10)/10;
+var since='since '+fmtD(fw.date)+' <span class="trend-sub">('+fw.weight+' → '+lw.weight+' kg)</span>';
+if(diff>0){el.innerHTML='<div class="trend">📉 You\'re <b>down '+diff+' kg</b> '+since+'. That\'s real progress — keep the momentum going!</div>'}
+else if(diff<0){el.innerHTML='<div class="trend" style="border-left-color:var(--gold)">You\'re up '+(-diff)+' kg '+since+'. Some spells go the other way — stay consistent and trust the process.</div>'}
+else{el.innerHTML='<div class="trend" style="border-left-color:var(--gold)">Holding steady at <b>'+lw.weight+' kg</b> '+since+'.</div>'}}
 function fmtD(s){var p=s.split('-');return p[2]+' '+MO[parseInt(p[1])-1].slice(0,3)}
 // How many blocks were completed on a day (weights/cardio/core/flex done, plus
 // any logged walking/swimming/cycling/steps). Capped at 4 for shading purposes.
@@ -661,7 +670,7 @@ for(var di=0;di<7;di++){var d=new Date(wsD);d.setDate(d.getDate()+di);var kk=dk(
 var nb=dayBlocks(S.wk[kk]);var cls=nb>0?' l'+nb:'';var fut=(kk>today)?' style="opacity:.4"':'';
 cells+='<div class="heat-cell'+cls+'"'+fut+' title="'+kk+' — '+nb+' block'+(nb===1?'':'s')+'"></div>'}
 rows+='<div class="heat-row"><div class="heat-wl">'+lbl+'</div>'+cells+'</div>'}
-var lg='<div class="heat-lg"><span>Less</span>'+['','l1','l2','l3','l4'].map(function(c){return'<span class="heat-cell '+c+'" style="flex:0 0 12px;width:12px"></span>'}).join('')+'<span>More</span><span style="margin-left:auto">blocks completed per day</span></div>';
+var lg='<div class="heat-lg"><span>Less</span>'+['','l1','l2','l3','l4'].map(function(c){return'<span class="heat-cell '+c+'" style="flex:0 0 14px;width:14px;height:14px"></span>'}).join('')+'<span>More</span><span style="margin-left:auto">blocks completed per day</span></div>';
 el.innerHTML='<div class="heat"><h4>Consistency — last 10 weeks (most recent first)</h4><div class="heat-grid">'+rows+'</div>'+lg+'</div>'}
 function rEffort(){var wk=weeklyData(8);var el=gEl('effort-area');var labels=wk.map(function(w){return w.start.getDate()+'/'+(w.start.getMonth()+1)});
 var charts=[{id:'ef-sess',t:'Days trained per week',c:'#c0392b',v:wk.map(function(w){return w.sessions})},{id:'ef-blk',t:'Blocks completed per week',c:'#7d5ba6',v:wk.map(function(w){return w.blocks})},{id:'ef-min',t:'Minutes trained per week',c:'#a9791a',v:wk.map(function(w){return w.min})}];
