@@ -208,6 +208,10 @@ body.dark .celeb{background-color:rgba(26,24,20,0.94)}
 .sync-help pre{background-color:var(--card2);padding:10px;border-radius:8px;overflow-x:auto;font-size:0.72rem;line-height:1.5;margin-top:6px;white-space:pre;border:1px solid var(--border)}
 #pg-set select{width:auto;min-width:150px}
 #sync-ui .setr input{text-align:left;width:100%}
+.pairbox{background-color:var(--card2);border-radius:8px;padding:12px;margin:12px 0;border-left:3px solid var(--gold)}
+.pairbox-h{font-weight:700;font-size:0.88rem;margin-bottom:6px;color:var(--text)}
+.pairbox p{font-size:0.8rem;color:var(--faint);line-height:1.5}
+.pairbox textarea{width:100%;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace}
 .gate{position:fixed;inset:0;z-index:400;background-color:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
 .gate-box{width:100%;max-width:340px;text-align:center}
 .gate-box svg{width:56px;height:56px;margin-bottom:12px}
@@ -264,7 +268,7 @@ body.dark .celeb{background-color:rgba(26,24,20,0.94)}
 <div class="setc"><h3>Data</h3><div class="setr"><label>Export backup</label><button class="xbtn" onclick="expJSON()">💾 Export</button></div><div class="setr"><label>Import backup</label><input type="file" accept=".json" onchange="impJSON(event)" style="width:auto;font-size:0.8rem"></div><div class="setr"><label style="color:var(--accent)">Reset all data</label><button class="dbtn" onclick="resetAll()">🗑 Reset</button></div></div>
 <div class="setc"><h3>Security</h3><div class="setr"><label>Lock the app now</label><button class="xbtn" onclick="lockNow()">🔒 Lock</button></div><div class="setr" style="display:block"><label style="display:block;margin-bottom:8px">Change password</label><input type="password" id="cp-cur" placeholder="Current password" style="width:100%;margin-bottom:6px"><input type="password" id="cp-new" placeholder="New password" style="width:100%;margin-bottom:6px"><input type="password" id="cp-new2" placeholder="Confirm new password" style="width:100%;margin-bottom:8px"><button class="xbtn" onclick="changePw()">Update password</button><div id="cp-msg" style="font-size:0.8rem;margin-top:8px;color:var(--faint)"></div></div><p style="margin-top:6px">Your data is encrypted with your password. It can't be recovered if you forget it, so keep a JSON backup somewhere safe. If you turn sync on, both devices share one password — changing it here only changes this device, so turn sync off first.</p></div>
 <div class="setc"><h3>How it works</h3><p>Each time you train, tap the day, pick how long you've got, and choose the blocks you want. Your weights focus advances Push → Pull → Legs, and cardio, core and flexibility rotate too — but only when you actually log a session. Miss a day and nothing shifts; you always pick up the next focus.</p></div>
-<div class="setc"><h3>About</h3><p>EglinGym v3.3 · Encrypted on this device. With sync on, that encrypted copy is mirrored to the service you chose — it is never uploaded in readable form. Use Export to back up.</p><p style="margin-top:8px;font-size:0.78rem">v3.3 — weight progress now measured from your first ever entry; consistency grid made taller and full width.<br>v3.2 — cross-device sync: end-to-end encrypted, and merges day by day rather than one device overwriting the other.<br>v3.1 — fixed the celebration messages (they were firing but invisible), messages now cycle through the full set before repeating, consistency grid made compact with shading by blocks per day and most recent week first, and every chart axis now sits on round numbers.</p></div>
+<div class="setc"><h3>About</h3><p>EglinGym v3.4 · Encrypted on this device. With sync on, that encrypted copy is mirrored to the service you chose — it is never uploaded in readable form. Use Export to back up.</p><p style="margin-top:8px;font-size:0.78rem">v3.4 — pairing code, so the second device is one paste instead of retyping the token; the connected screen now shows the Gist ID.<br>v3.3 — weight progress now measured from your first ever entry; consistency grid made taller and full width.<br>v3.2 — cross-device sync: end-to-end encrypted, and merges day by day rather than one device overwriting the other.<br>v3.1 — fixed the celebration messages (they were firing but invisible), messages now cycle through the full set before repeating, consistency grid made compact with shading by blocks per day and most recent week first, and every chart axis now sits on round numbers.</p></div>
 </div>
 </div>
 <div class="mov" id="mov" onclick="if(event.target===this)clMo()"><div class="mo"><div class="mo-h"><h3 id="mo-t"></h3><button class="mo-x" onclick="clMo()">✕</button></div><div class="mo-b" id="mo-b"></div></div></div>
@@ -507,16 +511,46 @@ function syncDisconnect(){var c=scfg();if(!confirm('Stop syncing on this device?
 
 // ---- settings UI ----
 function rSyncBtn(){var b=gEl('sync-btn');if(b)b.textContent=SYNC.busy?'Syncing…':'⟳ Sync now'}
+// A pairing code carries the provider settings to the second device, so nothing
+// has to be retyped on a phone keyboard. It contains the access token, so it is
+// shared privately — it does NOT contain the password or any training data.
+function pairCode(){var c=scfg();var o={p:c.prov};
+if(c.prov==='gist'){o.t=c.token;o.g=c.gistId}else{o.u=c.url;o.k=c.key}
+return'EG1.'+btoa(unescape(encodeURIComponent(JSON.stringify(o))))}
+function applyPair(code){try{var raw=String(code||'').trim().replace(/\s+/g,'').replace(/^EG1\./,'');
+var j=JSON.parse(decodeURIComponent(escape(atob(raw))));if(!j.p||!PROV[j.p])return false;
+var c=scfg();c.prov=j.p;
+if(j.p==='gist'){c.token=j.t||'';c.gistId=j.g||''}else{c.url=j.u||'';c.key=j.k||''}
+return true}catch(e){return false}}
+function pairPaste(){var el=gEl('sf-pair');if(!el||!el.value.trim()){syncStatus('Paste the code from your other device first.','bad');return}
+if(!applyPair(el.value)){syncStatus('That code was not recognised — copy the whole thing from your other device.','bad');return}
+rSync();syncStatus('Filled in from your other device. Now tap Connect.','ok')}
+function copyPair(){var el=gEl('pair-out');if(!el)return;
+var done=function(){syncStatus('Pairing code copied — send it to your other device.','ok')};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(el.value).then(done).catch(function(){el.select();syncStatus('Press and hold the code above, then Copy.','')});return}
+el.select();el.setSelectionRange(0,99999);
+try{document.execCommand('copy');done()}catch(e){syncStatus('Press and hold the code above, then Copy.','')}}
+
 function rSync(){var el=gEl('sync-ui');if(!el)return;var c=scfg();
 if(c.on){var p=PROV[c.prov];
  el.innerHTML='<div class="setr"><label>Status</label><span class="sync-pill ok">On · '+(p?p.label:c.prov)+'</span></div>'
  +'<div class="setr"><label>Sync now</label><button class="xbtn" id="sync-btn" onclick="syncNow(false)">⟳ Sync now</button></div>'
- +'<div class="setr"><label>Turn off on this device</label><button class="dbtn" onclick="syncDisconnect()">Disconnect</button></div>'
  +'<div class="sync-stat" id="sync-stat">'+(SYNC.last?'Last synced '+fmtWhen(SYNC.last):'Not synced yet this session')+'</div>'
+ +'<div class="pairbox"><div class="pairbox-h">Set up your other device</div>'
+ +'<p style="margin-bottom:8px">Copy this code, send it to your other device, and paste it into the same screen there. It saves retyping the token.</p>'
+ +'<textarea id="pair-out" readonly rows="3" style="width:100%;font-size:0.7rem;word-break:break-all">'+esc(pairCode())+'</textarea>'
+ +'<button class="xbtn" style="margin-top:8px" onclick="copyPair()">📋 Copy pairing code</button>'
+ +(c.prov==='gist'?'<div style="margin-top:10px;font-size:0.78rem;color:var(--faint)">Gist ID: <b style="color:var(--text)">'+esc(c.gistId||'—')+'</b></div>':'')
+ +'<div style="margin-top:8px;font-size:0.75rem;color:var(--faint)">Treat this like a password — it contains your access token. It does <i>not</i> contain your app password or any training data.</div></div>'
+ +'<div class="setr" style="margin-top:6px"><label>Turn off on this device</label><button class="dbtn" onclick="syncDisconnect()">Disconnect</button></div>'
  +'<p style="margin-top:10px">Your training data is encrypted on this device <i>before</i> it is uploaded, so the service storing it cannot read any of it. Changes merge day by day — editing Monday on your iPad and Tuesday on your iPhone keeps both.</p>';
  rSyncBtn();return}
 var prov=c.prov||'gist';var p=PROV[prov];
-var h='<div class="setr"><label>Service</label><select id="sync-prov" onchange="scfg().prov=this.value;rSync()">'
+var h='<div class="pairbox"><div class="pairbox-h">Already set up on your other device?</div>'
+ +'<p style="margin-bottom:8px">Paste the pairing code from it and everything below fills in for you.</p>'
+ +'<textarea id="sf-pair" rows="3" placeholder="EG1.…" style="width:100%;font-size:0.7rem"></textarea>'
+ +'<button class="xbtn" style="margin-top:8px" onclick="pairPaste()">Use this code</button></div>';
+h+='<div class="setr"><label>Service</label><select id="sync-prov" onchange="scfg().prov=this.value;rSync()">'
  +PROV_ORDER.map(function(k){return'<option value="'+k+'"'+(k===prov?' selected':'')+'>'+PROV[k].label+'</option>'}).join('')+'</select></div>';
 h+='<p style="margin:8px 0 10px">'+p.note+'</p>';
 p.fields.forEach(function(f){h+='<div class="setr" style="display:block"><label style="display:block;margin-bottom:6px">'+f.l+'</label><input type="'+f.t+'" id="sf-'+f.k+'" value="'+esc(c[f.k]||'')+'" placeholder="'+f.ph+'" style="width:100%"></div>'});
