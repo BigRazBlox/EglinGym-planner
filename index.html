@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>EglinGym — Private Training</title>
 <style>
-body{--bg:#f4f1ec;--card:#ffffff;--card2:#efeae3;--border:#dcd6cc;--text:#241f19;--muted:#6a6156;--faint:#948b7f;--accent:#c0392b;--accentD:#a5342a;--gold:#a9791a;--green:#1e8449;--shadow:0 1px 3px rgba(60,50,40,0.10)}
-body.dark{--bg:#1a1814;--card:#2a2722;--card2:#222019;--border:#4a4540;--text:#f5f0eb;--muted:#b8b0a5;--faint:#7a7268;--accent:#c0392b;--accentD:#962d22;--gold:#d4a34a;--green:#27ae60;--shadow:none}
+body{--bg:#f4f1ec;--card:#ffffff;--card2:#efeae3;--border:#dcd6cc;--text:#241f19;--muted:#6a6156;--faint:#948b7f;--accent:#c0392b;--accentD:#a5342a;--gold:#a9791a;--green:#1e8449;--lean:#2e6da4;--fat:#a9791a;--sh-ok:#1e8449;--sh-warn:#a9791a;--sh-bad:#d2691e;--sh-crit:#c0392b;--shadow:0 1px 3px rgba(60,50,40,0.10)}
+body.dark{--bg:#1a1814;--card:#2a2722;--card2:#222019;--border:#4a4540;--text:#f5f0eb;--muted:#b8b0a5;--faint:#7a7268;--accent:#c0392b;--accentD:#962d22;--gold:#d4a34a;--green:#27ae60;--lean:#4a94cf;--fat:#b8862c;--sh-ok:#2fae72;--sh-warn:#c99a3f;--sh-bad:#d98032;--sh-crit:#d9584a;--shadow:none}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
 body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background-color 0.2s,color 0.2s}
@@ -196,6 +196,38 @@ body.dark .celeb{background-color:rgba(26,24,20,0.94)}
 .setr input{width:100px;text-align:center}
 .setc p{color:var(--faint);font-size:0.85rem;line-height:1.6}
 .dbtn{background-color:var(--accentD);color:#fff;padding:10px 20px;border-radius:8px;font-weight:700}
+.sh-card{background-color:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
+.sh-sub{font-size:0.78rem;color:var(--faint);line-height:1.5;margin-bottom:12px}
+.sh-hero{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sh-n{font-weight:900;font-size:2.7rem;line-height:1}
+.sh-u{font-weight:800;font-size:1.05rem;color:var(--faint)}
+.sh-d{font-weight:800;font-size:0.9rem;margin-left:auto}
+.sh-split{display:flex;height:26px;border-radius:6px;overflow:hidden;margin-top:14px;gap:2px}
+.sh-split div{display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:800;color:#fff;
+white-space:nowrap;overflow:hidden}
+.sh-key{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:0.75rem;color:var(--muted)}
+.sh-key span{display:flex;align-items:center;gap:6px}
+.sh-key i{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+.sh-msg{background-color:var(--card2);border-radius:8px;padding:12px;margin-top:14px;border-left:3px solid var(--gold);
+font-size:0.85rem;color:var(--muted);line-height:1.6}
+.sh-msg b{color:var(--text)}
+.sh-meter{height:14px;border-radius:7px;position:relative;display:flex;gap:2px;overflow:visible;margin-top:4px}
+.sh-meter>div{height:100%}
+.sh-meter>div:first-child{border-radius:7px 0 0 7px}
+.sh-meter>div:last-child{border-radius:0 7px 7px 0}
+.sh-mk{position:absolute;top:-5px;width:3px;height:24px;background-color:var(--text);border-radius:2px;
+box-shadow:0 0 0 2px var(--card)}
+.sh-sc{display:flex;justify-content:space-between;font-size:0.62rem;color:var(--faint);margin-top:8px}
+.sh-td{font-size:0.74rem;font-weight:700;margin-top:3px}
+.sh-good{color:var(--green)}.sh-bad{color:var(--accent)}.sh-flat{color:var(--faint)}
+.sh-note{font-size:0.8rem;color:var(--faint);line-height:1.65;margin-top:10px}
+.sh-note b{color:var(--muted)}
+.sh-empty{background-color:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow);
+border-left:3px solid var(--gold)}
+.sh-empty h4{font-weight:800;font-size:1.05rem;margin-bottom:10px}
+.sh-empty p{font-size:0.88rem;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.sh-empty p b{color:var(--text)}
+.sh-empty .sh-tip{font-size:0.8rem;color:var(--faint)}
 .sync-pill{padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;background-color:var(--border);color:var(--muted)}
 .sync-pill.ok{background-color:rgba(39,174,96,0.20);color:var(--green)}
 .sync-stat{font-size:0.8rem;color:var(--faint);margin-top:10px;line-height:1.5;min-height:18px}
@@ -223,7 +255,7 @@ body.dark .celeb{background-color:rgba(26,24,20,0.94)}
 .gate-err{color:var(--accent);font-size:0.85rem;min-height:20px;margin-bottom:4px}
 .gate-foot{margin-top:18px;font-size:0.78rem;color:var(--faint);line-height:1.6}
 .gate-foot a{text-decoration:underline;cursor:pointer}
-@media(max-width:600px){.hdr{padding:10px 12px}.logo-t{font-size:1.1rem}.hnav button{padding:8px 10px;font-size:0.75rem}.dnum{font-size:1.15rem}.dc{padding:8px 2px;min-height:66px}.sgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.hdr{padding:10px 10px;gap:8px}.logo-a{min-width:0;gap:7px}.logo-a svg{width:26px;height:26px}.logo-t{font-size:1rem;letter-spacing:0}.logo-s{display:none}.hnav{flex-shrink:0}.hnav button{padding:8px 7px;font-size:0.7rem;letter-spacing:0}.dnum{font-size:1.15rem}.dc{padding:8px 2px;min-height:66px}.sgrid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -235,6 +267,7 @@ body.dark .celeb{background-color:rgba(26,24,20,0.94)}
 <div class="hnav">
 <button class="on" id="nav-train" onclick="goPage('cal')">TRAIN</button>
 <button id="nav-stats" onclick="goPage('stats')">STATS</button>
+<button id="nav-shape" onclick="goPage('shape')">SHAPE</button>
 <button id="nav-set" onclick="goPage('set')">⚙</button>
 </div>
 </div>
@@ -260,6 +293,10 @@ body.dark .celeb{background-color:rgba(26,24,20,0.94)}
 <div style="margin-bottom:20px"><h3 class="sech">Measurement charts</h3><div id="cht-area"></div></div>
 <div><h3 class="sech">History</h3><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="xbtn" onclick="expCSV('stats')">📊 Export Stats</button><button class="xbtn" onclick="expCSV('workouts')">🏋️ Export Workouts</button></div><div class="twrap" id="st-tbl"></div></div>
 </div>
+<div id="pg-shape" class="hide">
+<h2 style="font-weight:900;font-size:1.4rem;margin-bottom:16px">Shape</h2>
+<div id="shape-body"></div>
+</div>
 <div id="pg-set" class="hide">
 <h2 style="font-weight:900;font-size:1.4rem;margin-bottom:16px">Settings</h2>
 <div class="setc"><h3>Appearance</h3><div class="setr"><label>Theme</label><button class="xbtn" id="theme-btn" onclick="toggleTheme()">Switch</button></div></div>
@@ -268,7 +305,7 @@ body.dark .celeb{background-color:rgba(26,24,20,0.94)}
 <div class="setc"><h3>Data</h3><div class="setr"><label>Export backup</label><button class="xbtn" onclick="expJSON()">💾 Export</button></div><div class="setr"><label>Import backup</label><input type="file" accept=".json" onchange="impJSON(event)" style="width:auto;font-size:0.8rem"></div><div class="setr"><label style="color:var(--accent)">Reset all data</label><button class="dbtn" onclick="resetAll()">🗑 Reset</button></div></div>
 <div class="setc"><h3>Security</h3><div class="setr"><label>Lock the app now</label><button class="xbtn" onclick="lockNow()">🔒 Lock</button></div><div class="setr" style="display:block"><label style="display:block;margin-bottom:8px">Change password</label><input type="password" id="cp-cur" placeholder="Current password" style="width:100%;margin-bottom:6px"><input type="password" id="cp-new" placeholder="New password" style="width:100%;margin-bottom:6px"><input type="password" id="cp-new2" placeholder="Confirm new password" style="width:100%;margin-bottom:8px"><button class="xbtn" onclick="changePw()">Update password</button><div id="cp-msg" style="font-size:0.8rem;margin-top:8px;color:var(--faint)"></div></div><p style="margin-top:6px">Your data is encrypted with your password. It can't be recovered if you forget it, so keep a JSON backup somewhere safe. If you turn sync on, both devices share one password — changing it here only changes this device, so turn sync off first.</p></div>
 <div class="setc"><h3>How it works</h3><p>Each time you train, tap the day, pick how long you've got, and choose the blocks you want. Your weights focus advances Push → Pull → Legs, and cardio, core and flexibility rotate too — but only when you actually log a session. Miss a day and nothing shifts; you always pick up the next focus.</p></div>
-<div class="setc"><h3>About</h3><p>EglinGym v3.4 · Encrypted on this device. With sync on, that encrypted copy is mirrored to the service you chose — it is never uploaded in readable form. Use Export to back up.</p><p style="margin-top:8px;font-size:0.78rem">v3.4 — pairing code, so the second device is one paste instead of retyping the token; the connected screen now shows the Gist ID.<br>v3.3 — weight progress now measured from your first ever entry; consistency grid made taller and full width.<br>v3.2 — cross-device sync: end-to-end encrypted, and merges day by day rather than one device overwriting the other.<br>v3.1 — fixed the celebration messages (they were firing but invisible), messages now cycle through the full set before repeating, consistency grid made compact with shading by blocks per day and most recent week first, and every chart axis now sits on round numbers.</p></div>
+<div class="setc"><h3>About</h3><p>EglinGym v3.5 · Encrypted on this device. With sync on, that encrypted copy is mirrored to the service you chose — it is never uploaded in readable form. Use Export to back up.</p><p style="margin-top:8px;font-size:0.78rem">v3.5 — new Shape tab: estimated body fat, fat vs lean mass split, waist ÷ height, all worked out from the weight, waist and neck you already log.<br>v3.4 — pairing code, so the second device is one paste instead of retyping the token; the connected screen now shows the Gist ID.<br>v3.3 — weight progress now measured from your first ever entry; consistency grid made taller and full width.<br>v3.2 — cross-device sync: end-to-end encrypted, and merges day by day rather than one device overwriting the other.<br>v3.1 — fixed the celebration messages (they were firing but invisible), messages now cycle through the full set before repeating, consistency grid made compact with shading by blocks per day and most recent week first, and every chart axis now sits on round numbers.</p></div>
 </div>
 </div>
 <div class="mov" id="mov" onclick="if(event.target===this)clMo()"><div class="mo"><div class="mo-h"><h3 id="mo-t"></h3><button class="mo-x" onclick="clMo()">✕</button></div><div class="mo-b" id="mo-b"></div></div></div>
@@ -458,7 +495,7 @@ return chain.then(function(){
   syncStatus((mergedCount?'Merged '+mergedCount+' update'+(mergedCount===1?'':'s')+' · ':'Saved · ')+fmtWhen(SYNC.last),'ok');
   return true})
 }).then(function(pushed){
- if(mergedCount){saveNow();rWk();if(CUR)rDD(CUR,CURD);if(!gEl('pg-stats').className.match(/hide/))rSt()}
+ if(mergedCount){saveNow();rWk();if(CUR)rDD(CUR,CURD);if(!gEl('pg-stats').className.match(/hide/))rSt();if(!gEl('pg-shape').className.match(/hide/))rShape()}
  sv();return pushed})
 }).catch(function(e){
  SYNC.lastErr=e.message||String(e);
@@ -562,8 +599,224 @@ h+='<details class="sync-help"><summary>How do I get these?</summary>'+(prov==='
  +'</details>';
 el.innerHTML=h}
 
+// ================= Shape page =================
+// Everything here is derived from entries already logged on the Stats page:
+// weight, waist and neck. Nothing new to record.
+
+// US Navy circumference method (men). Accurate to roughly ±3-4 points against
+// DEXA, but the error is consistent for one person, so the TREND is the useful part.
+function navyBF(waist,neck,htCm){
+  if(!(waist>neck))return null;
+  var v=1.0324-0.19077*(Math.log(waist-neck)/Math.LN10)+0.15456*(Math.log(htCm)/Math.LN10);
+  if(!(v>0))return null;
+  var bf=495/v-450;
+  if(!isFinite(bf))return null;
+  return Math.max(3,Math.min(60,bf));
+}
+// Entries usable for the fat/lean split need all three of weight, waist, neck.
+function shapeRows(){
+  var ht=S.cfg.ht||186.5;
+  return (S.bs||[]).filter(function(e){
+    return e&&e.weight!=null&&e.waist!=null&&e.neck!=null
+  }).map(function(e){
+    var bf=navyBF(e.waist,e.neck,ht);
+    if(bf==null)return null;
+    var fat=e.weight*bf/100;
+    return {date:e.date,weight:e.weight,waist:e.waist,neck:e.neck,
+            bf:bf,fat:fat,lean:e.weight-fat,whtr:e.waist/ht};
+  }).filter(Boolean);
+}
+function sDelta(d,unit,lowerBetter,dp){
+  dp=(dp==null)?1:dp;
+  if(!isFinite(d)||Math.abs(d)<Math.pow(10,-dp)/2)return '<span class="sh-flat">no change</span>';
+  var cls=(lowerBetter==null)?'sh-flat':((lowerBetter?d<0:d>0)?'sh-good':'sh-bad');
+  return '<span class="'+cls+'">'+(d>0?'+':'')+d.toFixed(dp)+(unit?' '+unit:'')+'</span>';
+}
+function shDate(d){var p=String(d).split('-');
+  return parseInt(p[2],10)+' '+MO[parseInt(p[1],10)-1].slice(0,3)}
+
+function rShape(){
+  var el=gEl('shape-body');if(!el)return;
+  var d=shapeRows(),ht=S.cfg.ht||186.5,target=ht*0.5;
+  var anyWeight=(S.bs||[]).some(function(e){return e&&e.weight!=null});
+
+  if(d.length<1){
+    el.innerHTML='<div class="sh-empty"><h4>Two more numbers unlock this page</h4>'
+     +'<p>Everything here is worked out from <b>weight, waist and neck</b> together. '
+     +(anyWeight?'You are logging weight already — add a waist and neck measurement on the Stats page and this fills in.'
+                :'Log all three on the Stats page and this fills in.')+'</p>'
+     +'<p>The payoff is the question a bathroom scale cannot answer: when the weight comes off, '
+     +'<b>is it fat or is it muscle?</b></p>'
+     +'<p class="sh-tip">Measure first thing in the morning — waist at navel height, tape snug but not '
+     +'compressing, breathing normally. Doing it the same way each time matters more than doing it perfectly.</p>'
+     +'<button class="dbtn" style="background-color:var(--accent);margin-top:6px" onclick="goPage(\'stats\')">Go to Stats and log</button></div>';
+    return}
+
+  var f=d[0],n=d[d.length-1],single=(d.length===1);
+  var h='';
+
+  // ---- headline: fat vs lean ----
+  h+='<div class="sh-card"><h3 class="sech">Estimated body fat</h3>'
+   +'<div class="sh-sub">Worked out from your height, neck and waist</div>'
+   +'<div class="sh-hero"><span class="sh-n">'+n.bf.toFixed(1)+'</span><span class="sh-u">%</span>'
+   +'<span class="sh-d">'+(single?'<span class="sh-flat">first entry</span>':sDelta(n.bf-f.bf,'pts',true))+'</span></div>';
+  var lp=Math.max(8,Math.min(92,n.lean/n.weight*100));
+  h+='<div class="sh-split"><div style="flex:'+lp+';background-color:var(--lean)">'+n.lean.toFixed(1)+' kg lean</div>'
+   +'<div style="flex:'+(100-lp)+';background-color:var(--fat)">'+n.fat.toFixed(1)+' kg fat</div></div>'
+   +'<div class="sh-key"><span><i style="background-color:var(--lean)"></i>Lean mass</span>'
+   +'<span><i style="background-color:var(--fat)"></i>Fat mass</span></div>';
+  var wLost=f.weight-n.weight,fatLost=f.fat-n.fat,leanLost=f.lean-n.lean;
+  var msg;
+  if(single)msg='This is your first full entry, so there is nothing to compare against yet. Log another in a '
+    +'few weeks and this box will tell you how much of any change was fat.';
+  else if(wLost<=0.1&&wLost>=-0.1)msg='Weight is level since '+shDate(f.date)+'. Body composition can still be '
+    +'shifting underneath — watch the gold and blue bands rather than the scale.';
+  else if(wLost<0)msg='You are up <b>'+(-wLost).toFixed(1)+' kg</b> since '+shDate(f.date)+', of which an estimated <b>'
+    +(-fatLost).toFixed(1)+' kg</b> is fat. If you are lifting consistently some of a gain is muscle, which is why '
+    +'this split is worth more than the scale alone.';
+  else{
+    var pct=Math.round(fatLost/wLost*100);
+    if(pct>=85)msg='Of the <b>'+wLost.toFixed(1)+' kg</b> you have lost, an estimated <b>'+fatLost.toFixed(1)
+      +' kg was fat</b> — around '+pct+'%. That is close to ideal: you are losing the right thing and holding on to muscle.';
+    else if(pct>=60)msg='Of the <b>'+wLost.toFixed(1)+' kg</b> you have lost, an estimated <b>'+fatLost.toFixed(1)
+      +' kg was fat</b> ('+pct+'%) and '+leanLost.toFixed(1)+' kg lean. Keeping the weights up and protein high protects the lean side.';
+    else msg='Of the <b>'+wLost.toFixed(1)+' kg</b> lost, only around '+pct+'% looks like fat. Worth easing off any '
+      +'deficit and keeping the resistance work going — though remember this is an estimate from a tape measure.';
+  }
+  h+='<div class="sh-msg">'+msg+'</div></div>';
+
+  // ---- waist to height ----
+  var zones=[[0.40,0.50,'--sh-ok'],[0.50,0.55,'--sh-warn'],[0.55,0.60,'--sh-bad'],[0.60,0.70,'--sh-crit']];
+  var pos=Math.max(0,Math.min(100,(n.whtr-0.40)/0.30*100));
+  h+='<div class="sh-card"><h3 class="sech">Waist ÷ height</h3>'
+   +'<div class="sh-sub">The most useful health marker you can take with a tape measure — keep your waist under half your height</div>'
+   +'<div class="sh-meter">'+zones.map(function(z){
+       return '<div style="flex:'+((z[1]-z[0])*100)+';background-color:var('+z[2]+')"></div>'}).join('')
+   +'<div class="sh-mk" style="left:calc('+pos+'% - 1px)"></div></div>'
+   +'<div class="sh-sc"><span>0.40</span><span>0.50</span><span>0.55</span><span>0.60</span><span>0.70</span></div>'
+   +'<div class="sh-key"><span><i style="background-color:var(--sh-ok)"></i>Healthy</span>'
+   +'<span><i style="background-color:var(--sh-warn)"></i>Raised</span>'
+   +'<span><i style="background-color:var(--sh-bad)"></i>High</span>'
+   +'<span><i style="background-color:var(--sh-crit)"></i>Very high</span></div>';
+  var wm;
+  if(n.waist<=target)wm='Your waist is <b>'+n.waist.toFixed(1)+' cm</b> — under half your height. '
+    +'This is the number most worth protecting from here.';
+  else wm='Your waist is <b>'+n.waist.toFixed(1)+' cm</b>. The healthy threshold for your height is <b>'
+    +target.toFixed(0)+' cm</b>, so there is <b>'+(n.waist-target).toFixed(1)+' cm</b> to go'
+    +((!single&&f.waist>n.waist)?' — and you have taken off '+(f.waist-n.waist).toFixed(1)+' cm since '+shDate(f.date)+'.':'.');
+  h+='<div class="sh-msg">'+wm+'</div></div>';
+
+  // ---- tiles ----
+  var bmiN=n.weight/Math.pow(ht/100,2), bmiF=f.weight/Math.pow(ht/100,2);
+  var tiles=[
+   ['--green',n.weight.toFixed(1)+' kg','Weight',sDelta(n.weight-f.weight,'kg',true)],
+   ['--gold',n.waist.toFixed(1)+' cm','Waist',sDelta(n.waist-f.waist,'cm',true)],
+   ['--lean',n.whtr.toFixed(3),'Waist ÷ height',sDelta(n.whtr-f.whtr,'',true,3)],
+   ['--fat',n.fat.toFixed(1)+' kg','Fat mass',sDelta(n.fat-f.fat,'kg',true)],
+   ['--lean',n.lean.toFixed(1)+' kg','Lean mass',sDelta(n.lean-f.lean,'kg',false)],
+   ['--green',bmiN.toFixed(1),'BMI',sDelta(bmiN-bmiF,'',true)]
+  ];
+  h+='<div style="margin-bottom:16px"><h3 class="sech">Key numbers</h3>'
+   +'<div class="sh-sub" style="margin-bottom:10px">Change measured from your first full entry, '+shDate(f.date)+'</div>'
+   +'<div class="tiles">'+tiles.map(function(t){
+      return '<div class="tile" style="border-left-color:var('+t[0]+')"><div class="tile-v">'+t[1]
+       +'</div><div class="tile-l">'+t[2]+'</div><div class="sh-td">'+t[3]+'</div></div>'}).join('')+'</div></div>';
+
+  // ---- charts (only once there is something to compare) ----
+  if(d.length>=2){
+    h+='<div class="chtc"><h4>Where the weight went</h4>'
+     +'<div class="sh-sub" style="margin-bottom:8px">Each entry split into lean mass and fat mass</div>'
+     +'<canvas id="sh-split" class="chtcv"></canvas>'
+     +'<div class="sh-key"><span><i style="background-color:var(--lean)"></i>Lean mass</span>'
+     +'<span><i style="background-color:var(--fat)"></i>Fat mass</span></div>'
+     +'<div class="sh-note">Lean mass is everything that is not fat — muscle, bone, organs, water. '
+     +'The gold band shrinking while the blue holds steady is exactly what good progress looks like.</div></div>';
+    h+='<div class="chtc"><h4>Body fat trend</h4><canvas id="sh-bf" class="chtcv"></canvas></div>';
+  }
+
+  // ---- table ----
+  h+='<h3 class="sech">Every measure</h3><div class="twrap"><table class="stbl">'
+   +'<thead><tr><th>Measure</th><th>'+shDate(f.date)+'</th><th>'+shDate(n.date)+'</th><th>Change</th></tr></thead><tbody>';
+  [['Weight',f.weight,n.weight,'kg',true,1],['Waist',f.waist,n.waist,'cm',true,1],
+   ['Neck',f.neck,n.neck,'cm',null,1],['Body fat',f.bf,n.bf,'%',true,1],
+   ['Fat mass',f.fat,n.fat,'kg',true,1],['Lean mass',f.lean,n.lean,'kg',false,1],
+   ['Waist ÷ height',f.whtr,n.whtr,'',true,3]].forEach(function(r){
+    h+='<tr><td style="color:var(--text);font-weight:600">'+r[0]+'</td><td>'+r[1].toFixed(r[5])+' '+r[3]
+      +'</td><td>'+r[2].toFixed(r[5])+' '+r[3]+'</td><td>'+sDelta(r[2]-r[1],r[3],r[4],r[5])+'</td></tr>'});
+  h+='</tbody></table></div>';
+
+  // ---- caveat ----
+  h+='<div class="sh-card" style="margin-top:16px"><h3 class="sech">How much to trust it</h3>'
+   +'<div class="sh-note">The body-fat figure uses the <b>US Navy circumference method</b>, which estimates fat '
+   +'percentage from height, neck and waist. Against a proper DEXA scan it is accurate to roughly '
+   +'<b>±3–4 percentage points</b>, so treat the absolute number as a ballpark.<br><br>'
+   +'What it is reliable at is <b>direction</b>. The error stays consistent for one person measuring the same way, '
+   +'so the trend is far more trustworthy than any single reading — which is what makes the lean-versus-fat split '
+   +'worth having at all.<br><br><b>Measure the same way every time:</b> first thing in the morning, waist at navel '
+   +'height, tape snug but not compressing, breathing normally. Consistency beats precision.</div></div>';
+
+  el.innerHTML=h;
+  if(d.length>=2){shSplitChart(d);shBFChart(d)}
+}
+
+// Stacked lean/fat per entry. Shares niceScale/fmtTick with the other charts.
+function shSplitChart(d){
+  var cv=gEl('sh-split');if(!cv)return;var ctx=cv.getContext('2d');
+  var rect=cv.parentElement.getBoundingClientRect();var dpr=window.devicePixelRatio||1;
+  var W=rect.width-32,Hh=210;cv.width=W*dpr;cv.height=Hh*dpr;cv.style.width=W+'px';cv.style.height=Hh+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  var col=tcol();
+  var sc=niceScale(0,Math.max.apply(null,d.map(function(r){return r.weight})),4);
+  var pL=46,pR=14,pT=16,pB=28,cW=W-pL-pR,cH=Hh-pT-pB;
+  ctx.strokeStyle=col.grid;ctx.lineWidth=0.5;ctx.font='10px -apple-system,Helvetica,sans-serif';
+  for(var i=0;i<=sc.ticks;i++){var y=pT+(cH/sc.ticks)*i;
+    ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();
+    ctx.fillStyle=col.faint;ctx.textAlign='right';ctx.fillText(fmtTick(sc.mx-sc.step*i,sc.dec),pL-6,y+4)}
+  var slot=cW/d.length,bw=Math.min(44,slot*0.62);
+  var lean=cssVar('--lean'),fat=cssVar('--fat');
+  d.forEach(function(r,i){
+    var x=pL+slot*i+(slot-bw)/2;
+    var hL=(r.lean/sc.mx)*cH, yL=pT+cH-hL;
+    var hF=(r.fat/sc.mx)*cH, yF=yL-hF;
+    ctx.fillStyle=lean;ctx.fillRect(x,yL,bw,hL);
+    ctx.fillStyle=fat;ctx.fillRect(x,yF,bw,Math.max(0,hF-2));   // 2px gap between segments
+    ctx.fillStyle=col.faint;ctx.textAlign='center';ctx.font='9px -apple-system,Helvetica,sans-serif';
+    ctx.fillText(shDate(r.date),x+bw/2,Hh-9);
+    if(i===0||i===d.length-1){ctx.fillStyle=col.faint;ctx.font='700 10px -apple-system,Helvetica,sans-serif';
+      ctx.fillText(r.fat.toFixed(1)+'kg fat',x+bw/2,Math.max(10,yF-5))}
+  });
+}
+function shBFChart(d){
+  var cv=gEl('sh-bf');if(!cv)return;var ctx=cv.getContext('2d');
+  var rect=cv.parentElement.getBoundingClientRect();var dpr=window.devicePixelRatio||1;
+  var W=rect.width-32,Hh=210;cv.width=W*dpr;cv.height=Hh*dpr;cv.style.width=W+'px';cv.style.height=Hh+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  var col=tcol(),vals=d.map(function(r){return r.bf});
+  var sc=niceScale(Math.min.apply(null,vals),Math.max.apply(null,vals),4);
+  var pL=46,pR=16,pT=18,pB=28,cW=W-pL-pR,cH=Hh-pT-pB,rng=sc.mx-sc.mn||1;
+  ctx.strokeStyle=col.grid;ctx.lineWidth=0.5;ctx.font='10px -apple-system,Helvetica,sans-serif';
+  for(var i=0;i<=sc.ticks;i++){var y=pT+(cH/sc.ticks)*i;
+    ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();
+    ctx.fillStyle=col.faint;ctx.textAlign='right';ctx.fillText(fmtTick(sc.mx-sc.step*i,sc.dec)+'%',pL-6,y+4)}
+  var fat=cssVar('--fat');
+  var X=function(i){return pL+(cW/Math.max(d.length-1,1))*i};
+  var Y=function(v){return pT+cH-((v-sc.mn)/rng)*cH};
+  ctx.strokeStyle=fat;ctx.lineWidth=2;ctx.lineJoin='round';ctx.beginPath();
+  d.forEach(function(r,i){i?ctx.lineTo(X(i),Y(r.bf)):ctx.moveTo(X(i),Y(r.bf))});ctx.stroke();
+  d.forEach(function(r,i){
+    ctx.beginPath();ctx.arc(X(i),Y(r.bf),4,0,Math.PI*2);ctx.fillStyle=fat;ctx.fill();
+    ctx.strokeStyle=col.pt;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=col.faint;ctx.textAlign='center';ctx.font='9px -apple-system,Helvetica,sans-serif';
+    var stp=Math.max(1,Math.floor(d.length/6));
+    if(i%stp===0||i===d.length-1)ctx.fillText(shDate(r.date),X(i),Hh-9);
+    if(i===0||i===d.length-1){ctx.fillStyle=col.faint;ctx.font='700 10px -apple-system,Helvetica,sans-serif';
+      ctx.fillText(r.bf.toFixed(1)+'%',X(i),Math.max(11,Y(r.bf)-10))}
+  });
+}
+function cssVar(n){return getComputedStyle(document.body).getPropertyValue(n).trim()}
+
 // ---- Page nav ----
-function goPage(p){gEl('nav-train').className=(p==='cal'?'on':'');gEl('nav-stats').className=(p==='stats'?'on':'');gEl('nav-set').className=(p==='set'?'on':'');gEl('pg-cal').className=(p==='cal'?'':'hide');gEl('pg-stats').className=(p==='stats'?'':'hide');gEl('pg-set').className=(p==='set'?'':'hide');if(p==='stats')rSt();if(p==='set')rSync();if(p==='set')lCfg()}
+function goPage(p){gEl('nav-train').className=(p==='cal'?'on':'');gEl('nav-stats').className=(p==='stats'?'on':'');gEl('nav-shape').className=(p==='shape'?'on':'');gEl('nav-set').className=(p==='set'?'on':'');gEl('pg-cal').className=(p==='cal'?'':'hide');gEl('pg-stats').className=(p==='stats'?'':'hide');gEl('pg-shape').className=(p==='shape'?'':'hide');gEl('pg-set').className=(p==='set'?'':'hide');if(p==='stats')rSt();if(p==='shape')rShape();if(p==='set')rSync();if(p==='set')lCfg()}
 function initC(){applyTheme(S.cfg.theme||'light');WSTART=ws(new Date());rWk()}
 function chgWk(dir){var w=new Date(WSTART);w.setDate(w.getDate()+(dir*7));WSTART=w;CUR=null;gEl('day-det').className='hide';rWk()}
 
@@ -666,10 +919,10 @@ _celebT=setTimeout(function(){el.className='celeb';_celebT=null},big?2000:1400)}
 
 // ---- Stats ----
 function tcol(){var dark=document.body.classList.contains('dark');return dark?{grid:'rgba(122,114,104,0.3)',faint:'#9a9186',pt:'#1a1814'}:{grid:'rgba(120,110,95,0.22)',faint:'#948b7f',pt:'#ffffff'}}
-function rSt(){var inp=gEl('st-inputs');var h='<div class="scard" style="grid-column:1/-1;border-left:3px solid var(--gold)"><label>Entry date</label><input type="date" id="si-date" value="'+dk(new Date())+'" max="'+dk(new Date())+'" onchange="loadStForDate()"><div class="u">Pick a past day to log or update it</div></div>';SF.forEach(function(f){h+='<div class="scard"><label>'+f.l+'</label><input type="number" step="'+f.s+'" id="si-'+f.k+'" placeholder="—"><div class="u">'+f.u+'</div></div>'});h+='<div class="scard" style="border-left:3px solid var(--accent)"><label>BMI</label><div id="bmi-d" style="font-weight:900;font-size:1.4rem;margin-top:4px">—</div><div class="u">Auto</div></div>';inp.innerHTML=h;loadStForDate();rTrend();rTiles();rHeat();rEffort();rBmiCtx();rCht();rTbl()}
+function rSt(){var inp=gEl('st-inputs');var h='<div class="scard" style="grid-column:1/-1;border-left:3px solid var(--gold)"><label>Entry date</label><input type="date" id="si-date" value="'+dk(new Date())+'" max="'+dk(new Date())+'" onchange="loadStForDate()"><div class="u">Pick a past day to log or update it</div></div>';SF.forEach(function(f){h+='<div class="scard"><label>'+f.l+'</label><input type="number" step="'+f.s+'" id="si-'+f.k+'" placeholder="—"><div class="u">'+f.u+'</div></div>'});h+='<div class="scard" style="border-left:3px solid var(--accent)"><label>BMI</label><div id="bmi-d" style="font-weight:900;font-size:1.4rem;margin-top:4px">—</div><div class="u">Auto</div></div>';inp.innerHTML=h;loadStForDate();rTrend();rTiles();rHeat();rEffort();rBmiCtx();rCht();rTbl();if(!gEl('pg-shape').className.match(/hide/))rShape()}
 function loadStForDate(){var de=gEl('si-date');if(!de)return;var d=de.value,ex=null;S.bs.forEach(function(s){if(s.date===d)ex=s});SF.forEach(function(f){var el=gEl('si-'+f.k);if(el)el.value=(ex&&ex[f.k]!=null)?ex[f.k]:''});var bd=gEl('bmi-d');if(bd)bd.textContent=(ex&&ex.bmi!=null)?ex.bmi:'—'}
 function latestWeight(){for(var i=S.bs.length-1;i>=0;i--){if(S.bs[i].weight!=null)return S.bs[i]}return null}
-function saveSt(){var dsel=(gEl('si-date')||{}).value||dk(new Date());var e={date:dsel},has=false;SF.forEach(function(f){var v=gEl('si-'+f.k).value;if(v!==''){e[f.k]=parseFloat(v);has=true}});if(!has){alert('Enter at least one measurement.');return}if(e.weight){var hm=(S.cfg.ht||186.5)/100;e.bmi=Math.round((e.weight/(hm*hm))*10)/10}var idx=-1;S.bs.forEach(function(s,i){if(s.date===e.date)idx=i});if(idx>=0){for(var kk in e)S.bs[idx][kk]=e[kk]}else S.bs.push(e);S.bs.sort(function(a,b){return a.date.localeCompare(b.date)});sv();loadStForDate();shC('STATS LOGGED! 📊','Tracking = winning!',false);rTrend();rTiles();rHeat();rEffort();rBmiCtx();rCht();rTbl()}
+function saveSt(){var dsel=(gEl('si-date')||{}).value||dk(new Date());var e={date:dsel},has=false;SF.forEach(function(f){var v=gEl('si-'+f.k).value;if(v!==''){e[f.k]=parseFloat(v);has=true}});if(!has){alert('Enter at least one measurement.');return}if(e.weight){var hm=(S.cfg.ht||186.5)/100;e.bmi=Math.round((e.weight/(hm*hm))*10)/10}var idx=-1;S.bs.forEach(function(s,i){if(s.date===e.date)idx=i});if(idx>=0){for(var kk in e)S.bs[idx][kk]=e[kk]}else S.bs.push(e);S.bs.sort(function(a,b){return a.date.localeCompare(b.date)});sv();loadStForDate();shC('STATS LOGGED! 📊','Tracking = winning!',false);rTrend();rTiles();rHeat();rEffort();rBmiCtx();rCht();rTbl();if(!gEl('pg-shape').className.match(/hide/))rShape()}
 
 // weekly aggregation
 function weekKey(d){return dk(ws(d))}
