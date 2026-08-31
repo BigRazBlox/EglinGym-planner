@@ -92,6 +92,15 @@ a{color:var(--accent);text-decoration:none}
 .exip input{width:56px;padding:5px 6px;font-size:0.85rem;text-align:center}
 .exlast{font-size:0.72rem;color:var(--faint);margin-top:5px}
 .exlast b{color:var(--gold)}
+.exadv{font-size:0.75rem;color:var(--muted);margin-top:7px;line-height:1.5;padding:7px 9px;border-radius:7px;
+background-color:rgba(148,139,127,0.10);border-left:2px solid var(--border)}
+.exadv b{color:var(--text)}
+.exadv.up{background-color:rgba(39,174,96,0.13);border-left-color:var(--green)}
+.exadv.up b{color:var(--green)}
+.exadv.hold{background-color:rgba(169,121,26,0.13);border-left-color:var(--gold)}
+.exadv.hold b{color:var(--gold)}
+.exup{font-size:0.6rem;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:var(--green);
+background-color:rgba(39,174,96,0.16);padding:2px 7px;border-radius:20px}
 .csel{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .cbtn{padding:10px 16px;border-radius:8px;background-color:var(--card2);font-weight:700;font-size:0.85rem;border:1px solid var(--border);color:var(--text)}
 .cbtn.on{background-color:var(--accent);border-color:var(--accent);color:#fff}
@@ -101,6 +110,8 @@ a{color:var(--accent);text-decoration:none}
 .clog textarea{resize:vertical;min-height:60px}
 .actg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .actg .clog{margin:0}
+.act-win{background-color:rgba(39,174,96,0.14);border-left:3px solid var(--green);border-radius:8px;padding:9px 11px;
+margin-bottom:10px;font-size:0.82rem;font-weight:700;color:var(--green)}
 .rec{color:var(--muted);font-size:0.85rem;margin-bottom:12px;line-height:1.5;padding:10px;background-color:var(--card2);border-radius:8px;border-left:3px solid var(--accent)}
 .rec strong{color:var(--text)}
 .hrz{background-color:var(--card2);border-radius:8px;padding:12px;margin-bottom:12px}
@@ -285,7 +296,7 @@ border-left:3px solid var(--gold)}
 <div id="pg-stats" class="hide">
 <h2 style="font-weight:900;font-size:1.4rem;margin-bottom:16px">Progress</h2>
 <div id="trend-area"></div>
-<div style="margin-bottom:8px"><h3 class="sech">Effort — this training week</h3><div id="tiles-area"></div></div>
+<div style="margin-bottom:8px"><h3 class="sech">Effort — rolling 7 days</h3><div id="tiles-area"></div></div>
 <div style="margin-bottom:20px"><div id="heat-area"></div></div>
 <div style="margin-bottom:20px"><h3 class="sech">Weekly effort</h3><div id="effort-area"></div></div>
 <div style="margin-bottom:20px"><h3 class="sech">Log Body Stats</h3><div class="sgrid" id="st-inputs"></div><button class="dbtn" onclick="saveSt()" style="background-color:var(--accent);padding:14px 24px;font-size:1rem;margin-top:16px;width:100%">Save Entry</button></div>
@@ -300,12 +311,12 @@ border-left:3px solid var(--gold)}
 <div id="pg-set" class="hide">
 <h2 style="font-weight:900;font-size:1.4rem;margin-bottom:16px">Settings</h2>
 <div class="setc"><h3>Appearance</h3><div class="setr"><label>Theme</label><button class="xbtn" id="theme-btn" onclick="toggleTheme()">Switch</button></div></div>
-<div class="setc"><h3>Your Profile</h3><div class="setr"><label>Height (cm)</label><input type="number" id="s-ht" value="186.5" step="0.1" onchange="savSet()"></div><div class="setr"><label>Year of Birth</label><input type="number" id="s-yob" value="1968" onchange="savSet()"></div><p style="margin-top:10px">Your age sets your heart-rate zones. Age <span id="age-disp">—</span>.</p></div>
+<div class="setc"><h3>Your Profile</h3><div class="setr"><label>Height (cm)</label><input type="number" id="s-ht" value="186.5" step="0.1" onchange="savSet()"></div><div class="setr"><label>Year of Birth</label><input type="number" id="s-yob" value="1968" onchange="savSet()"></div><div class="setr"><label>Smallest weight jump (kg)</label><input type="number" id="s-inc" value="2.5" step="0.5" min="0.5" onchange="savSet()"></div><div class="setr"><label>Walk that earns a block (km)</label><input type="number" id="s-walk" value="5" step="0.5" min="0" onchange="savSet()"></div><div class="setr"><label>Steps that earn a block</label><input type="number" id="s-steps" value="14000" step="500" min="0" onchange="savSet()"></div><p style="margin-top:10px">Your age sets your heart-rate zones. Age <span id="age-disp">—</span>. The weight jump is the smallest step your dumbbells allow — it decides what the app suggests when you have earned an increase.</p></div>
 <div class="setc"><h3>Sync across devices</h3><div id="sync-ui"></div></div>
 <div class="setc"><h3>Data</h3><div class="setr"><label>Export backup</label><button class="xbtn" onclick="expJSON()">💾 Export</button></div><div class="setr"><label>Import backup</label><input type="file" accept=".json" onchange="impJSON(event)" style="width:auto;font-size:0.8rem"></div><div class="setr"><label style="color:var(--accent)">Reset all data</label><button class="dbtn" onclick="resetAll()">🗑 Reset</button></div></div>
 <div class="setc"><h3>Security</h3><div class="setr"><label>Lock the app now</label><button class="xbtn" onclick="lockNow()">🔒 Lock</button></div><div class="setr" style="display:block"><label style="display:block;margin-bottom:8px">Change password</label><input type="password" id="cp-cur" placeholder="Current password" style="width:100%;margin-bottom:6px"><input type="password" id="cp-new" placeholder="New password" style="width:100%;margin-bottom:6px"><input type="password" id="cp-new2" placeholder="Confirm new password" style="width:100%;margin-bottom:8px"><button class="xbtn" onclick="changePw()">Update password</button><div id="cp-msg" style="font-size:0.8rem;margin-top:8px;color:var(--faint)"></div></div><p style="margin-top:6px">Your data is encrypted with your password. It can't be recovered if you forget it, so keep a JSON backup somewhere safe. If you turn sync on, both devices share one password — changing it here only changes this device, so turn sync off first.</p></div>
-<div class="setc"><h3>How it works</h3><p>Each time you train, tap the day, pick how long you've got, and choose the blocks you want. Your weights focus advances Push → Pull → Legs, and cardio, core and flexibility rotate too — but only when you actually log a session. Miss a day and nothing shifts; you always pick up the next focus.</p></div>
-<div class="setc"><h3>About</h3><p>EglinGym v3.5 · Encrypted on this device. With sync on, that encrypted copy is mirrored to the service you chose — it is never uploaded in readable form. Use Export to back up.</p><p style="margin-top:8px;font-size:0.78rem">v3.5 — new Shape tab: estimated body fat, fat vs lean mass split, waist ÷ height, all worked out from the weight, waist and neck you already log.<br>v3.4 — pairing code, so the second device is one paste instead of retyping the token; the connected screen now shows the Gist ID.<br>v3.3 — weight progress now measured from your first ever entry; consistency grid made taller and full width.<br>v3.2 — cross-device sync: end-to-end encrypted, and merges day by day rather than one device overwriting the other.<br>v3.1 — fixed the celebration messages (they were firing but invisible), messages now cycle through the full set before repeating, consistency grid made compact with shading by blocks per day and most recent week first, and every chart axis now sits on round numbers.</p></div>
+<div class="setc"><h3>How it works</h3><p>Each exercise reads your last session and tells you what to aim for. Hit the top of the rep range on every set and it says you have earned the next weight up; stall three sessions running and it says so. Advice only — it never changes what you log.</p><p style="margin-top:8px">Each time you train, tap the day, pick how long you've got, and choose the blocks you want. Your weights focus advances Push → Pull → Legs, and cardio, core and flexibility rotate too — but only when you actually log a session. Miss a day and nothing shifts; you always pick up the next focus.</p></div>
+<div class="setc"><h3>About</h3><p>EglinGym v3.7 · Encrypted on this device. With sync on, that encrypted copy is mirrored to the service you chose — it is never uploaded in readable form. Use Export to back up.</p><p style="margin-top:8px;font-size:0.78rem">v3.7 — daily activity now earns a block when it is substantial; stats moved to rolling seven-day windows; ticking an exercise records what you did, so volume actually grows.<br>v3.6 — progressive overload: each exercise now tells you when you have earned a heavier weight, when to hold, and what to aim for next.<br>v3.5 — new Shape tab: estimated body fat, fat vs lean mass split, waist ÷ height, all worked out from the weight, waist and neck you already log.<br>v3.4 — pairing code, so the second device is one paste instead of retyping the token; the connected screen now shows the Gist ID.<br>v3.3 — weight progress now measured from your first ever entry; consistency grid made taller and full width.<br>v3.2 — cross-device sync: end-to-end encrypted, and merges day by day rather than one device overwriting the other.<br>v3.1 — fixed the celebration messages (they were firing but invisible), messages now cycle through the full set before repeating, consistency grid made compact with shading by blocks per day and most recent week first, and every chart axis now sits on round numbers.</p></div>
 </div>
 </div>
 <div class="mov" id="mov" onclick="if(event.target===this)clMo()"><div class="mo"><div class="mo-h"><h3 id="mo-t"></h3><button class="mo-x" onclick="clMo()">✕</button></div><div class="mo-b" id="mo-b"></div></div></div>
@@ -378,6 +389,92 @@ function genCEx(ri){return CORE[ri].ex.map(function(e){return{n:e.n,s:e.s,r:e.r,
 function lastWeight(name,k){var best=null,bd='';for(var key in S.wk){if(key>=k)continue;var w=S.wk[key];if(!w.weights||!w.weights.active)continue;w.weights.ex.forEach(function(e){if(e.n===name&&e.akg!==''&&e.akg!=null){if(key>bd){bd=key;best=e.akg}}})}return best}
 function bestWeightExcl(name,k){var best=null;for(var key in S.wk){if(key===k)continue;var w=S.wk[key];if(!w.weights||!w.weights.active)continue;w.weights.ex.forEach(function(e){if(e.n===name){var v=num(e.akg);if(v!=null&&(best==null||v>best))best=v}})}return best}
 
+// ================= Progressive overload =================
+// Double progression: stay at a weight until you can hit the TOP of the rep
+// range on every set, then add one increment and drop back to the bottom.
+// Advice is suggestive — it never blocks logging and never changes your data.
+
+function progInc(){var v=num(S.cfg.inc);return(v&&v>0)?v:2.5}
+// "10-12" -> {lo:10,hi:12}; "15-20"; "10 each" -> {lo:10,hi:10}; "30-45s" -> time
+function repRange(r){
+  var s=String(r==null?'':r);
+  var time=/\d\s*s(ec)?\b/i.test(s)||/\ds\b/i.test(s)||/s$/i.test(s.trim());
+  var m=s.match(/(\d+)\s*-\s*(\d+)/);
+  if(m)return{lo:parseInt(m[1],10),hi:parseInt(m[2],10),time:time};
+  var m2=s.match(/(\d+)/);
+  if(m2)return{lo:parseInt(m2[1],10),hi:parseInt(m2[1],10),time:time};
+  return null;
+}
+// Every past logging of an exercise, oldest first. Looks in weights AND core.
+function exHistory(name,before){
+  var out=[];
+  for(var key in S.wk){
+    if(before&&key>=before)continue;
+    var w=S.wk[key];if(!w)continue;
+    ['weights','core'].forEach(function(b){
+      if(!w[b]||!w[b].active||!w[b].ex)return;
+      w[b].ex.forEach(function(e){
+        if(e.n!==name)return;
+        var kg=num(e.akg),sets=num(e.asets),reps=num(e.areps);
+        if(kg==null&&sets==null&&reps==null)return;
+        out.push({date:key,kg:kg,sets:sets,reps:reps});
+      });
+    });
+  }
+  out.sort(function(a,b){return a.date<b.date?-1:(a.date>b.date?1:0)});
+  return out;
+}
+// Returns {t:html, cls:'up'|'hold'|'', next:kg|null, kg:workingWeight|null}
+function exAdvice(ex,k){
+  var hist=exHistory(ex.n,k),rr=repRange(ex.r),inc=progInc(),weighted=ex.kg>0;
+  if(!hist.length){
+    return{t:weighted?('First time — start around <b>'+ex.kg+'kg</b> and see how '+ex.s+' × '+ex.r+' feels.')
+                     :('First time — aim for '+ex.s+' × '+ex.r+'.'),cls:'',next:null,kg:weighted?ex.kg:null};
+  }
+  var L=hist[hist.length-1],reps=L.reps,sets=L.sets;
+
+  if(weighted){
+    if(L.kg==null)
+      return{t:'Last time you logged reps but no weight. Add the weight and I can tell you when to go up.',
+             cls:'',next:null,kg:ex.kg};
+    var enoughSets=(sets==null||sets>=ex.s);
+    if(rr&&reps!=null&&reps>=rr.hi&&enoughSets){
+      var nx=Math.round((L.kg+inc)*10)/10;
+      return{t:'You hit <b>'+(sets||ex.s)+' × '+reps+'</b> at '+L.kg+'kg last time — ready to go up to <b>'+nx+'kg</b>.',
+             cls:'up',next:nx,kg:nx};
+    }
+    // Genuinely stalled: same weight for 3+ sessions AND reps no better than
+    // when the run started. Reps still creeping up is progress, not a plateau.
+    var run=[];
+    for(var i=hist.length-1;i>=0;i--){if(hist[i].kg===L.kg)run.unshift(hist[i]);else break}
+    var same=run.length;
+    var stalled=(same>=3&&reps!=null&&run[0].reps!=null&&reps<=run[0].reps);
+    if(rr&&stalled&&reps<rr.hi){
+      var down=Math.max(inc,Math.round((L.kg-inc)*10)/10);
+      return{t:same+' sessions at '+L.kg+'kg without reaching '+rr.hi+' reps. Hold here — or drop to '+down+
+               'kg and build back with cleaner form.',cls:'hold',next:null,kg:L.kg};
+    }
+    if(rr&&reps!=null&&reps<rr.lo)
+      return{t:'Stay at '+L.kg+'kg and work up to '+rr.lo+' reps before adding weight.',cls:'',next:null,kg:L.kg};
+    if(reps!=null)
+      return{t:'Aim for <b>'+(reps+1)+' reps</b> at '+L.kg+'kg'+(rr?' — '+rr.hi+' on all '+ex.s+' sets earns the next '+inc+'kg':'')+'.',
+             cls:'',next:null,kg:L.kg};
+    return{t:'Last time '+L.kg+'kg. Log your reps too and I can tell you when to go up.',cls:'',next:null,kg:L.kg};
+  }
+
+  // bodyweight and core work — progress by reps or time, not load
+  if(reps==null)return{t:'Log your reps and I can track progress here.',cls:'',next:null,kg:null};
+  if(rr&&rr.time){
+    if(reps>=rr.hi)return{t:'<b>'+reps+'s</b> last time — past the target. Try a harder variation, or add a light weight.',
+                          cls:'up',next:null,kg:null};
+    return{t:'Last time <b>'+reps+'s</b>. Aim for '+(reps+5)+'s.',cls:'',next:null,kg:null};
+  }
+  if(rr&&reps>=rr.hi)
+    return{t:'<b>'+reps+' reps</b> puts you at the top of the range. Try a harder variation, or hold a dumbbell.',
+           cls:'up',next:null,kg:null};
+  return{t:'Last time <b>'+reps+' reps</b>. Aim for '+(reps+1)+' this time.',cls:'',next:null,kg:null};
+}
+
 // ---- Encryption + gate (Web Crypto) ----
 var KEY=null,SALT=null,SECCHECK=null,saveT=null,db=null;
 function enc(s){return new TextEncoder().encode(s)}
@@ -399,7 +496,7 @@ function sv(){if(saveT)clearTimeout(saveT);saveT=setTimeout(flush,120)}
 function saveNow(cb){if(saveT){clearTimeout(saveT);saveT=null}if(!KEY){if(cb)cb();return}stampChanges();Promise.all([encryptStr(JSON.stringify(S.wk)),encryptStr(JSON.stringify(S.bs)),encryptStr(JSON.stringify(S.cfg))]).then(function(r){writeBlobs(r[0],r[1],r[2]);if(cb)setTimeout(cb,30)}).catch(function(){if(cb)cb()})}
 function clearAll(cb){function done(){try{localStorage.removeItem('eg_w');localStorage.removeItem('eg_b');localStorage.removeItem('eg_c');localStorage.removeItem('eg_sec')}catch(e){}if(cb)cb()}if(db){try{var tx=db.transaction('data','readwrite'),st=tx.objectStore('data');st.delete('wk');st.delete('bs');st.delete('cfg');st.delete('sec');tx.oncomplete=done;tx.onerror=done}catch(e){done()}}else done()}
 function ld(cb){readBlobs(function(w,b,c){var jobs=[];if(w)jobs.push(decryptStr(w).then(function(p){try{var o=JSON.parse(p);if(o&&typeof o==='object')S.wk=o}catch(e){}}).catch(function(){}));if(b)jobs.push(decryptStr(b).then(function(p){try{var o=JSON.parse(p);if(Array.isArray(o))S.bs=o}catch(e){}}).catch(function(){}));if(c)jobs.push(decryptStr(c).then(function(p){try{var o=JSON.parse(p);if(o&&typeof o==='object')S.cfg=o}catch(e){}}).catch(function(){}));Promise.all(jobs).then(function(){migrate();if(cb)cb()})})}
-function migrate(){if(!S.cfg)S.cfg={};if(!S.cfg.sync)S.cfg.sync={on:false,prov:'gist',token:'',gistId:'',url:'',key:'',mx:0};if(!S.cfg.ht)S.cfg.ht=186.5;if(!S.cfg.yob)S.cfg.yob=1968;if(!S.cfg.theme)S.cfg.theme='light';for(var k in S.wk){var w=S.wk[k];if(!w||typeof w!=='object'){delete S.wk[k];continue}if(!('dur'in w))w.dur=null;if(w.comp)delete w.comp;
+function migrate(){if(!S.cfg)S.cfg={};if(!(S.cfg.inc>0))S.cfg.inc=2.5;if(!(S.cfg.walkMin>=0))S.cfg.walkMin=5;if(!(S.cfg.stepMin>=0))S.cfg.stepMin=14000;if(!S.cfg.sync)S.cfg.sync={on:false,prov:'gist',token:'',gistId:'',url:'',key:'',mx:0};if(!S.cfg.ht)S.cfg.ht=186.5;if(!S.cfg.yob)S.cfg.yob=1968;if(!S.cfg.theme)S.cfg.theme='light';for(var k in S.wk){var w=S.wk[k];if(!w||typeof w!=='object'){delete S.wk[k];continue}if(!('dur'in w))w.dur=null;if(w.comp)delete w.comp;
 if(w.cardio){if(Array.isArray(w.cardio)){delete w.cardio}else{if(!('active'in w.cardio))w.cardio.active=true;if(w.cardio.ci==null)w.cardio.ci=(w.cardio.pi!=null?w.cardio.pi:0);if(!w.cardio.mode)w.cardio.mode=(w.cardio.t||'peloton')}}
 if(w.weights){if(Array.isArray(w.weights)){delete w.weights}else{if(!('active'in w.weights))w.weights.active=true;if(w.weights.fi==null)w.weights.fi=(w.weights.focus?Math.max(0,PPL.indexOf(w.weights.focus)):0);if(!w.weights.focus)w.weights.focus=PPL[w.weights.fi];if(w.weights.ex)w.weights.ex.forEach(function(e){if(!('asets'in e))e.asets='';if(!('areps'in e))e.areps='';if(!('akg'in e))e.akg=''})}}
 if(w.core&&w.core.ex)w.core.ex.forEach(function(e){if(!('asets'in e))e.asets='';if(!('areps'in e))e.areps='';if(!('akg'in e))e.akg=''});
@@ -825,8 +922,21 @@ var STREAMS=['cardio','weights','core','flex'];
 function blkStatus(w,b){if(!w||!w[b]||!w[b].active)return'none';if(w[b].done)return'done';return'part'}
 function dayComplete(w){if(!w)return false;var any=false,allDone=true;STREAMS.forEach(function(b){if(w[b]&&w[b].active){any=true;if(!w[b].done)allDone=false}});return any&&allDone}
 function dayHasActivity(w){if(!w||!w.activity)return false;var a=w.activity;return!!(num(a.walk)||num(a.swim)||num(a.cycle)||num(a.steps))}
+function actThresh(){return{walk:(num(S.cfg.walkMin)>0?num(S.cfg.walkMin):5),steps:(num(S.cfg.stepMin)>0?num(S.cfg.stepMin):14000)}}
+// Which optional activities are substantial enough to earn a block?
+// Cycling and swimming count at any distance; walking and steps need a threshold,
+// otherwise ordinary daily pottering about would score.
+function activityWins(w){
+if(!w||!w.activity)return[];
+var a=w.activity,t=actThresh(),o=[];
+if(num(a.cycle)>0)o.push('🚲 '+num(a.cycle)+' km');
+if(num(a.swim)>0)o.push('🏊 '+num(a.swim)+' m');
+if(num(a.walk)>=t.walk)o.push('🚶 '+num(a.walk)+' km');
+if(num(a.steps)>=t.steps)o.push('👟 '+Math.round(num(a.steps)).toLocaleString());
+return o}
+function activityQualifies(w){return activityWins(w).length>0}
 function dayHasDone(w){return STREAMS.some(function(b){return w&&w[b]&&w[b].active&&w[b].done})}
-function daySession(w){return dayHasDone(w)||dayHasActivity(w)}
+function daySession(w){return dayHasDone(w)||activityQualifies(w)}
 function rUp(){var el=gEl('upnext');var cnt=0,w0=ws(new Date());for(var k in S.wk){var d=new Date(k+'T12:00:00');if(d>=w0&&daySession(S.wk[k]))cnt++}
 el.innerHTML='<div class="upn"><div class="upn-h">Up next — advances only when you log a session</div><div class="upn-row"><span class="upn-pill">🏋️ '+nextFocusName()+'</span><span class="upn-pill">🔥 '+nextCoreName().split(' — ')[0]+'</span><span class="upn-pill">🚴 '+nextCardioName()+'</span><span class="upn-pill">🧘 '+nextFlexName()+'</span><span class="upn-stat"><b>'+cnt+'</b> this week</span></div></div>'}
 function rWk(){var w=WSTART,we=new Date(w);we.setDate(we.getDate()+6);gEl('wk-title').textContent=w.getDate()+' '+MO[w.getMonth()]+' — '+we.getDate()+' '+MO[we.getMonth()]+' '+we.getFullYear();var g=gEl('wk-grid');g.innerHTML='';var td=dk(new Date());for(var i=0;i<7;i++){var d=new Date(w);d.setDate(d.getDate()+i);var k=dk(d),wo=S.wk[k],all=dayComplete(wo);function dcls(b){var s=blkStatus(wo,b);return s==='done'?' ok':s==='part'?' part':''}var c=document.createElement('div');c.className='dc'+(k===td?' today':'')+(k===CUR?' sel':'')+(all?' comp':'');c.setAttribute('data-k',k);c.setAttribute('data-t',d.getTime());c.onclick=function(){sDay(this.getAttribute('data-k'),new Date(parseInt(this.getAttribute('data-t'))))};c.innerHTML='<div class="dn">'+DAYS[d.getDay()]+'</div><div class="dnum">'+d.getDate()+'</div><div class="dots"><div class="dot'+dcls('cardio')+'"></div><div class="dot'+dcls('weights')+'"></div><div class="dot'+dcls('core')+'"></div><div class="dot'+dcls('flex')+'"></div></div>';g.appendChild(c)}rUp()}
@@ -854,14 +964,18 @@ if(b==='flex'){sub=FL[o.ri].n;body=rFlx(k,o)}
 return'<div class="blk"><div class="blk-h" onclick="tB(\''+b+'\')"><div class="blk-ta"><div class="blk-ic '+meta.ic+'">'+meta.em+'</div><div><div class="blk-lb">'+meta.lb+'</div><div class="blk-sb">'+sub+'</div></div></div>'+badge+'</div><div class="blk-c open" id="bl-'+b+'">'+body+'</div></div>'}
 
 function actCard(k,wo){var a=(wo&&wo.activity)||{};var has=dayHasActivity(wo);
-var body='<div class="blk-sb" style="margin-bottom:10px">Log anything else you did today — it feeds your weekly effort dashboard.</div><div class="actg">'
+var wins=activityWins(wo),t=actThresh();
+var body='<div class="blk-sb" style="margin-bottom:10px">Log anything else you did today. '
++'<b>Earns a block:</b> any cycling or swimming, a walk of '+t.walk+' km or more, or '+t.steps.toLocaleString()+'+ steps.</div>'
++(wins.length?'<div class="act-win">✓ Counts as a block today — '+wins.join(' · ')+'</div>':'')
++'<div class="actg">'
 +'<div class="clog"><label>🚶 Walking (km)</label><input type="number" step="0.1" value="'+esc(a.walk)+'" placeholder="0" onchange="uAct(\''+k+'\',\'walk\',this.value)"></div>'
 +'<div class="clog"><label>🏊 Swimming (m)</label><input type="number" step="10" value="'+esc(a.swim)+'" placeholder="0" onchange="uAct(\''+k+'\',\'swim\',this.value)"></div>'
 +'<div class="clog"><label>🚲 Cycling (km)</label><input type="number" step="0.1" value="'+esc(a.cycle)+'" placeholder="0" onchange="uAct(\''+k+'\',\'cycle\',this.value)"></div>'
 +'<div class="clog"><label>👟 Step count</label><input type="number" step="100" value="'+esc(a.steps)+'" placeholder="0" onchange="uAct(\''+k+'\',\'steps\',this.value)"></div>'
 +'</div>';
-return'<div class="blk"><div class="blk-h" onclick="tB(\'act\')"><div class="blk-ta"><div class="blk-ic c5">🚶</div><div><div class="blk-lb">Daily Activity</div><div class="blk-sb">Walking · swimming · cycling · steps</div></div></div>'+(has?'<span class="badge dn2">Logged</span>':'<span class="badge p">Optional</span>')+'</div><div class="blk-c'+(has?' open':'')+'" id="bl-act">'+body+'</div></div>'}
-function uAct(k,f,v){ensureDay(k);if(!S.wk[k].activity)S.wk[k].activity={walk:'',swim:'',cycle:'',steps:''};S.wk[k].activity[f]=v;sv();rWk()}
+return'<div class="blk"><div class="blk-h" onclick="tB(\'act\')"><div class="blk-ta"><div class="blk-ic c5">🚶</div><div><div class="blk-lb">Daily Activity</div><div class="blk-sb">Walking · swimming · cycling · steps</div></div></div>'+(wins.length?'<span class="badge dn2">Counts as a block</span>':(has?'<span class="badge ip">Logged</span>':'<span class="badge p">Optional</span>'))+'</div><div class="blk-c'+(has?' open':'')+'" id="bl-act">'+body+'</div></div>'}
+function uAct(k,f,v){ensureDay(k);if(!S.wk[k].activity)S.wk[k].activity={walk:'',swim:'',cycle:'',steps:''};S.wk[k].activity[f]=v;sv();rWk();rDD(k,CURD)}
 
 function tB(b){var el=gEl('bl-'+b);if(el)el.className=el.className.indexOf('open')>=0?'blk-c':'blk-c open'}
 function ensureDay(k){if(!S.wk[k])S.wk[k]={dur:null}}
@@ -889,13 +1003,21 @@ function sCT(k,t){S.wk[k].cardio.mode=t;sv();rDD(k,CURD)}
 function uC(k,f,v){S.wk[k].cardio[f]=v;sv()}
 
 function rExBlock(k,blk,o){var h='';o.ex.forEach(function(ex,i){var hasKg=ex.kg>0;var last=hasKg?lastWeight(ex.n,k):null;
-h+='<div class="exi'+(ex.done?' xdone':'')+'"><div class="exck'+(ex.done?' on':'')+'" onclick="tEx(\''+k+'\',\''+blk+'\','+i+')">'+(ex.done?'✓':'')+'</div><div class="exinf"><div class="exnm">'+ex.n+' <span class="ibtn" onclick="sI(\''+k+'\',\''+blk+'\','+i+')">ℹ</span></div><div class="exdt">Target: '+ex.s+' × '+ex.r+(hasKg?' · '+ex.kg+'kg':'')+'</div><div class="exip"><label>Sets <input type="number" step="1" value="'+esc(ex.asets)+'" placeholder="'+ex.s+'" onchange="uEx(\''+k+'\',\''+blk+'\','+i+',\'asets\',this.value)"></label><label>Reps <input type="number" step="1" value="'+esc(ex.areps)+'" placeholder="'+firstNum(ex.r)+'" onchange="uEx(\''+k+'\',\''+blk+'\','+i+',\'areps\',this.value)"></label>'+(hasKg?'<label>Wt <input type="number" step="0.5" value="'+esc(ex.akg)+'" placeholder="'+ex.kg+'" onchange="uEx(\''+k+'\',\''+blk+'\','+i+',\'akg\',this.value)"> kg</label>':'')+'</div>'+(last!=null?'<div class="exlast">Last time: <b>'+last+' kg</b></div>':'')+'</div></div>'});
+var adv=exAdvice(ex,k);var wkg=(adv.kg!=null?adv.kg:ex.kg);h+='<div class="exi'+(ex.done?' xdone':'')+'"><div class="exck'+(ex.done?' on':'')+'" onclick="tEx(\''+k+'\',\''+blk+'\','+i+')">'+(ex.done?'✓':'')+'</div><div class="exinf"><div class="exnm">'+ex.n+' <span class="ibtn" onclick="sI(\''+k+'\',\''+blk+'\','+i+')">ℹ</span>'+(adv.cls==='up'?'<span class="exup">▲ level up</span>':'')+'</div><div class="exdt">Target: '+ex.s+' × '+ex.r+(hasKg?' · <b style="color:var(--text)">'+wkg+'kg</b>':'')+'</div><div class="exip"><label>Sets <input type="number" step="1" value="'+esc(ex.asets)+'" placeholder="'+ex.s+'" onchange="uEx(\''+k+'\',\''+blk+'\','+i+',\'asets\',this.value)"></label><label>Reps <input type="number" step="1" value="'+esc(ex.areps)+'" placeholder="'+firstNum(ex.r)+'" onchange="uEx(\''+k+'\',\''+blk+'\','+i+',\'areps\',this.value)"></label>'+(hasKg?'<label>Wt <input type="number" step="0.5" value="'+esc(ex.akg)+'" placeholder="'+wkg+'" onchange="uEx(\''+k+'\',\''+blk+'\','+i+',\'akg\',this.value)"> kg</label>':'')+'</div>'+'<div class="exadv'+(adv.cls?' '+adv.cls:'')+'">'+adv.t+'</div></div></div>'});
 var lbl=blk==='core'?'Mark Core Complete':'Mark Weights Complete';
 h+='<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">'+markRow(k,blk,o.done,lbl,'Tap when all done')+'</div><a class="rmlink" onclick="removeBlock(\''+k+'\',\''+blk+'\')">Remove this block</a>';
 return h}
 function uEx(k,blk,i,f,v){S.wk[k][blk].ex[i][f]=v;sv()}
-function tEx(k,blk,i){var o=S.wk[k][blk],ex=o.ex[i];ex.done=!ex.done;sv();rDD(k,CURD);
-if(ex.done){var pr=false;if(blk==='weights'&&ex.kg>0&&num(ex.akg)!=null){var b=bestWeightExcl(ex.n,k);if(b==null||num(ex.akg)>b)pr=true}
+function tEx(k,blk,i){var o=S.wk[k][blk],ex=o.ex[i];ex.done=!ex.done;
+// Ticking an exercise means "I did what was suggested", so fill any box left
+// blank. Without this the Wt placeholder looks filled but records nothing, and
+// training volume never grows.
+if(ex.done){var adv=exAdvice(ex,k);
+if(!String(ex.asets==null?'':ex.asets).length)ex.asets=String(ex.s);
+if(!String(ex.areps==null?'':ex.areps).length)ex.areps=String(firstNum(ex.r));
+if(ex.kg>0&&!String(ex.akg==null?'':ex.akg).length&&adv.kg!=null)ex.akg=String(adv.kg)}
+sv();rDD(k,CURD);
+if(ex.done){var pr=false;if(blk==='weights'&&ex.kg>0&&num(ex.akg)!=null){var b=bestWeightExcl(ex.n,k);if(b!=null&&num(ex.akg)>b)pr=true}
 if(pr){var m=pick(PRCH,'p');shC(m[0],ex.n+' · '+ex.akg+'kg',true)}else{var c=pick(CH,'c');shC(c[0],c[1],false)}}
 if(o.ex.every(function(x){return x.done})&&!o.done){o.done=true;sv();setTimeout(function(){var m=pick(BCH,'b');shC(m[0],m[1],true);rWk();rDD(k,CURD);checkDay(k)},1400)}}
 function sI(k,blk,i){var ex=S.wk[k][blk].ex[i];gEl('mo-t').textContent=ex.n;gEl('mo-b').innerHTML='<p>'+ex.d+'</p><a href="'+ex.yt+'" target="_blank" class="ytl">▶ Watch Form Guide</a>';gEl('mov').className='mov show'}
@@ -927,15 +1049,36 @@ function saveSt(){var dsel=(gEl('si-date')||{}).value||dk(new Date());var e={dat
 // weekly aggregation
 function weekKey(d){return dk(ws(d))}
 function weeklyData(nWeeks){var cur=ws(new Date());var weeks=[];for(var i=nWeeks-1;i>=0;i--){var wsD=new Date(cur);wsD.setDate(wsD.getDate()-i*7);weeks.push({start:new Date(wsD),key:dk(wsD),sessions:0,blocks:0,min:0,steps:0,km:0,swim:0})}var idx={};weeks.forEach(function(w){idx[w.key]=w});for(var k in S.wk){var w=S.wk[k];var d=new Date(k+'T12:00:00');var wk=weekKey(d);if(!idx[wk])continue;var bucket=idx[wk];if(daySession(w)){bucket.sessions++;bucket.min+=(w.dur||0)}bucket.blocks+=dayBlocks(w);if(w.activity){bucket.steps+=(num(w.activity.steps)||0);bucket.km+=(num(w.activity.walk)||0)+(num(w.activity.cycle)||0);bucket.swim+=(num(w.activity.swim)||0)}}return weeks}
-function currentStreak(){var active={};for(var k in S.wk){if(daySession(S.wk[k]))active[weekKey(new Date(k+'T12:00:00'))]=true}var cur=ws(new Date());var probe=new Date(cur);if(!active[dk(probe)])probe.setDate(probe.getDate()-7);var streak=0;while(active[dk(probe)]){streak++;probe.setDate(probe.getDate()-7)}return streak}
+// Rolling windows ending today, not Monday-to-Sunday calendar weeks.
+function activeDates(){var set={};for(var k in S.wk){if(daySession(S.wk[k]))set[k]=1}return set}
+function rollingStats(nDays,back){
+var end=new Date();end.setHours(12,0,0,0);
+if(back)end.setDate(end.getDate()-back*nDays);
+var start=new Date(end);start.setDate(start.getDate()-(nDays-1));
+var lo=dk(start),hi=dk(end),days=0,blocks=0,min=0;
+for(var k in S.wk){if(k<lo||k>hi)continue;var w=S.wk[k];
+if(daySession(w)){days++;min+=(w.dur||0)}blocks+=dayBlocks(w)}
+return{days:days,blocks:blocks,min:min,from:lo,to:hi}}
+// A streak survives as long as each rolling seven-day block back from today
+// contains at least one session.
+function currentStreak(){
+var act=activeDates(),end=new Date();end.setHours(12,0,0,0);var streak=0;
+for(var wnd=0;wnd<520;wnd++){var hit=false;
+for(var d=0;d<7;d++){var p=new Date(end);p.setDate(p.getDate()-wnd*7-d);if(act[dk(p)]){hit=true;break}}
+if(hit)streak++;else break}
+return streak}
 function totals(){var sessions=0,min=0,vol=0,km=0,swim=0,steps=0;for(var k in S.wk){var w=S.wk[k];if(daySession(w)){sessions++;min+=(w.dur||0)}['weights','core'].forEach(function(b){if(w[b]&&w[b].active)w[b].ex.forEach(function(e){if(e.kg>0&&num(e.akg)!=null){var st=num(e.asets)||e.s,rp=num(e.areps)||firstNum(e.r),kg=num(e.akg);vol+=st*rp*kg}})});if(w.activity){km+=(num(w.activity.walk)||0)+(num(w.activity.cycle)||0);swim+=(num(w.activity.swim)||0);steps+=(num(w.activity.steps)||0)}}return{sessions:sessions,min:min,vol:Math.round(vol),km:Math.round(km*10)/10,swim:swim,steps:steps}}
-function rTiles(){var t=totals();var wd=weeklyData(1)[0];var el=gEl('tiles-area');
-var tiles=[['gr',wd.sessions,'Days trained this wk'],['g',wd.blocks,'Blocks this wk'],['',currentStreak(),'Week streak 🔥'],['g',t.sessions,'Total days trained'],['',Math.round(t.min/60*10)/10+'h','Total time'],['g',t.vol.toLocaleString(),'Volume kg'],['gr',(t.km+Math.round(t.swim/1000*10)/10),'Distance km']];
+function rTiles(){var t=totals();var wd=rollingStats(7,0);var el=gEl('tiles-area');
+var tiles=[['gr',wd.days,'Days trained · last 7 days'],['g',wd.blocks,'Blocks · last 7 days'],['',currentStreak(),'7-day streak 🔥'],['g',t.sessions,'Total days trained'],['',Math.round(t.min/60*10)/10+'h','Total time'],['g',t.vol.toLocaleString(),'Volume kg'],['gr',(t.km+Math.round(t.swim/1000*10)/10),'Distance km']];
 el.className='';
 el.innerHTML='<div class="tiles">'+tiles.map(function(x){return'<div class="tile '+x[0]+'"><div class="tile-v">'+x[1]+'</div><div class="tile-l">'+x[2]+'</div></div>'}).join('')+'</div>'
-+'<div class="tilenote"><b>Days trained</b> — any day you ticked at least one block complete <i>or</i> logged an activity. Counted once per day, so the most you can score is 7 in a week (it is not one per 30 minutes).<br>'
-+'<b>Blocks</b> — each section you finished that day: Weights, Cardio, Core, Flexibility, plus one if you logged any walking / swimming / cycling / steps. Up to 4 a day.<br>'
-+'<b>Total time</b> — adds up the session length you picked on each day you trained (30 / 60 / 90 min), not the actual clock time.</div>'}
++'<div class="tilenote"><b>Last 7 days</b> means a rolling window ending today — not Monday to Sunday. It moves with you.<br>'
++'<b>Days trained</b> — any day you ticked at least one block complete <i>or</i> logged a qualifying activity. Counted once per day, so 7 is the most possible.<br>'
++'<b>Blocks</b> — each section you finished: Weights, Cardio, Core, Flexibility, plus one for qualifying Daily Activity. Up to 5 a day.<br>'
++'<b>Qualifying activity</b> — any cycling or swimming, a walk of '+actThresh().walk+' km or more, or '+actThresh().steps.toLocaleString()+'+ steps. Shorter walks and ordinary step counts are still recorded, they just do not score a block.<br>'
++'<b>7-day streak</b> — how many consecutive rolling seven-day blocks, counting back from today, contain at least one session.<br>'
++'<b>Total time</b> — adds up the session length you picked (30 / 60 / 90 min) on each day you trained, not actual clock time.<br>'
++'<b>Volume kg</b> — sets × reps × weight, added up across every weights exercise where you recorded a weight. It only grows when the Wt box is filled in.</div>'}
 // Always measured from the very first weight ever logged — that is the starting point.
 function firstWeight(){var best=null;for(var i=0;i<S.bs.length;i++){var e=S.bs[i];if(!e||e.weight==null)continue;if(!best||e.date<best.date)best=e}return best}
 function rTrend(){var el=gEl('trend-area');var lw=latestWeight();var fw=firstWeight();
@@ -948,13 +1091,13 @@ else{el.innerHTML='<div class="trend" style="border-left-color:var(--gold)">Hold
 function fmtD(s){var p=s.split('-');return p[2]+' '+MO[parseInt(p[1])-1].slice(0,3)}
 // How many blocks were completed on a day (weights/cardio/core/flex done, plus
 // any logged walking/swimming/cycling/steps). Capped at 4 for shading purposes.
-function dayBlocks(w){if(!w)return 0;var n=0;STREAMS.forEach(function(b){if(w[b]&&w[b].active&&w[b].done)n++});if(dayHasActivity(w))n++;return n>4?4:n}
+function dayBlocks(w){if(!w)return 0;var n=0;STREAMS.forEach(function(b){if(w[b]&&w[b].active&&w[b].done)n++});if(activityQualifies(w))n++;return n}
 function rHeat(){var el=gEl('heat-area');var N=10;var cur=ws(new Date());var today=dk(new Date());
 var rows='<div class="heat-row"><div class="heat-wl"></div>'+['M','T','W','T','F','S','S'].map(function(x){return'<div class="heat-dl">'+x+'</div>'}).join('')+'</div>';
 for(var wi=0;wi<N;wi++){var wsD=new Date(cur);wsD.setDate(wsD.getDate()-wi*7);
 var lbl=wsD.getDate()+' '+MO[wsD.getMonth()].slice(0,3);var cells='';
 for(var di=0;di<7;di++){var d=new Date(wsD);d.setDate(d.getDate()+di);var kk=dk(d);
-var nb=dayBlocks(S.wk[kk]);var cls=nb>0?' l'+nb:'';var fut=(kk>today)?' style="opacity:.4"':'';
+var nb=dayBlocks(S.wk[kk]);var cls=nb>0?' l'+Math.min(4,nb):'';var fut=(kk>today)?' style="opacity:.4"':'';
 cells+='<div class="heat-cell'+cls+'"'+fut+' title="'+kk+' — '+nb+' block'+(nb===1?'':'s')+'"></div>'}
 rows+='<div class="heat-row"><div class="heat-wl">'+lbl+'</div>'+cells+'</div>'}
 var lg='<div class="heat-lg"><span>Less</span>'+['','l1','l2','l3','l4'].map(function(c){return'<span class="heat-cell '+c+'" style="flex:0 0 14px;width:14px;height:14px"></span>'}).join('')+'<span>More</span><span style="margin-left:auto">blocks completed per day</span></div>';
@@ -997,8 +1140,8 @@ var sc=niceScale(Math.min.apply(null,vals),Math.max.apply(null,vals),4,step||0);
 var mn=sc.mn,mx=sc.mx,ticks=sc.ticks;var rng=mx-mn||1,pL=46,pR=16,pT=10,pB=28,cW=W-pL-pR,cH=H-pT-pB;ctx.strokeStyle=col.grid;ctx.lineWidth=0.5;ctx.font='10px -apple-system';for(var i=0;i<=ticks;i++){var y=pT+(cH/ticks)*i;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.fillStyle=col.faint;ctx.textAlign='right';var lv=mx-sc.step*i;ctx.fillText(fmtTick(lv,sc.dec),pL-6,y+4)}ctx.strokeStyle=color;ctx.lineWidth=2;ctx.lineJoin='round';ctx.beginPath();data.forEach(function(d,i){var x=pL+(cW/Math.max(data.length-1,1))*i,y=pT+cH-((d[key]-mn)/rng)*cH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke();data.forEach(function(d,i){var x=pL+(cW/Math.max(data.length-1,1))*i,y=pT+cH-((d[key]-mn)/rng)*cH;ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle=col.pt;ctx.lineWidth=1.5;ctx.stroke()});ctx.fillStyle=col.faint;ctx.font='9px -apple-system';ctx.textAlign='center';var stp=Math.max(1,Math.floor(data.length/6));data.forEach(function(d,i){if(i%stp===0||i===data.length-1){var x=pL+(cW/Math.max(data.length-1,1))*i,p=d.date.split('-');ctx.fillText(p[2]+'/'+p[1],x,H-8)}})}
 function rTbl(){var el=gEl('st-tbl');if(S.bs.length===0){el.innerHTML='<p style="color:var(--faint);font-size:0.85rem">No entries yet.</p>';return}var hd=['Date'].concat(SF.map(function(f){return f.l})).concat(['BMI']);el.innerHTML='<table class="stbl"><thead><tr>'+hd.map(function(h){return'<th>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+S.bs.slice().reverse().map(function(s){return'<tr><td>'+s.date+'</td>'+SF.map(function(f){return'<td>'+(s[f.k]!=null?s[f.k]:'—')+'</td>'}).join('')+'<td>'+(s.bmi!=null?s.bmi:'—')+'</td></tr>'}).join('')+'</tbody></table>'}
 
-function lCfg(){gEl('s-ht').value=S.cfg.ht;gEl('s-yob').value=S.cfg.yob;gEl('age-disp').textContent=age();applyTheme(S.cfg.theme||'light')}
-function savSet(){S.cfg.ht=parseFloat(gEl('s-ht').value)||186.5;S.cfg.yob=parseInt(gEl('s-yob').value)||1968;gEl('age-disp').textContent=age();sv()}
+function lCfg(){gEl('s-ht').value=S.cfg.ht;gEl('s-yob').value=S.cfg.yob;gEl('s-inc').value=(S.cfg.inc||2.5);gEl('s-walk').value=(S.cfg.walkMin!=null?S.cfg.walkMin:5);gEl('s-steps').value=(S.cfg.stepMin!=null?S.cfg.stepMin:14000);gEl('age-disp').textContent=age();applyTheme(S.cfg.theme||'light')}
+function savSet(){S.cfg.ht=parseFloat(gEl('s-ht').value)||186.5;S.cfg.yob=parseInt(gEl('s-yob').value)||1968;var iv=parseFloat(gEl('s-inc').value);S.cfg.inc=(iv>0?iv:2.5);var wv=parseFloat(gEl('s-walk').value);S.cfg.walkMin=(wv>=0?wv:5);var sv2=parseFloat(gEl('s-steps').value);S.cfg.stepMin=(sv2>=0?sv2:14000);gEl('age-disp').textContent=age();sv();if(CUR)rDD(CUR,CURD)}
 
 function expCSV(type){var csv='';if(type==='stats'){csv='Date,'+SF.map(function(f){return f.l}).join(',')+',BMI\n';S.bs.forEach(function(s){csv+=s.date+','+SF.map(function(f){return s[f.k]!=null?s[f.k]:''}).join(',')+','+(s.bmi||'')+'\n'})}else{csv='Date,Duration_min,Block,Detail,Target_Sets,Target_Reps,Actual_Sets,Actual_Reps,Suggested_kg,Actual_kg,Done\n';var keys=Object.keys(S.wk).sort();keys.forEach(function(k){var w=S.wk[k],dur=w.dur||'';if(w.cardio&&w.cardio.active){var det=(w.cardio.mode==='peloton'?PELO[w.cardio.ci].n:CMODE[w.cardio.mode].n)+(w.cardio.cls?' - '+w.cardio.cls:'');csv+=k+','+dur+',Cardio,"'+det.replace(/"/g,'')+'",,,,,,,'+w.cardio.done+'\n'}['weights','core'].forEach(function(bl){if(w[bl]&&w[bl].active){var lbl=bl==='weights'?WD[w.weights.focus].name.split(' — ')[0]:CORE[w.core.ri].n;w[bl].ex.forEach(function(ex){csv+=k+','+dur+','+(bl==='weights'?'Weights':'Core')+',"'+ex.n+'",'+ex.s+','+ex.r+','+(ex.asets||'')+','+(ex.areps||'')+','+ex.kg+','+(ex.akg||'')+','+ex.done+'\n'})}});if(w.flex&&w.flex.active){csv+=k+','+dur+',Flex,"'+FL[w.flex.ri].n+'",,,,,,,'+w.flex.done+'\n'}if(w.activity&&dayHasActivity(w)){var a=w.activity;csv+=k+','+dur+',Activity,"walk '+(a.walk||0)+'km; swim '+(a.swim||0)+'m; cycle '+(a.cycle||0)+'km; steps '+(a.steps||0)+'",,,,,,,\n'}})}var blob=new Blob([csv],{type:'text/csv'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='eglingym-'+type+'-'+dk(new Date())+'.csv';a.click()}
 function expJSON(){var data={wk:S.wk,bs:S.bs,cfg:S.cfg,exported:new Date().toISOString(),version:3};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='eglingym-backup-'+dk(new Date())+'.json';a.click()}
